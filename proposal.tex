@@ -1,0 +1,83 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{titlesec}
+
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.12em,topsep=0.15em}
+\titleformat{\section}{\large\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.15em}{0.35em}
+
+\begin{document}
+
+\begin{center}
+\textbf{} Maxime DRÉAN -- Mattéo LE FUR -- Mayssa FRIKHA -- Paul LE SAGER\hfill
+\end{center}
+
+\vspace{0.8cm}
+
+\begin{center}
+    {\Large \textbf{Proposition de projet transversal}}\\[0.15cm]
+    {\normalsize INF3001 -- Simulation et Applications Interactives (SAI)}\\[0.05cm]
+    {\normalsize INF3002 -- Movement \& Artificial Intelligence}
+\end{center}
+
+\vspace{0.55cm}
+
+\textbf{Objectif.} Concevoir un \textit{escape game} en réalité mixte pour Meta Quest 3. Le joueur explore plusieurs pièces et couloirs réels, préalablement numérisés au LiDAR, pour retrouver des indices virtuels et s'échapper. Un monstre, animé à partir de mouvements capturés par l'équipe, patrouille et poursuit le joueur au moyen d'une intelligence artificielle de navigation et de perception.
+
+\section*{1. Intitulé du projet}
+\textbf{Exploration en réalité mixte et poursuite par un monstre intelligent}
+
+\section*{2. Concept et problématique}
+L'expérience se déroule dans un environnement intérieur réel, fixe et connu à l'avance, composé de plusieurs pièces reliées par des couloirs. L'espace est scanné avec un capteur LiDAR, puis préparé sous la forme d'une scène 3D. Avec le Meta Quest 3 en mode passthrough, le joueur voit directement son environnement physique, enrichi d'indices, d'objets et d'un monstre virtuels.
+
+L'enjeu central est d'aligner durablement les deux repères spatiaux pour que les objets restent placés au bon endroit et que le monstre respecte les murs, les portes et les passages. La numérisation préalable ne suffit pas, à elle seule, à garantir cet alignement : une phase de calibration, ainsi que des vérifications lors des déplacements entre pièces, seront nécessaires.
+
+\section*{3. Expérience de jeu envisagée}
+\begin{itemize}
+    \item \textbf{Exploration :} parcourir les pièces et couloirs pour découvrir des indices virtuels intégrés à la scène réelle.
+    \item \textbf{Collecte :} saisir et manipuler des objets par \textit{hand tracking}, sans contrôleurs, pour débloquer la sortie.
+    \item \textbf{Menace :} éviter un monstre qui patrouille, détecte le joueur par son champ de vision, le poursuit puis le recherche lorsqu'il perd sa trace.
+    \item \textbf{Issue :} s'échapper après avoir réuni les indices requis ; la capture par le monstre entraîne l'échec.
+\end{itemize}
+
+\section*{3. Axe INF3001 -- Simulation et Applications Interactives}
+Cet axe porte sur la correspondance entre espace réel et contenu virtuel, ainsi que sur l'interaction avec ce contenu :
+\begin{itemize}
+    \item scan LiDAR de plusieurs pièces et couloirs ; assemblage, nettoyage et simplification des maillages 3D ;
+    \item interprétation des objets physiques (tables, chaises, portes) comme des obstacles et murs ;
+    \item calibration du repère virtuel sur le repère physique, avec contrôle de l'alignement lors des changements de pièce ;
+    \item placement persistant des indices et gestion des occultations et collisions avec la géométrie numérisée ;
+    \item \textit{hand tracking} pour la sélection, la prise et la manipulation d'objets virtuels ;
+    \item progression de la collecte, retours visuels/sonores et optimisation sur casque autonome.
+\end{itemize}
+
+\section*{6. Axe INF3002 -- Movement \& Artificial Intelligence}
+Cet axe concerne l'animation du monstre et ses prises de décision :
+\begin{itemize}
+    \item enregistrement des mouvements nécessaires (marche, course, recherche, attaque) au moyen d'une méthode de \textit{motion capture} à sélectionner ;
+    \item adaptation des captures au squelette du personnage 3D (\textit{retargeting}) et transitions entre animations ;
+    \item navigation sur un \textit{NavMesh} ou graphe navigable, avec calcul de chemin (type A*) entre pièces et couloirs ;
+    \item perception par champ de vision et vérification de la ligne de vue, puis poursuite ou perte de cible ;
+    \item machine à états : patrouille, détection, poursuite, recherche autour de la dernière position connue, retour en patrouille ; ajustement simple de la recherche selon les déplacements observés.
+\end{itemize}
+
+\section*{7. Moyens techniques et méthodologie}
+\textbf{Matériel :} Meta Quest 3, LiDAR et dispositif de capture de mouvement à définir (par exemple, capture vidéo sans marqueurs).
+
+\textbf{Logiciels :} moteur 3D non arrêté (Unity ou Unreal Engine) ; outils de réalité mixte et de suivi des mains pour Quest 3 ; logiciel de scan/export 3D ; Blender ou équivalent pour le traitement des modèles et des animations.
+
+\textbf{Démarche :} construire d'abord une tranche jouable couvrant une pièce et un couloir, puis étendre l'expérience à plusieurs espaces ; développer parallèlement la collecte et le monstre avant intégration et tests sur casque.
+
+\end{document}
