@@ -1,0 +1,124 @@
+name: Mirror to GitLab
+
+on:
+  push:
+  delete:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# All branches share one mirror; never let two runs overwrite each other.
+concurrency:
+  group: mirror-to-gitlab
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    name: Mirror Git history and LFS objects
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    env:
+      GIT_TERMINAL_PROMPT: "0"
+      GITLAB_REPOSITORY_URL: ${{ secrets.GITLAB_REPOSITORY_URL }}
+    steps:
+      # Fail early if the required secrets are missing or the clone URL is invalid.
+      - name: Check required secrets
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          if [[ -z "$GITLAB_TOKEN" ]]; then
+            echo "::error::Add the GITLAB_TOKEN Actions secret with GitLab write_repository permission."
+            exit 1
+          fi
+          if [[ -z "$GITLAB_REPOSITORY_URL" ]]; then
+            echo "::error::Add the GITLAB_REPOSITORY_URL Actions secret with the HTTPS clone URL."
+            exit 1
+          fi
+
+          if [[ ! "$GITLAB_REPOSITORY_URL" =~ ^https://[^/@[:space:]?#]+/[^[:space:]?#]+\.git$ ]]; then
+            echo "::error::GITLAB_REPOSITORY_URL must be an HTTPS clone URL ending in .git, without credentials."
+            exit 1
+          fi
+
+      # Hide the URL and components that Git or LFS may print separately.
+      - name: Mask the mirror address
+        run: |
+          mirror_location=${GITLAB_REPOSITORY_URL#https://}
+          mirror_host=${mirror_location%%/*}
+          mirror_path=/${mirror_location#*/}
+          mirror_decoded_path=$mirror_path
+          while [[ "$mirror_decoded_path" =~ %([[:xdigit:]]{2}) ]]; do
+            mirror_encoded_byte=${BASH_REMATCH[0]}
+            printf -v mirror_decoded_byte '%b' "\x${BASH_REMATCH[1]}"
+            mirror_decoded_path=${mirror_decoded_path/"$mirror_encoded_byte"/"$mirror_decoded_byte"}
+          done
+
+          mirror_values=("$GITLAB_REPOSITORY_URL" "${GITLAB_REPOSITORY_URL%.git}" "$mirror_host")
+          for mirror_variant in "$mirror_path" "$mirror_decoded_path"; do
+            mirror_namespace=${mirror_variant%/*}
+            mirror_namespace=${mirror_namespace##*/}
+            mirror_project=${mirror_variant##*/}
+            mirror_values+=("$mirror_variant" "${mirror_variant%.git}" "$mirror_namespace" "$mirror_project" "${mirror_project%.git}")
+          done
+
+          for mirror_value in "${mirror_values[@]}"; do
+            [[ -n "$mirror_value" ]] || continue
+            mirror_value=${mirror_value//'%'/'%25'}
+            mirror_value=${mirror_value//$'\r'/'%0D'}
+            mirror_value=${mirror_value//$'\n'/'%0A'}
+            printf '::add-mask::%s\n' "$mirror_value"
+          done
+
+      # The triggering branch or tag may already have been deleted.
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
+      # Refresh the source snapshot and exclude GitHub's internal pull-request refs.
+      - name: Fetch the latest GitHub branches, tags, and notes
+        run: |
+          git fetch --prune --no-tags origin \
+            '+refs/heads/*:refs/mirror/heads/*' \
+            '+refs/tags/*:refs/mirror/tags/*' \
+            '+refs/notes/*:refs/mirror/notes/*'
+
+      # Read the destination exclusively from its repository secret.
+      - name: Configure the GitLab remote
+        run: git remote add gitlab "$GITLAB_REPOSITORY_URL"
+
+      # Scope authentication to the secret URL; keep the token out of Git config.
+      - name: Configure GitLab authentication
+        run: |
+          git config --local --replace-all "credential.${GITLAB_REPOSITORY_URL}.helper" ''
+          git config --local --add "credential.${GITLAB_REPOSITORY_URL}.helper" \
+            '!f() { if [ "$1" = get ]; then printf "username=oauth2\npassword=%s\n" "$GITLAB_TOKEN"; fi; }; f'
+
+      # Include LFS objects referenced only by old commits or other branches.
+      - name: Download all historical Git LFS objects from GitHub
+        run: |
+          git for-each-ref --format='%(refname)' refs/mirror/ \
+            | git lfs fetch --all origin --stdin
+
+      # Make the binary objects available before publishing their Git references.
+      - name: Upload all historical Git LFS objects to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git for-each-ref --format='%(refname)' refs/mirror/ \
+            | git lfs push --all gitlab --stdin
+
+      # Preserve commit IDs, force-pushes and deletions in one atomic transaction.
+      - name: Mirror branches, tags, and notes atomically to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git push --atomic --prune gitlab \
+            '+refs/mirror/heads/*:refs/heads/*' \
+            '+refs/mirror/tags/*:refs/tags/*' \
+            '+refs/mirror/notes/*:refs/notes/*'
