@@ -1,0 +1,21 @@
+# Operating system files.
+.DS_Store
+Thumbs.db
+
+# PDF files.
+*.pdf
+
+# LaTeX intermediate files.
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.bak*
+indent.log
