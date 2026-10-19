@@ -74,9 +74,9 @@ Exploration en réalité mixte et poursuite par un monstre intelligent.
 
 \section{Concept et problématique}
 
-L'expérience prend place dans un environnement intérieur connu à l'avance, composé à terme de plusieurs pièces reliées par des couloirs. Le mode \emph{passthrough} (affichage en direct des images filmées par les caméras du casque) permet de voir la pièce physique, augmentée d'indices et d'un personnage virtuel. Le joueur se déplace réellement à allure contrôlée, sans manettes.
+L'expérience prend place dans un environnement intérieur connu à l'avance. Le premier prototype se concentre sur une zone de jeu limitée et contrôlée, constituée d'une seule pièce. Le mode \emph{passthrough} (affichage en direct des images filmées par les caméras du casque) permet de voir l'environnement physique, augmenté d'indices et d'un personnage virtuel. Le joueur se déplace réellement à allure contrôlée, sans manettes. L'ajout d'un couloir ou d'autres pièces pourra être envisagé après validation de cette première zone.
 
-Le défi consiste à maintenir la correspondance entre les objets virtuels et les éléments physiques du lieu, notamment lors d'un passage d'une pièce à l'autre. Le monstre doit également percevoir les obstacles, emprunter les passages accessibles et réagir à la position du joueur, tout en préservant la sécurité des déplacements et les performances du casque autonome.
+Le défi consiste à maintenir la correspondance entre les objets virtuels et les éléments physiques de la pièce pendant les déplacements du joueur. Le monstre doit également percevoir les obstacles, se déplacer dans l'espace accessible et réagir à la position du joueur, tout en préservant la sécurité des déplacements et les performances du casque autonome.
 
 \section{Expérience de jeu}
 
@@ -84,7 +84,7 @@ Le joueur recherche trois indices virtuels répartis dans le parcours. Avec le \
 
 Pendant cette exploration, le joueur doit éviter le champ de vision du monstre. Il peut utiliser les murs et les obstacles pour rompre la ligne de vue et échapper à une poursuite. La partie est gagnée lorsque l'énigme finale est résolue et que la sortie est atteinte ; elle est perdue si le monstre intercepte le joueur.
 
-Le premier prototype comportera une pièce et un couloir, trois indices, un monstre et deux issues possibles. L'extension à d'autres pièces interviendra après validation de cette boucle de jeu.
+Le premier prototype comportera une seule pièce, trois indices, un monstre et une condition de sortie. L'ajout d'un couloir ou d'autres pièces interviendra uniquement après validation de cette boucle de jeu.
 
 \clearpage
 \section{Approche technique}
@@ -93,7 +93,9 @@ Le premier prototype comportera une pièce et un couloir, trois indices, un mons
 
 Unity et le \emph{Meta XR Core SDK} (ensemble d'outils Meta pour développer sur Quest) seront utilisés pour afficher la scène en réalité mixte. La \emph{Scene API} (accès aux surfaces et objets reconnus par le casque) et le \doclink{https://developers.meta.com/vr/documentation/unity/unity-mr-utility-kit-samples/}{Mixed Reality Utility Kit (MRUK)} aideront à représenter les sols, murs et obstacles. Les \doclink{https://developers.meta.com/vr/documentation/unity/unity-spatial-anchors-persist-content/}{ancrages spatiaux} permettront de rattacher les objets virtuels à des positions physiques connues.
 
-La numérisation de l'environnement sera préparée avec \doclink{https://github.com/aabdlwahab/3d-scanner}{ScanSpace}, un outil de numérisation 3D dont le code est disponible sur GitHub, exploitant le LiDAR de l'iPhone ainsi qu'ARKit et RoomPlan. Le relevé des pièces pourra être exporté en GLB ou OBJ, puis nettoyé et simplifié dans \doclink{https://www.blender.org/}{Blender}. Un recalage (mise en correspondance de deux systèmes de coordonnées) devra ensuite aligner ce maillage sur le repère spatial du Quest~3. Si cette calibration se révèle instable, une géométrie de collision simplifiée issue de la scène Meta servira au prototype jouable.
+L'architecture fixe sera représentée en priorité à partir de la géométrie fournie par la Scene API et MRUK, afin de disposer d'une base directement exploitable pour le prototype. En complément, une numérisation plus détaillée pourra être préparée avec \doclink{https://github.com/aabdlwahab/3d-scanner}{ScanSpace}, un outil de numérisation 3D dont le code est disponible sur GitHub, exploitant le LiDAR de l'iPhone ainsi qu'ARKit et RoomPlan. Le relevé pourra être exporté en GLB ou OBJ, puis nettoyé et simplifié dans \doclink{https://www.blender.org/}{Blender}. Un recalage (mise en correspondance de deux systèmes de coordonnées) devra alors aligner ce maillage sur le repère spatial du Quest~3. Cette numérisation externe reste une amélioration : si sa calibration se révèle instable, la géométrie simplifiée issue de la scène Meta restera suffisante pour le prototype jouable.
+
+Les meubles susceptibles d'être déplacés, notamment les tables ou les chaises utiles au parcours, ne seront pas intégrés définitivement au maillage fixe. Ils seront représentés par des volumes simples dans Unity et associés à des marqueurs visuels de type QR code. Après déplacement d'un meuble, la détection de son marqueur permettra de remettre à jour sa position et son orientation dans la scène virtuelle sans imposer un suivi continu.
 
 Le \emph{Meta XR Interaction SDK} fournira les outils de manipulation par les mains. Des zones de sélection et d'activation adaptées aux gestes permettront d'interagir avec les indices. Les maillages utilisés pour les collisions seront simplifiés afin de limiter la charge de calcul.
 
@@ -134,7 +136,9 @@ Chaque ligne indique un comportement observable et un critère de validation, af
 \endhead
 \essential & Lancer l'application sur Quest~3 en \emph{passthrough} et récupérer les surfaces nécessaires du lieu (sols, murs, obstacles). & Affichage stable en conditions réelles et repérage des obstacles. \\
 \addlinespace[0.25em]
-\essential & Calibrer les positions des indices dans une pièce et un couloir, et les maintenir lors des déplacements et changements d'orientation. & Trois objets restent à leurs emplacements après un aller-retour. \\
+\essential & Calibrer les positions des indices dans une seule pièce et les maintenir lors des déplacements et changements d'orientation. & Trois objets restent à leurs emplacements après un aller-retour. \\
+\addlinespace[0.25em]
+\essential & Repositionner dans la scène virtuelle un meuble réel identifié par QR code après son déplacement. & Un meuble déplacé puis reposé retrouve une position et une orientation cohérentes dans Unity. \\
 \addlinespace[0.25em]
 \essential & Reconnaître les deux mains et permettre de sélectionner, prendre, relâcher et activer chaque indice sans manettes. & Trois interactions enchaînées sans contrôleur. \\
 \addlinespace[0.25em]
@@ -169,9 +173,9 @@ Les fonctionnalités suivantes ne sont abordées qu'après validation du parcour
 \textbf{Importance} & \textbf{Fonctionnalité attendue} & \textbf{Critère de validation} \\
 \midrule
 \endhead
-\important & Scanner une pièce et un couloir dans ScanSpace, exporter un maillage, le corriger dans Blender et l'aligner avec le repère Quest. & Sol, murs et passage recalés sur les mêmes repères physiques. \\
+\important & Scanner la pièce dans ScanSpace, exporter un maillage, le corriger dans Blender et l'aligner avec le repère Quest. & Sol, murs et principaux obstacles recalés sur les mêmes repères physiques. \\
 \addlinespace[0.25em]
-\important & Étendre la scène à plusieurs pièces et conserver la cohérence des indices et de la navigation aux portes. & Passage aller-retour sans décalage gênant ni blocage. \\
+\important & Ajouter un couloir puis, si pertinent, étendre la scène à plusieurs pièces en conservant la cohérence des indices et de la navigation entre les zones. & Déplacement aller-retour entre les zones sans décalage gênant ni blocage. \\
 \addlinespace[0.25em]
 \important & Ajouter l'occultation des objets virtuels par les murs et un réglage plus précis des volumes de collision. & Un indice disparaît correctement derrière un obstacle. \\
 \addlinespace[0.25em]
@@ -180,6 +184,14 @@ Les fonctionnalités suivantes ne sont abordées qu'après validation du parcour
 \optional & Adapter la zone de recherche du monstre selon les derniers déplacements observés du joueur. & Deux comportements distincts comparés sur un même scénario. \\
 \addlinespace[0.25em]
 \optional & Varier les emplacements des indices entre deux parties sans compromettre la résolution des énigmes. & Deux configurations jouables et validées. \\
+\addlinespace[0.25em]
+\optional & Ajouter des objets virtuels interactifs répartis dans la zone de jeu, avec des effets possibles sur la progression ou sur le comportement du monstre. & Au moins un objet peut être manipulé et déclenche un effet de jeu identifiable, par exemple attirer, distraire ou ralentir le monstre. \\
+\addlinespace[0.25em]
+\optional & Transformer visuellement certains meubles réels suivis par QR code en éléments du décor virtuel, par exemple une table représentée comme un mur ou une cloison. & Le décor virtuel reste aligné avec le meuble réel et conserve une zone physique cohérente pour les déplacements du joueur. \\
+\addlinespace[0.25em]
+\optional & Proposer une ambiance virtuelle sombre afin de limiter volontairement la visibilité et d'augmenter la tension pendant l'exploration. & Le parcours et les indices restent utilisables malgré la réduction de visibilité, sans compromettre la sécurité du joueur. \\
+\addlinespace[0.25em]
+\optional & Ajouter une mécanique de lampe ou de source de lumière, disponible dès le départ ou à retrouver dans la zone de jeu. & La lampe améliore localement la visibilité et peut être intégrée à une courte étape de progression. \\
 \bottomrule
 \end{longtable}
 }
@@ -200,57 +212,78 @@ L'ordre de réalisation peut être ajusté en cas de difficulté technique. En r
 \clearpage
 \section{Roadmap}
 
-Le développement suit sept phases ordonnées par dépendances techniques, sans échéances figées. Les prototypes spatiaux, les interactions et l'animation pourront être réalisés en parallèle par les quatre membres de l'équipe. Chaque phase se termine par une vérification concrète avant l'intégration suivante.
+Le développement est organisé en deux MVP successifs, correspondant aux deux unités d'enseignement. Le MVP~2 dépend directement du MVP~1 : avant d'ajouter un monstre capable de naviguer et de réagir au joueur, il faut disposer d'un environnement réel correctement représenté, calibré et exploitable dans Unity. Les phases sont ordonnées par dépendances techniques et ne sont pas associées à des échéances figées.
 
-\subsection*{Phase 1 -- Mise en place et étude de faisabilité}
+\subsection*{MVP 1 -- INF3001 : environnement MR jouable}
 
-\textbf{Objectifs.} Créer le projet Unity, intégrer les SDK Meta, vérifier l'installation d'une application en réalité mixte sur Quest~3 et tester la détection des mains. Effectuer en parallèle un premier scan avec ScanSpace et un essai de capture FreeMoCap, afin d'identifier rapidement les limitations matérielles et logicielles.
+L'objectif du premier MVP est d'obtenir une petite boucle d'escape game stable sur Quest~3, sans dépendre du monstre.
 
-\textit{Livrable :} application de test sur casque, fichier 3D exporté, courte capture de mouvement et relevé des difficultés techniques.
+\subsection*{Phase 1 -- Mise en place Unity et Quest~3}
 
-\subsection*{Phase 2 -- Numérisation et alignement spatial}
+\textbf{Objectifs.} Configurer le projet Unity pour le Quest~3 standalone, intégrer OpenXR et les SDK Meta nécessaires, obtenir un affichage \emph{passthrough}, déployer une première application sur le casque et vérifier le suivi des mains pour les interactions prévues.
 
-\textbf{Objectifs.} Numériser la pièce de référence et son couloir, vérifier la géométrie des portes et des obstacles, simplifier le maillage dans Blender et préparer son import dans Unity. Définir des repères de calibration, tester les ancrages spatiaux et comparer le modèle importé avec la géométrie reconnue par le casque.
+\textit{Livrable :} application de test fonctionnelle sur Quest~3 avec \emph{passthrough} et détection des mains.
 
-\textit{Livrable :} scène de test avec sol, murs, obstacles et trois positions d'objets conservées après déplacement.
+\subsection*{Phase 2 -- Numérisation et calibration de l'environnement}
 
-\subsection*{Phase 3 -- Interactions et logique des énigmes}
+\textbf{Objectifs.} Choisir une seule pièce comme zone de test, puis récupérer une représentation simple de son architecture fixe avec la Scene API et MRUK. Définir un repère physique de référence et vérifier que les murs et les obstacles restent suffisamment cohérents pendant les déplacements. Si le temps et la stabilité du recalage le permettent, un scan plus détaillé réalisé avec ScanSpace pourra ensuite remplacer ou compléter cette géométrie simplifiée.
 
-\textbf{Objectifs.} Implémenter la sélection, la prise et l'activation d'objets par suivi des mains ; créer trois indices avec une progression déterministe ; prévoir les états de collecte, de résolution et d'ouverture de la sortie. Vérifier qu'une interaction accidentelle ou répétée ne bloque pas la partie.
+\textit{Livrable :} représentation géométrique simple de la zone de jeu, alignée avec l'environnement réel et vérifiée sur casque ; le scan détaillé reste optionnel à ce stade.
 
-\textit{Livrable :} boucle de collecte jouable sans manettes, avec condition de victoire indépendante du monstre.
+\subsection*{Phase 3 -- Mobilier amovible}
 
-\subsection*{Phase 4 -- Navigation et perception du monstre}
+\textbf{Objectifs.} Représenter quelques meubles mobiles par des volumes simples dans Unity et leur associer des QR codes. La détection d'un code doit permettre de retrouver la position et l'orientation du meuble, puis de mettre à jour son volume de collision et, lorsque nécessaire, son obstacle de navigation. Le système vise en priorité les meubles déplacés puis reposés, sans imposer un suivi continu à haute fréquence.
 
-\textbf{Objectifs.} Construire un NavMesh à partir des zones accessibles, définir des points de patrouille et intégrer les obstacles. Programmer la machine à états et vérifier les transitions entre détection, poursuite, perte de vue et recherche de la dernière position connue, dans des scénarios reproductibles.
+\textit{Livrable :} au moins un meuble réel déplacé puis correctement repositionné dans la scène virtuelle grâce à son QR code.
 
-\textit{Livrable :} monstre capable de patrouiller, poursuivre et perdre le joueur sans traverser les murs.
+\subsection*{Phase 4 -- Indices, interactions et progression}
 
-\clearpage
-\subsection*{Phase 5 -- Capture et intégration des animations}
+\textbf{Objectifs.} Placer les indices virtuels dans l'espace calibré, permettre les interactions nécessaires avec les mains et gérer leur état de progression. Mettre en place une condition simple de réussite et vérifier qu'une perte temporaire de suivi ou une interaction répétée ne bloque pas la partie.
 
-\textbf{Objectifs.} Calibrer le dispositif vidéo pour FreeMoCap, enregistrer les séquences de marche, de course, puis, si possible, de recherche et d'attaque. Nettoyer les mouvements, transférer les animations au squelette du monstre dans Blender et régler leurs transitions dans Unity.
+\textit{Livrable :} boucle d'escape game jouable sans manettes et sans monstre, depuis l'entrée dans la zone jusqu'à la condition de victoire.
 
-\textit{Livrable :} au moins deux animations issues de captures réelles, synchronisées avec les états de navigation et de poursuite.
+\textbf{Validation du MVP 1.} Le joueur doit pouvoir entrer dans la zone réelle, retrouver les éléments virtuels aux positions prévues, interagir avec les indices et terminer une courte séquence de jeu. Le mobilier suivi ne doit pas créer d'incohérence majeure entre l'espace physique et la scène Unity.
 
-\subsection*{Phase 6 -- Intégration, essais et stabilisation}
+\subsection*{MVP 2 -- INF3002 : monstre animé et intelligent}
 
-\textbf{Objectifs.} Relier les énigmes, le suivi des mains, la navigation du monstre et les états de victoire ou de défaite. Tester la stabilité spatiale, la perte du suivi, la lisibilité des interactions, les collisions et la fluidité mesurée sur Quest~3. Corriger en priorité les erreurs empêchant de terminer une partie. Étendre le parcours à plusieurs pièces uniquement lorsque la version courte est fiable.
+Le second MVP réutilise directement l'environnement, les obstacles et la boucle de progression validés pendant INF3001.
 
-\textit{Livrable :} prototype complet, utilisable sur casque et accompagné d'une liste d'essais réussis et des défauts connus.
+\subsection*{Phase 5 -- Graphe d'états et préparation de la motion capture}
 
-\subsection*{Phase 7 -- Évaluation et restitution}
+\textbf{Objectifs.} Définir avant l'enregistrement un graphe complet des états du monstre et de leurs transitions : patrouille, détection, poursuite, perte de la cible, recherche de la dernière position connue, retour en patrouille et capture. À partir de ce graphe, établir la liste des animations et transitions réellement nécessaires.
 
-\textbf{Objectifs.} Faire tester le jeu à des personnes extérieures à l'équipe, relever les difficultés de prise en main et vérifier les scénarios de victoire et de défaite. Consolider le projet Unity, les ressources 3D, le protocole de calibration, les captures de mouvement et la documentation des choix techniques.
+\textit{Livrable :} graphe d'états validé et liste des clips de motion capture à enregistrer.
 
-\textit{Livrable :} démonstration sur Quest~3, code et ressources du projet, procédure de lancement et bilan critique des résultats et limites.
+\subsection*{Phase 6 -- Capture et intégration des animations}
+
+\textbf{Objectifs.} Enregistrer avec FreeMoCap les mouvements définis à la phase précédente, nettoyer les captures, les transférer au squelette du monstre et préparer les transitions et le \emph{blending} dans Unity. La marche et la course constituent le minimum attendu ; les animations de recherche et d'attaque seront ajoutées si leur qualité est suffisante.
+
+\textit{Livrable :} au moins deux animations issues de captures réelles et correctement déclenchées dans Unity.
+
+\subsection*{Phase 7 -- Navigation, perception et comportement}
+
+\textbf{Objectifs.} Préparer le NavMesh à partir de l'architecture fixe, intégrer les meubles suivis par QR comme obstacles et faire naviguer le monstre dans les zones accessibles. Ajouter le champ de vision, la distance de détection, la vérification de ligne de vue et la mémorisation de la dernière position connue du joueur, puis relier ces informations au graphe d'états.
+
+\textit{Livrable :} monstre capable de patrouiller, détecter, poursuivre, perdre puis rechercher le joueur sans traverser les murs ni les obstacles reconnus.
+
+\subsection*{Phase 8 -- Intégration, essais et stabilisation}
+
+\textbf{Objectifs.} Relier le monstre à la boucle de jeu du MVP~1, gérer la capture du joueur et la défaite, puis tester l'ensemble sur Quest~3. Vérifier en priorité l'alignement spatial, les collisions, les pertes de suivi, la lisibilité des interactions, la navigation et la fluidité. Les erreurs empêchant de terminer une partie sont corrigées avant toute extension.
+
+\textit{Livrable :} prototype complet dans lequel le joueur peut résoudre les indices tout en étant poursuivi par un monstre animé et cohérent avec l'environnement réel.
+
+\textbf{Validation du MVP 2.} Une partie complète doit pouvoir être gagnée ou perdue sur casque, avec navigation du monstre, perception du joueur, transitions d'animation et respect de la géométrie fixe et du mobilier détecté.
+
+\subsection*{Phase 9 -- Évaluation et restitution}
+
+\textbf{Objectifs.} Faire tester le prototype à des personnes extérieures à l'équipe, relever les difficultés de prise en main et vérifier les scénarios de victoire et de défaite. Consolider le projet Unity, les ressources 3D, le protocole de calibration, les captures de mouvement et la documentation des choix techniques et des limites rencontrées.
+
+\textit{Livrable :} démonstration sur Quest~3, code et ressources du projet, procédure de lancement et bilan critique des résultats.
 
 \subsection*{Coordination et critères de passage}
 
-Les activités de création spatiale, d'interaction manuelle, d'intelligence artificielle et d'animation pourront progresser en parallèle. Leur intégration sera vérifiée régulièrement sur une même version Unity et, dès que possible, sur le Quest~3 plutôt que dans le seul éditeur.
+Certaines tâches pourront progresser en parallèle, mais l'ordre des dépendances doit être conservé. En particulier, la capture de mouvement n'est lancée qu'après définition du graphe d'états, et le comportement complet du monstre n'est intégré qu'une fois le MVP~1 suffisamment stable. Les tests sont réalisés régulièrement sur le Quest~3 plutôt que dans le seul éditeur Unity.
 
-Pour passer d'une phase à la suivante, l'équipe devra disposer d'un livrable exécutable, d'une procédure permettant de reproduire son fonctionnement et d'une liste des points encore ouverts. Les fonctionnalités indispensables seront corrigées avant toute extension.
-
-En cas de difficulté de recalage LiDAR, le prototype conservera la représentation spatiale simplifiée fournie par le casque. Si la capture de mouvement est insuffisante, seules les animations validées seront retenues. Ces solutions de repli permettront de préserver une démonstration jouable et sûre sans renoncer à documenter les limites rencontrées.
+Pour passer d'une phase à la suivante, l'équipe doit disposer d'un livrable exécutable ou vérifiable et d'une liste claire des points encore ouverts. Les fonctionnalités indispensables sont stabilisées avant les extensions optionnelles. Les ajouts tels que des objets virtuels supplémentaires, la transformation visuelle du mobilier ou une ambiance sombre avec une mécanique de lampe ne sont envisagés qu'après validation des deux MVP.
 
 \end{document}
