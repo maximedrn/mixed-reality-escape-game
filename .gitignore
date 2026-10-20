@@ -2,9 +2,6 @@
 .DS_Store
 Thumbs.db
 
-# PDF files.
-*.pdf
-
 # LaTeX intermediate files.
 *.aux
 *.bbl

@@ -14,7 +14,6 @@
 \usepackage{xcolor}
 \usepackage[colorlinks=true,breaklinks=true]{hyperref}
 
-% Couleurs employées uniquement pour les liens et les niveaux d'importance.
 \definecolor{linkBlue}{HTML}{245D86}
 \definecolor{priorityHigh}{HTML}{A33A3A}
 \definecolor{priorityMedium}{HTML}{98700E}
@@ -23,7 +22,7 @@
 \hypersetup{
     urlcolor=linkBlue,
     linkcolor=linkBlue,
-    pdftitle={Proposition de projet - Escape game en réalité mixte},
+    pdftitle={Tohannic: No Way Out - Proposition de projet},
     pdfauthor={Maxime Dréan, Mayssa Frikha, Mattéo Le Fur, Paul Le Sager}
 }
 
@@ -32,7 +31,17 @@
 \newcommand{\important}{\textcolor{priorityMedium}{Importante}}
 \newcommand{\optional}{\textcolor{priorityLow}{Optionnelle}}
 
-% Paragraphes avec alinéas ; aucun gras au fil du texte, hormis les objectifs.
+\newcommand{\mailMaxime}{\textit{drean.e2200832@etud.univ-ubs.fr}}
+\newcommand{\mailMayssa}{\textit{frikha.e2604618@etud.univ-ubs.fr}}
+\newcommand{\mailMatteo}{\textit{le-fur.e2202500@etud.univ-ubs.fr}}
+\newcommand{\mailPaul}{\textit{le-sager.e2402846@etud.univ-ubs.fr}}
+\newcommand{\authorwithmail}[2]{%
+    \begin{tabular}{@{}c@{}}
+        #1 \\[0.10em]
+        {\footnotesize\color{gray}#2}
+    \end{tabular}%
+}
+
 \setlength{\parindent}{1.25em}
 \setlength{\parskip}{0.48em}
 \setlength{\emergencystretch}{2em}
@@ -52,17 +61,29 @@
 \begin{document}
 
 \begin{center}
-    {\LARGE\bfseries Proposition de projet\par}
-    \vspace{0.23cm}
-    {\normalsize INF3001 -- Simulation et Applications Interactives\par}
-    {\normalsize INF3002 -- Mouvements et Intelligence Artificielle\par}
-
-    \vspace{0.54cm}
-    \begin{tabular}{@{}l@{\hspace{1.25cm}}l@{}}
-        Maxime \textsc{Dréan} & Mayssa \textsc{Frikha} \\[0.15cm]
-        Mattéo \textsc{Le Fur} & Paul \textsc{Le Sager}
-    \end{tabular}
+    \vspace*{0.3cm}
+    {\fontsize{23}{28}\selectfont\bfseries Tohannic: No Way Out\par}
+    \vspace{0.12cm}
+    {\large Proposition de projet\par}
+    \vspace{0.35cm}
+    {\color{gray}\rule{0.55\linewidth}{0.4pt}\par}
+    \vspace{0.32cm}
+    {\small
+        INF3001 -- Simulation et Applications Interactives\par
+        \vspace{0.08cm}INF3002 -- Mouvements et Intelligence Artificielle\par
+    }
+    \vspace{0.35cm}
+    {\normalsize
+        \begin{tabular}{@{}c@{\hspace{0.95cm}}c@{}}
+            \authorwithmail{Maxime \textsc{Dréan}}{\mailMaxime} &
+            \authorwithmail{Mayssa \textsc{Frikha}}{\mailMayssa} \\[0.25cm]
+            \authorwithmail{Mattéo \textsc{Le Fur}}{\mailMatteo} &
+            \authorwithmail{Paul \textsc{Le Sager}}{\mailPaul}
+        \end{tabular}\par
+    }
+    \vspace{0.22cm}
 \end{center}
+
 
 \vspace{0.62cm}
 
@@ -78,15 +99,25 @@ L'expérience prend place dans un environnement intérieur connu à l'avance. Le
 
 Le défi consiste à maintenir la correspondance entre les objets virtuels et les éléments physiques de la pièce pendant les déplacements du joueur. Le monstre doit également percevoir les obstacles, se déplacer dans l'espace accessible et réagir à la position du joueur, tout en préservant la sécurité des déplacements et les performances du casque autonome.
 
+\Needspace{18\baselineskip}
 \section{Expérience de jeu}
 
-Le joueur recherche trois indices virtuels répartis dans le parcours. Avec le \emph{hand tracking} (suivi des mains par les caméras du casque), il saisit, déplace ou active des objets sans contrôleurs. Les indices servent à résoudre des énigmes successives et à débloquer la sortie.
+Le joueur recherche trois indices virtuels répartis dans le parcours. Avec le \emph{hand tracking} (suivi des mains par les caméras du casque), il saisit, déplace ou active des objets sans contrôleurs. Les indices servent à résoudre des énigmes successives et à débloquer une \emph{sortie virtuelle}, sans interaction nécessaire avec une porte physique.
 
-Pendant cette exploration, le joueur doit éviter le champ de vision du monstre. Il peut utiliser les murs et les obstacles pour rompre la ligne de vue et échapper à une poursuite. La partie est gagnée lorsque l'énigme finale est résolue et que la sortie est atteinte ; elle est perdue si le monstre intercepte le joueur.
+\paragraph{Nature des indices.} Les indices seront des objets virtuels tridimensionnels, ancrés à des positions de la pièce et manipulables à la main. Une première proposition d'énigmes, à valider lors du prototypage, organise le parcours en trois étapes :
+\begin{enumerate}[leftmargin=1.9em,itemsep=0.16em,topsep=0.20em]
+    \item \emph{Observation :} saisir une plaque virtuelle, l'orienter et relever un symbole visible sur l'une de ses faces.
+    \item \emph{Manipulation :} faire tourner un disque gradué pour aligner ce symbole avec un repère et obtenir une nouvelle indication.
+    \item \emph{Assemblage :} rapprocher deux fragments d'un même objet pour faire apparaître un code de déverrouillage.
+\end{enumerate}
+Ce code sera saisi sur un clavier virtuel pour ouvrir une sortie également virtuelle. La logique des énigmes dépendra de la forme et de l'orientation des objets, et non uniquement de textes affichés dans l'espace. De courtes consignes pourront guider le joueur si une interaction est ambiguë.
+
+\paragraph{Défis proposés au joueur.} Le joueur doit trouver les indices dans un espace réel, comprendre comment les manipuler, mémoriser les informations découvertes et résoudre les énigmes tout en surveillant le monstre. La tension repose sur une alternance entre observation et dissimulation : lorsque le monstre l'aperçoit, le joueur doit rompre la ligne de vue derrière un obstacle puis profiter de la phase de recherche pour reprendre l'énigme. Le déplacement s'effectue à vitesse de marche, sans course ni contact avec les objets réels. La difficulté pourra être réglée par la vitesse du monstre, son champ de vision et la durée de sa recherche, sans imposer de chronomètre au prototype minimal.
+
+La partie est gagnée lorsque l'énigme finale est résolue et que la sortie virtuelle est atteinte ; elle est perdue si le monstre intercepte le joueur. Le joueur conserve à tout moment une vue \emph{passthrough} suffisante pour éviter les obstacles physiques.
 
 Le premier prototype comportera une seule pièce, trois indices, un monstre et une condition de sortie. L'ajout d'un couloir ou d'autres pièces interviendra uniquement après validation de cette boucle de jeu.
 
-\clearpage
 \section{Approche technique}
 
 \subsection{Environnement et interactions (INF3001)}
@@ -95,15 +126,35 @@ Unity et le \emph{Meta XR Core SDK} (ensemble d'outils Meta pour développer sur
 
 L'architecture fixe sera représentée en priorité à partir de la géométrie fournie par la Scene API et MRUK, afin de disposer d'une base directement exploitable pour le prototype. En complément, une numérisation plus détaillée pourra être préparée avec \doclink{https://github.com/aabdlwahab/3d-scanner}{ScanSpace}, un outil de numérisation 3D dont le code est disponible sur GitHub, exploitant le LiDAR de l'iPhone ainsi qu'ARKit et RoomPlan. Le relevé pourra être exporté en GLB ou OBJ, puis nettoyé et simplifié dans \doclink{https://www.blender.org/}{Blender}. Un recalage (mise en correspondance de deux systèmes de coordonnées) devra alors aligner ce maillage sur le repère spatial du Quest~3. Cette numérisation externe reste une amélioration : si sa calibration se révèle instable, la géométrie simplifiée issue de la scène Meta restera suffisante pour le prototype jouable.
 
-Les meubles susceptibles d'être déplacés, notamment les tables ou les chaises utiles au parcours, ne seront pas intégrés définitivement au maillage fixe. Ils seront représentés par des volumes simples dans Unity et associés à des marqueurs visuels de type QR code. Après déplacement d'un meuble, la détection de son marqueur permettra de remettre à jour sa position et son orientation dans la scène virtuelle sans imposer un suivi continu.
+Les meubles susceptibles d'être déplacés, notamment les tables ou les chaises utiles au parcours, ne seront pas intégrés définitivement au maillage fixe. Ils seront représentés par des volumes simples dans Unity et associés à des marqueurs visuels de type QR code. Après déplacement d'un meuble, la détection de son marqueur permettra de remettre à jour sa position et son orientation dans la scène virtuelle sans imposer un suivi continu. Cette fonction nécessitera un accès autorisé aux images des caméras via la \doclink{https://developers.meta.com/vr/documentation/unity/unity-pca-documentation/}{Passthrough Camera API}, le décodage du marqueur et une estimation de sa pose. Sa fiabilité devra être vérifiée sur le casque réel.
+
+\paragraph{Géométrie et fabrication des objets.} Les indices et accessoires virtuels seront des \emph{maillages polygonaux} (sommets et faces) : les premiers essais utiliseront des primitives de Unity, puis des modèles légers créés ou corrigés dans \emph{Blender} et importés, par exemple au format FBX. Le maillage visible (\texttt{Mesh Filter} et \texttt{Mesh Renderer}) sera distinct des volumes de collision simplifiés (\emph{colliders}) et des zones de préhension. La plaque, le disque et les fragments d'assemblage pourront ainsi être manipulés sans simuler toute leur géométrie en physique. L'architecture fournie par MRUK prendra plutôt la forme de plans ou de volumes simplifiés ; seul un scan détaillé supplémentaire produirait un maillage de pièce plus complet.
+
+\paragraph{Déplacement et déformation.} Les indices ne se déformeront pas lors de leur manipulation : ils seront principalement translatés, tournés ou assemblés. Les meubles physiques, quant à eux, ne seront ni déformés ni modifiés : seul le modèle virtuel correspondant sera repositionné après lecture de son marqueur. Une transformation \emph{visuelle} d'un meuble réel en élément fantastique pourra être expérimentée ultérieurement, sans changer la géométrie réellement occupée ni les contraintes de sécurité.
 
 Le \emph{Meta XR Interaction SDK} fournira les outils de manipulation par les mains. Des zones de sélection et d'activation adaptées aux gestes permettront d'interagir avec les indices. Les maillages utilisés pour les collisions seront simplifiés afin de limiter la charge de calcul.
 
 \subsection{Animation et intelligence artificielle (INF3002)}
 
-Le monstre sera représenté par un personnage 3D articulé. Les mouvements de l'équipe seront enregistrés avec \doclink{https://github.com/freemocap/freemocap}{FreeMoCap}, solution libre de \emph{motion capture} (capture de mouvement) sans marqueurs, au moyen de caméras préalablement calibrées. Les poses reconstruites seront nettoyées dans Blender, puis adaptées au squelette du personnage par \emph{retargeting} (transfert d'animations entre squelettes différents).
+Le monstre sera représenté par un \emph{maillage 3D déformable} associé à un squelette (\emph{rig}). Le modèle sera préparé dans Blender : vérification de la topologie, placement des os et \emph{weight painting} (poids attribués aux sommets pour déterminer l'influence des os). Les mouvements de l'équipe seront enregistrés avec \doclink{https://github.com/freemocap/freemocap}{FreeMoCap}, solution libre de \emph{motion capture} (capture de mouvement) sans marqueurs, au moyen de caméras préalablement calibrées. Les poses reconstruites seront nettoyées dans Blender, puis adaptées au squelette du personnage par \emph{retargeting} (transfert d'animations entre squelettes différents). Dans Unity, l'\emph{Animator} déclenchera les clips ; le \emph{Skinned Mesh Renderer} déformera le maillage au niveau des articulations selon la pose des os (\emph{skinning}). Il s'agit d'une déformation du maillage liée au mouvement des os : les membres fléchissent et les sommets suivent les articulations. Une transformation plus spectaculaire de la silhouette (allongement de membres, modification du visage, etc.) demanderait des \emph{blend shapes} préparées dans Blender ou une animation spécifique. Elle sera considérée comme une extension visuelle facultative, distincte de l'animation squelettique indispensable.
 
-La navigation reposera sur un \doclink{https://developers.meta.com/vr/documentation/unity/unity-sample-mruk-navmesh/}{NavMesh} (surface indiquant les zones dans lesquelles le personnage peut se déplacer). Une machine à états définira les comportements : patrouille, détection, poursuite, recherche de la dernière position connue, puis retour en patrouille. La détection combinera un angle de vision, une distance maximale et un test de visibilité par rayon afin qu'un mur puisse masquer le joueur.
+\paragraph{IA du monstre.} Le système retenu est une \emph{IA comportementale déterministe}, sans entraînement de réseau neuronal. Une machine à états finis (\emph{FSM}) coordonnera les comportements suivants : patrouille $\rightarrow$ détection $\rightarrow$ poursuite $\rightarrow$ recherche $\rightarrow$ retour en patrouille. La perception utilisera la position du joueur, un cône de vision (distance et angle) et un test de ligne de vue par \emph{raycast} contre les obstacles physiques reconstruits : un mur pourra donc interrompre la détection. En poursuite, le monstre mettra régulièrement à jour sa destination ; après perte de vue, il rejoindra la dernière position observée et y cherchera brièvement le joueur avant de reprendre sa patrouille. La capture sera déclenchée à proximité suffisante, sans collision physique avec le joueur.
+
+La navigation reposera sur un \doclink{https://developers.meta.com/vr/documentation/unity/unity-sample-mruk-navmesh/}{NavMesh} (surface indiquant les zones où le personnage peut marcher), parcouru par un agent de navigation Unity (\texttt{NavMeshAgent}) qui calcule un chemin contournant les obstacles. Les volumes des meubles suivis seront intégrés comme obstacles de navigation lorsque leur pose est connue. La partie « intelligence » correspond ici à la prise de décision, à la perception et au calcul de trajectoire ; une adaptation fondée sur l'historique du joueur reste une extension optionnelle et non un apprentissage automatique promis pour le prototype.
+
+\paragraph{Exemple de décision.} Si le joueur entre dans le cône de vision et qu'aucun mur ne le masque, l'IA passe de la patrouille à la poursuite. S'il se cache derrière une table dont le volume est reconnu comme occultant, le monstre cesse de recevoir sa position actuelle, rejoint la dernière position visible puis explore brièvement les alentours. Le joueur peut alors s'éloigner ou reprendre une énigme. L'IA ne connaîtra donc pas la position du joueur en permanence ; l'angle, la portée, les délais et le périmètre de recherche seront réglables pour obtenir une difficulté jouable dans une seule pièce.
+
+\subsection{Défis techniques et limites du prototype}
+
+\begin{itemize}
+    \item \emph{Recalage spatial :} éviter que les indices et les collisions dérivent par rapport aux murs réels. Solution envisagée : une pièce calibrée, des ancrages spatiaux et des essais de retour au point de départ ; le scan détaillé est secondaire.
+    \item \emph{Mobilier mobile et marqueurs :} reconnaître le QR code malgré les changements de distance, d'angle ou de luminosité, puis reconstruire la pose du meuble. Solution : tests précoces de la Passthrough Camera API, marqueurs de dimensions connues et vérification après chaque déplacement ; si nécessaire, recours à un recalage manuel pour les essais.
+    \item \emph{Suivi des mains et énigmes :} gérer les occlusions des doigts, les gestes imprécis et la perte temporaire du suivi. Solution : objets suffisamment grands, interactions tolérantes et possibilité de réessayer sans bloquer la progression.
+    \item \emph{Animation du monstre :} éviter les poses irréalistes produites par la capture et les déformations incorrectes aux articulations. Solution : nettoyage des clips, réglage des poids du squelette dans Blender et transitions d'animation progressives dans Unity.
+    \item \emph{Navigation et réactivité :} produire des trajectoires crédibles lorsque les obstacles changent de place, sans recalcul coûteux à chaque image. Solution : NavMesh de la pièce, mise à jour ciblée des obstacles et fréquence contrôlée de recherche de chemin.
+    \item \emph{Équilibrage des poursuites :} éviter un monstre omniscient ou, à l'inverse, incapable de retrouver le joueur dans une seule pièce. Solution : champ de vision et temporisations paramétrables, essais de perte puis de reprise de cible et ajustement du temps consacré aux énigmes.
+    \item \emph{Sécurité et performances :} préserver la fluidité du Quest~3 et éviter qu'une poursuite incite à courir ou à heurter un meuble. Solution : aire réelle dégagée, déplacements lents, distances de sécurité, maillages simplifiés et mesures en situation réelle.
+\end{itemize}
 
 \begin{quote}
     \small
@@ -114,7 +165,7 @@ La navigation reposera sur un \doclink{https://developers.meta.com/vr/documentat
     \end{itemize}
 \end{quote}
 
-\clearpage
+\Needspace{12\baselineskip}
 \section{Fonctionnalités et priorités}
 
 Les exigences sont réparties selon leur contribution à une démonstration complète. Les fonctionnalités de niveau \essential{} forment le parcours minimal : une seule défaillance bloquante empêche de conclure une partie. Les fonctionnalités de niveau \important{} renforcent la fidélité et l'étendue du projet, mais ne doivent pas retarder ce parcours. Les fonctionnalités de niveau \optional{} sont réservées au temps restant après stabilisation.
@@ -142,20 +193,19 @@ Chaque ligne indique un comportement observable et un critère de validation, af
 \addlinespace[0.25em]
 \essential & Reconnaître les deux mains et permettre de sélectionner, prendre, relâcher et activer chaque indice sans manettes. & Trois interactions enchaînées sans contrôleur. \\
 \addlinespace[0.25em]
-\essential & Gérer trois indices, leur ordre éventuel, l'ouverture de la sortie, la victoire et la défaite par interception. & Une partie gagnée et une partie perdue de bout en bout. \\
+\essential & Gérer trois indices 3D manipulables (examen, rotation, assemblage), la saisie d'un code sur un clavier virtuel, la sortie et les conditions de victoire et de défaite. & Résoudre les trois indices puis gagner ; tester aussi une partie perdue. \\
 \addlinespace[0.25em]
 \essential & Faire naviguer le monstre entre des points de patrouille en contournant les obstacles et sans traverser les murs. & Parcours préétabli réalisé sans collision bloquante. \\
 \addlinespace[0.25em]
 \essential & Détecter le joueur dans un cône de vision, vérifier la ligne de vue, poursuivre puis rechercher la dernière position connue. & Tests : joueur visible, caché et perdu de vue. \\
 \addlinespace[0.25em]
-\essential & Intégrer au moins deux animations issues de FreeMoCap et les déclencher en fonction des états du monstre. & Marche et course observables dans le casque. \\
+\essential & Préparer le squelette et les poids du maillage du monstre, puis intégrer au moins deux animations issues de FreeMoCap selon les états de l'IA. & Marche et course visibles sur le personnage, sans déformation articulaire bloquante. \\
 \addlinespace[0.25em]
 \essential & Définir une zone physique sûre, gérer les pertes de suivi et contrôler les performances sur casque autonome. & Parcours testé sans collision réelle ; mesures de fluidité relevées. \\
 \bottomrule
 \end{longtable}
 }
 
-\clearpage
 \subsection{Améliorations et extensions}
 
 Les fonctionnalités suivantes ne sont abordées qu'après validation du parcours minimal. Les améliorations ont pour but d'élargir le lieu exploré et de rendre les interactions plus réalistes. Les extensions ne sont développées que si les tests d'intégration sont concluants.
@@ -183,6 +233,8 @@ Les fonctionnalités suivantes ne sont abordées qu'après validation du parcour
 \midrule
 \optional & Adapter la zone de recherche du monstre selon les derniers déplacements observés du joueur. & Deux comportements distincts comparés sur un même scénario. \\
 \addlinespace[0.25em]
+\optional & Déformer ponctuellement la silhouette du monstre (visage ou membres) avec des \emph{blend shapes} préparées dans Blender. & Une transformation déclenchée par un état est visible sans perturber les animations de marche. \\
+\addlinespace[0.25em]
 \optional & Varier les emplacements des indices entre deux parties sans compromettre la résolution des énigmes. & Deux configurations jouables et validées. \\
 \addlinespace[0.25em]
 \optional & Ajouter des objets virtuels interactifs répartis dans la zone de jeu, avec des effets possibles sur la progression ou sur le comportement du monstre. & Au moins un objet peut être manipulé et déclenche un effet de jeu identifiable, par exemple attirer, distraire ou ralentir le monstre. \\
@@ -202,14 +254,14 @@ La validation ne se limitera pas à l'ouverture de la scène Unity. Des essais r
 
 \begin{itemize}
     \item \emph{Alignement spatial :} poser les indices à trois emplacements de référence, effectuer un trajet complet et vérifier leur position à l'arrivée. Recommencer après une nouvelle session du casque.
-    \item \emph{Manipulation :} prendre, déplacer, relâcher et activer les trois indices ; vérifier qu'une perte temporaire de suivi des mains ne rend pas l'énigme impossible.
-    \item \emph{Comportement du monstre :} tester séparément les situations où le joueur est visible, masqué par un mur, puis perdu de vue ; vérifier les changements d'état et les trajets.
+    \item \emph{Manipulation et progression :} examiner la plaque, faire tourner le disque, assembler les fragments puis saisir le code ; vérifier qu'une perte temporaire de suivi des mains ne rend pas l'énigme impossible.
+    \item \emph{Comportement du monstre :} tester séparément les situations où le joueur est visible, masqué par un mur, puis perdu de vue ; vérifier qu'il recherche la dernière position vue, sans suivre instantanément le joueur à travers un obstacle.
+    \item \emph{Maillage animé :} observer la marche et la course au niveau des genoux, coudes et épaules pour repérer des déformations anormales ou des ruptures d'animation.
     \item \emph{Parcours complet :} terminer au moins une partie gagnée et une partie perdue, puis relever la fluidité et les incidents rencontrés durant les déplacements réels.
 \end{itemize}
 
 L'ordre de réalisation peut être ajusté en cas de difficulté technique. En revanche, aucune extension optionnelle ne doit compromettre les fonctionnalités indispensables.
 
-\clearpage
 \section{Roadmap}
 
 Le développement est organisé en deux MVP successifs, correspondant aux deux unités d'enseignement. Le MVP~2 dépend directement du MVP~1 : avant d'ajouter un monstre capable de naviguer et de réagir au joueur, il faut disposer d'un environnement réel correctement représenté, calibré et exploitable dans Unity. Les phases sont ordonnées par dépendances techniques et ne sont pas associées à des échéances figées.
@@ -238,7 +290,7 @@ L'objectif du premier MVP est d'obtenir une petite boucle d'escape game stable s
 
 \subsection*{Phase 4 -- Indices, interactions et progression}
 
-\textbf{Objectifs.} Placer les indices virtuels dans l'espace calibré, permettre les interactions nécessaires avec les mains et gérer leur état de progression. Mettre en place une condition simple de réussite et vérifier qu'une perte temporaire de suivi ou une interaction répétée ne bloque pas la partie.
+\textbf{Objectifs.} Placer trois indices sous forme de maillages virtuels dans l'espace calibré et prototyper les manipulations proposées : inspection d'une plaque, rotation d'un disque et assemblage de fragments. Ajouter la saisie du code final, la validation de la sortie virtuelle et la sauvegarde des états de progression. Vérifier qu'une perte temporaire de suivi ou une interaction répétée ne bloque pas la partie ; simplifier une énigme si son geste se révèle peu fiable sur Quest~3.
 
 \textit{Livrable :} boucle d'escape game jouable sans manettes et sans monstre, depuis l'entrée dans la zone jusqu'à la condition de victoire.
 
@@ -256,13 +308,13 @@ Le second MVP réutilise directement l'environnement, les obstacles et la boucle
 
 \subsection*{Phase 6 -- Capture et intégration des animations}
 
-\textbf{Objectifs.} Enregistrer avec FreeMoCap les mouvements définis à la phase précédente, nettoyer les captures, les transférer au squelette du monstre et préparer les transitions et le \emph{blending} dans Unity. La marche et la course constituent le minimum attendu ; les animations de recherche et d'attaque seront ajoutées si leur qualité est suffisante.
+\textbf{Objectifs.} Préparer dans Blender un monstre avec maillage, squelette et poids des sommets (\emph{skinning}). Enregistrer avec FreeMoCap les mouvements définis à la phase précédente, nettoyer les captures, les transférer au squelette du monstre et préparer les transitions et le \emph{blending} dans Unity. La marche et la course constituent le minimum attendu ; les animations de recherche et d'attaque seront ajoutées si leur qualité est suffisante. Vérifier les déformations aux articulations lors des changements d'état.
 
 \textit{Livrable :} au moins deux animations issues de captures réelles et correctement déclenchées dans Unity.
 
 \subsection*{Phase 7 -- Navigation, perception et comportement}
 
-\textbf{Objectifs.} Préparer le NavMesh à partir de l'architecture fixe, intégrer les meubles suivis par QR comme obstacles et faire naviguer le monstre dans les zones accessibles. Ajouter le champ de vision, la distance de détection, la vérification de ligne de vue et la mémorisation de la dernière position connue du joueur, puis relier ces informations au graphe d'états.
+\textbf{Objectifs.} Préparer le NavMesh à partir de l'architecture fixe, intégrer les meubles suivis par QR comme obstacles et faire naviguer le monstre dans les zones accessibles avec un \texttt{NavMeshAgent}. Ajouter le cône de vision, la distance maximale, un raycast de ligne de vue et la mémorisation de la dernière position connue du joueur. Relier ces informations à la machine à états (patrouille, poursuite, recherche, capture), en distinguant clairement cette IA à règles d'un système entraîné par apprentissage automatique.
 
 \textit{Livrable :} monstre capable de patrouiller, détecter, poursuivre, perdre puis rechercher le joueur sans traverser les murs ni les obstacles reconnus.
 
