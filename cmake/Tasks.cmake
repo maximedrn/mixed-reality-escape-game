@@ -77,6 +77,37 @@ function(lint)
     )
 endfunction()
 
+function(mocap_setup)
+    find_program(UV NAMES uv REQUIRED)
+
+    execute_process(
+        COMMAND "${UV}" sync
+            --project "${ROOT}/tools/mocap"
+        WORKING_DIRECTORY "${ROOT}"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endfunction()
+
+function(mocap_check)
+    find_program(UV NAMES uv REQUIRED)
+
+    execute_process(
+        COMMAND "${UV}" run
+            --project "${ROOT}/tools/mocap"
+            ruff format --check "${ROOT}/tools/mocap"
+        WORKING_DIRECTORY "${ROOT}"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+
+    execute_process(
+        COMMAND "${UV}" run
+            --project "${ROOT}/tools/mocap"
+            ruff check "${ROOT}/tools/mocap"
+        WORKING_DIRECTORY "${ROOT}"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endfunction()
+
 if(TASK STREQUAL "setup")
     setup()
 
@@ -92,6 +123,12 @@ elseif(TASK STREQUAL "lint")
 elseif(TASK STREQUAL "check")
     check_format()
     lint()
+
+elseif(TASK STREQUAL "mocap-setup")
+    mocap_setup()
+
+elseif(TASK STREQUAL "mocap-check")
+    mocap_check()
 
 else()
     message(FATAL_ERROR "Unknown task: ${TASK}")

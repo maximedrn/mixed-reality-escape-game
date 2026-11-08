@@ -121,11 +121,17 @@ cmake -DTASK=check-format -P cmake/Tasks.cmake
 # Run Roslyn code-style and analyzer checks.
 cmake -DTASK=lint -P cmake/Tasks.cmake
 
-#Run all checks.
+# Run all checks.
 cmake -DTASK=check -P cmake/Tasks.cmake
 
 # Enable detailed diagnostic output.
 cmake -DTASK=lint -DVERBOSE=ON -P cmake/Tasks.cmake
+
+# Set up the motion capture environment and install Python dependencies.
+cmake -DTASK=mocap-setup -P cmake/Tasks.cmake
+
+# Validate motion capture Python code (formatting and static analysis).
+cmake -DTASK=mocap-check -P cmake/Tasks.cmake
 ```
 
 ### 5. Run tests

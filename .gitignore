@@ -2,6 +2,10 @@
 .DS_Store
 Thumbs.db
 
+# Motion capture recordings and temporary exports.
+/tools/mocap/data/
+/tools/mocap/exports/
+
 # LaTeX intermediate files.
 *.aux
 *.bbl
@@ -17,7 +21,7 @@ Thumbs.db
 *.bak*
 indent.log
 
-# Unity generated files
+# Unity generated files.
 /Unity/[Ll]ibrary/
 /Unity/[Tt]emp/
 /Unity/[Oo]bj/
@@ -28,7 +32,7 @@ indent.log
 /Unity/[Bb]uilds/
 /Unity/.gradle/
 
-# Generated IDE files
+# Generated IDE files.
 *.csproj
 *.sln
 *.slnx
@@ -37,12 +41,12 @@ indent.log
 .idea/
 .vscode/
 
-# Python
+# Python.
 .venv/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
 
-# Local artifacts
+# Local artifacts.
 /artifacts/
 /Builds/
