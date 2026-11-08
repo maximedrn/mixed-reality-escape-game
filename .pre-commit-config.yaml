@@ -1,0 +1,20 @@
+
+repos:
+  - repo: local
+    hooks:
+      - id: csharp-format
+        name: "C# | Format (CSharpier)"
+        entry: cmake -DTASK=format -P cmake/Tasks.cmake
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+
+      - id: csharp-check
+        name: "C# | Check (CSharpier + Roslyn)"
+        entry: cmake -DTASK=check -P cmake/Tasks.cmake
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+

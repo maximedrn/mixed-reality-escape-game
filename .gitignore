@@ -16,3 +16,33 @@ Thumbs.db
 *.toc
 *.bak*
 indent.log
+
+# Unity generated files
+/Unity/[Ll]ibrary/
+/Unity/[Tt]emp/
+/Unity/[Oo]bj/
+/Unity/[Ll]ogs/
+/Unity/[Uu]serSettings/
+/Unity/[Mm]emoryCaptures/
+/Unity/[Bb]uild/
+/Unity/[Bb]uilds/
+/Unity/.gradle/
+
+# Generated IDE files
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+.idea/
+.vscode/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# Local artifacts
+/artifacts/
+/Builds/
