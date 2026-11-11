@@ -1,0 +1,123 @@
+[project]
+name = "tohannic-markers"
+version = "0.1.0"
+description = "Vector QR markers and printable label sheets for Tohannic."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.10,<3",
+    "qrcode>=8.0,<9",
+    "reportlab>=4.0,<6",
+]
+
+[project.scripts]
+markers = "src.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4,<3",
+    "pylint>=4.1,<5",
+    "poethepoet>=0.35,<1",
+    "pypdf>=5.0,<8",
+    "pyright>=1.1.400,<2",
+    "pytest>=9.0,<10",
+    "ruff>=0.17.0,<1",
+    "types-qrcode>=8.0,<9",
+    "types-reportlab>=4.0,<5",
+    "wemake-python-styleguide>=1.8,<2",
+    "flake8-pyproject>=1.2,<2",
+    "flake8-import-restrictions>=2.1,<3",
+    "flake8-strict-types>=0.3.2,<0.4",
+    "ast-grep-cli>=0.40,<1",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "src"
+module-root = ""
+
+[tool.uv]
+no-build = false
+
+[tool.ruff]
+line-length = 79
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ANN", "D", "RUF", "TID251", "PLR2004"]
+ignore = ["D203", "D213"]
+external = ["TYP001", "TYP002"]
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PLR2004"]
+# Preserve external TYP001 exemptions on Python Enum members.
+"src/models/*.py" = ["RUF101"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.TypedDict" = { msg = "Use a Pydantic BaseModel." }
+"typing_extensions.TypedDict" = { msg = "Use a Pydantic BaseModel." }
+"dataclasses.dataclass" = { msg = "Use a Pydantic BaseModel." }
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = [".venv"]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+mypy_path = ["$MYPY_CONFIG_FILE_DIR"]
+
+[tool.flake8]
+select = ["WPS432", "WPS226", "IMR222", "TYP001", "TYP002"]
+imr222_include = ["*"]
+max-string-usages = 1
+exclude = [".venv", "dist", "__pycache__"]
+per-file-ignores = ["tests/*: WPS226,WPS432"]
+
+[tool.pylint.main]
+prefer-stubs = true
+load-plugins = ["pylint.extensions.docparams"]
+
+[tool.pylint.parameter_documentation]
+default-docstring-type = "sphinx"
+accept-no-param-doc = false
+accept-no-return-doc = false
+
+[tool.pylint.design]
+# Sheet dimensions are flat TOML fields; PDF helpers take explicit coordinates.
+max-attributes = 10
+max-args = 6
+max-positional-arguments = 6
+max-locals = 20
+
+[tool.poe.tasks]
+format = "ruff format ."
+format-check = "ruff format --check ."
+ruff = "ruff check ."
+literals = "flake8 ."
+strings = "ast-grep scan --config ../../sgconfig.yml ."
+lint = ["ruff", "literals", "strings"]
+pyright = "pyright"
+mypy = "mypy"
+pylint = "pylint src"
+test = "pytest -q"
+typecheck = ["pyright", "mypy"]
+check = ["format-check", "lint", "typecheck", "pylint", "test"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
