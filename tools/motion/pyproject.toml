@@ -1,0 +1,137 @@
+[project]
+name = "motion"
+version = "0.1.0"
+description = "Prepare humanoid skeletal motion from marker JSON and export verified animated GLB files."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26,<3",
+    "scipy>=1.13,<2",
+    "pydantic>=2.10,<3",
+]
+
+[project.scripts]
+motion = "src.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+    "ruff>=0.11,<1",
+    "mypy>=1.13,<3",
+    "pyright>=1.1.400,<2",
+    "pylint>=3.3,<5",
+    "poethepoet>=0.35,<1",
+    "wemake-python-styleguide>=1.8,<2",
+    "flake8-pyproject>=1.2,<2",
+    "flake8-import-restrictions>=2.1,<3",
+    "scipy-stubs>=1.18,<2",
+    "flake8-strict-types>=0.3.2,<0.4",
+    "pydoclint>=0.8,<1",
+    "ast-grep-cli>=0.40,<1",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "src"
+module-root = ""
+
+[tool.uv]
+no-build = false
+
+[tool.ruff]
+line-length = 79
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ANN", "D", "RUF", "TID251", "PLR2004"]
+ignore = ["D203", "D213"]
+external = ["TYP001", "TYP002", "WPS226"]
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PLR2004"]
+# Enum values cannot be annotated. Preserve the external TYP001 noqa:
+# Ruff otherwise rewrites this plugin's code to its own legacy TC001 alias.
+"src/models/*.py" = ["RUF101"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.TypedDict" = { msg = "Use a Pydantic BaseModel." }
+"typing_extensions.TypedDict" = { msg = "Use a Pydantic BaseModel." }
+"dataclasses.dataclass" = { msg = "Use a Pydantic BaseModel." }
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = [".venv"]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+mypy_path = ["$MYPY_CONFIG_FILE_DIR"]
+plugins = ["pydantic.mypy"]
+
+[tool.flake8]
+select = ["WPS432", "WPS226", "IMR222", "TYP001", "TYP002", "DOC"]
+imr222_include = ["*"]
+max-string-usages = 1
+style = "sphinx"
+arg-type-hints-in-docstring = true
+arg-type-hints-in-signature = true
+check-return-types = true
+require-return-section-when-returning-nothing = true
+skip-checking-short-docstrings = false
+skip-checking-raises = true
+check-class-attributes = false
+allow-init-docstring = true
+exclude = [".venv", "dist", "__pycache__"]
+per-file-ignores = ["tests/*: WPS226,WPS432"]
+
+[tool.pylint.main]
+prefer-stubs = true
+load-plugins = ["pylint.extensions.docparams"]
+
+[tool.pylint.parameter_documentation]
+default-docstring-type = "sphinx"
+accept-no-param-doc = false
+accept-no-return-doc = false
+
+[tool.pylint.messages_control]
+# pydoclint enforces explicit return types, including None, in every docstring.
+disable = ["redundant-returns-doc"]
+
+[tool.pylint.design]
+# glTF records mirror the schema; build paths are explicit CLI options.
+max-attributes = 10
+max-args = 7
+max-positional-arguments = 7
+max-locals = 20
+
+[tool.poe.tasks]
+format = "ruff format ."
+format-check = "ruff format --check ."
+ruff = "ruff check ."
+literals = "flake8 ."
+strings = "ast-grep scan --config ../../sgconfig.yml ."
+lint = ["ruff", "literals", "strings"]
+pyright = "pyright"
+mypy = "mypy"
+pylint = "pylint src"
+test = "pytest -q"
+typecheck = ["pyright", "mypy"]
+check = ["format-check", "lint", "typecheck", "pylint", "test"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
