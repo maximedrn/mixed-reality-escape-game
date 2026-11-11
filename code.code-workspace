@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {"name": "Root", "path": "."},
+    {"name": "Unity", "path": "Unity"},
+    {"name": "Markers", "path": "tools/markers"},
+    {"name": "Motion", "path": "tools/motion"},
+    {"name": "Lint", "path": "tools/lint"}
+  ],
+  "settings": {
+    "mypy-type-checker.importStrategy": "fromEnvironment"
+  }
+}

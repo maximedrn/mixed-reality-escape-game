@@ -2,9 +2,8 @@
 .DS_Store
 Thumbs.db
 
-# Motion capture recordings and temporary exports.
-/tools/mocap/data/
-/tools/mocap/exports/
+# Generated printable markers.
+/assets/markers/exports/
 
 # LaTeX intermediate files.
 *.aux
@@ -39,7 +38,6 @@ indent.log
 *.suo
 *.user
 .idea/
-.vscode/
 
 # Python.
 .venv/

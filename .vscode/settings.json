@@ -1,0 +1,65 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/tools/markers/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/tools/markers"
+  ],
+  "python-envs.workspaceSearchPaths": [
+    "./tools/markers/.venv",
+    "./tools/motion/.venv"
+  ],
+  "python-envs.pythonProjects": [
+    {
+      "path": "./tools/markers",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
+    },
+    {
+      "path": "./tools/motion",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
+    }
+  ],
+  "pylint.interpreter": [
+    "${workspaceFolder}/tools/markers/.venv/bin/python"
+  ],
+  "pylint.path": [
+    "${workspaceFolder}/tools/markers/.venv/bin/pylint"
+  ],
+  "pylint.cwd": "${workspaceFolder}/tools/markers",
+  "pylint.args": [
+    "--rcfile=${workspaceFolder}/tools/markers/pyproject.toml"
+  ],
+  "mypy-type-checker.interpreter": [
+    "${workspaceFolder}/tools/markers/.venv/bin/python"
+  ],
+  "mypy-type-checker.path": [
+    "${workspaceFolder}/tools/markers/.venv/bin/mypy"
+  ],
+  "mypy-type-checker.cwd": "${workspaceFolder}/tools/markers",
+  "mypy-type-checker.args": [
+    "--config-file=${workspaceFolder}/tools/markers/pyproject.toml"
+  ],
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy.configFile": "tools/markers/pyproject.toml",
+  "mypy.targets": [
+    "tools/markers/src"
+  ],
+  "mypy.dmypyExecutable": "${workspaceFolder}/tools/markers/.venv/bin/dmypy",
+  "ruff.path": [
+    "${workspaceFolder}/tools/markers/.venv/bin/ruff"
+  ],
+  "flake8.interpreter": [
+    "${workspaceFolder}/tools/markers/.venv/bin/python"
+  ],
+  "flake8.path": [
+    "${workspaceFolder}/tools/markers/.venv/bin/flake8"
+  ],
+  "flake8.cwd": "${workspaceFolder}/tools/markers",
+  "flake8.importStrategy": "fromEnvironment",
+  "flake8.args": [
+    "--toml-config=${workspaceFolder}/tools/markers/pyproject.toml"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
+}
