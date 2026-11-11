@@ -5,6 +5,21 @@ on:
   pull_request:
 
 jobs:
+  python-policy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install shared Python lint tools
+        run: uv sync --locked --project tools/lint
+      - name: Test shared rules and scan all Python code
+        run: uv run --locked --project tools/lint poe -C tools/lint check
+
   format:
     strategy:
       matrix:
@@ -25,3 +40,25 @@ jobs:
       - name: Check formatting
         run: cmake -DTASK=check-format -P cmake/Tasks.cmake
 
+  python:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        tool: [markers, motion]
+        python: ["3.12", "3.13"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: tools/${{ matrix.tool }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install locked Python environment
+        run: uv sync --locked
+      - name: Check Python formatting, lint, types and tests
+        run: uv run --locked poe check
+      - name: Build Python distributions
+        run: uv build

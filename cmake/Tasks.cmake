@@ -8,9 +8,8 @@ if(NOT DEFINED TASK)
     set(TASK "check")
 endif()
 
-find_program(DOTNET NAMES dotnet REQUIRED)
-
 function(run_dotnet)
+    find_program(DOTNET NAMES dotnet REQUIRED)
     execute_process(
         COMMAND "${DOTNET}" ${ARGN}
         WORKING_DIRECTORY "${ROOT}"
@@ -77,32 +76,36 @@ function(lint)
     )
 endfunction()
 
-function(mocap_setup)
+function(motion_setup)
     find_program(UV NAMES uv REQUIRED)
 
     execute_process(
-        COMMAND "${UV}" sync
-            --project "${ROOT}/tools/mocap"
+        COMMAND "${UV}" sync --locked
+            --project "${ROOT}/tools/motion"
         WORKING_DIRECTORY "${ROOT}"
         COMMAND_ERROR_IS_FATAL ANY
     )
 endfunction()
 
-function(mocap_check)
+function(motion_check)
     find_program(UV NAMES uv REQUIRED)
 
     execute_process(
         COMMAND "${UV}" run
-            --project "${ROOT}/tools/mocap"
-            ruff format --check "${ROOT}/tools/mocap"
+            --locked
+            --project "${ROOT}/tools/motion"
+            poe -C "${ROOT}/tools/motion" check
         WORKING_DIRECTORY "${ROOT}"
         COMMAND_ERROR_IS_FATAL ANY
     )
+endfunction()
+
+function(python_lint)
+    find_program(UV NAMES uv REQUIRED)
 
     execute_process(
-        COMMAND "${UV}" run
-            --project "${ROOT}/tools/mocap"
-            ruff check "${ROOT}/tools/mocap"
+        COMMAND "${UV}" run --locked --project "${ROOT}/tools/lint"
+            poe -C "${ROOT}/tools/lint" check
         WORKING_DIRECTORY "${ROOT}"
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -124,11 +127,14 @@ elseif(TASK STREQUAL "check")
     check_format()
     lint()
 
-elseif(TASK STREQUAL "mocap-setup")
-    mocap_setup()
+elseif(TASK STREQUAL "motion-setup")
+    motion_setup()
 
-elseif(TASK STREQUAL "mocap-check")
-    mocap_check()
+elseif(TASK STREQUAL "motion-check")
+    motion_check()
+
+elseif(TASK STREQUAL "python-lint")
+    python_lint()
 
 else()
     message(FATAL_ERROR "Unknown task: ${TASK}")

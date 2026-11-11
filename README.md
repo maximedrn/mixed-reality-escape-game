@@ -1,4 +1,3 @@
-
 # Tohannic: No Way Out
 
 _A mixed-reality escape game on Meta Quest 3. The player explores a real-world location, interacts with virtual clues without controllers, and evades a monster animated using motion capture and controlled by artificial intelligence that navigates and pursues the player._
@@ -121,17 +120,20 @@ cmake -DTASK=check-format -P cmake/Tasks.cmake
 # Run Roslyn code-style and analyzer checks.
 cmake -DTASK=lint -P cmake/Tasks.cmake
 
-# Run all checks.
+# Run all C# checks.
 cmake -DTASK=check -P cmake/Tasks.cmake
 
 # Enable detailed diagnostic output.
 cmake -DTASK=lint -DVERBOSE=ON -P cmake/Tasks.cmake
 
-# Set up the motion capture environment and install Python dependencies.
-cmake -DTASK=mocap-setup -P cmake/Tasks.cmake
+# Install the motion processing environment and Python dependencies.
+cmake -DTASK=motion-setup -P cmake/Tasks.cmake
 
-# Validate motion capture Python code (formatting and static analysis).
-cmake -DTASK=mocap-check -P cmake/Tasks.cmake
+# Validate motion Python code (formatting, lint, types and tests).
+cmake -DTASK=motion-check -P cmake/Tasks.cmake
+
+# Test the shared Python rules and scan every Python project in the repository.
+cmake -DTASK=python-lint -P cmake/Tasks.cmake
 ```
 
 ### 5. Run tests
