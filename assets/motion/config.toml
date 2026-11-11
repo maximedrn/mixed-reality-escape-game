@@ -1,0 +1,6 @@
+[inputs]
+model = "monster/models/rigged.glb"
+animation = "monster/animations/limp_walk.json"
+
+[outputs]
+glb = "monster/animations/limp_walk.glb"

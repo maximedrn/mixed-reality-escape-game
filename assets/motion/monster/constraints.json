@@ -1,0 +1,715 @@
+{
+  "schema_version": 1,
+  "model": "rigged.glb",
+  "character": {
+    "height_m": 3.0,
+    "limp_side": "left",
+    "forward_in_gltf": [
+      0,
+      0,
+      1
+    ],
+    "up_in_gltf": [
+      0,
+      1,
+      0
+    ]
+  },
+  "calibration": {
+    "hinge_axis_selection": "closest_pose_bone_local_axis_to_global_lateral_x",
+    "hinge_sign": "estimate_from_posebone_rest_and_requested_forward_or_backward",
+    "warning": "Ranges are preliminary and measured relative to the existing bind pose, not medically verified human joint coordinates."
+  },
+  "ik": {
+    "create_targets": true,
+    "initial_influence": 0.0,
+    "limb_chain_count": 2,
+    "generate_pole_visual_guides": true,
+    "warnings": [
+      "IK targets are placeholders: animate targets and calibrate pole angles before enabling.",
+      "GLB/FBX does not retain Blender constraints; bake clips after applying constraints."
+    ]
+  },
+  "limits": {
+    "mixamorig:Hips": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -50,
+        -45,
+        -60
+      ],
+      "max_deg": [
+        50,
+        45,
+        60
+      ]
+    },
+    "mixamorig:Spine": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -35,
+        -30,
+        -30
+      ],
+      "max_deg": [
+        35,
+        30,
+        30
+      ]
+    },
+    "mixamorig:Spine1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -40,
+        -35,
+        -35
+      ],
+      "max_deg": [
+        40,
+        35,
+        35
+      ]
+    },
+    "mixamorig:Spine2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -45,
+        -35,
+        -35
+      ],
+      "max_deg": [
+        45,
+        35,
+        35
+      ]
+    },
+    "mixamorig:Neck": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -40,
+        -55,
+        -45
+      ],
+      "max_deg": [
+        40,
+        55,
+        45
+      ]
+    },
+    "mixamorig:Head": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -30,
+        -40,
+        -35
+      ],
+      "max_deg": [
+        30,
+        40,
+        35
+      ]
+    },
+    "mixamorig:LeftShoulder": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -35,
+        -35,
+        -40
+      ],
+      "max_deg": [
+        35,
+        35,
+        40
+      ]
+    },
+    "mixamorig:LeftArm": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -105,
+        -110,
+        -115
+      ],
+      "max_deg": [
+        105,
+        110,
+        115
+      ]
+    },
+    "mixamorig:LeftForeArm": {
+      "axis_mode": "auto_hinge",
+      "flexion_deg": 150,
+      "hyperextension_deg": 5,
+      "lateral_slack_deg": 12,
+      "hinge_axis": 0,
+      "bend_direction": [
+        -0.3371107578277588,
+        -0.9086334109306335,
+        -0.24645836651325226
+      ],
+      "twist_axis": 1,
+      "twist_deg": 34.99999983559887
+    },
+    "mixamorig:LeftHand": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -45,
+        -50
+      ],
+      "max_deg": [
+        65,
+        45,
+        50
+      ]
+    },
+    "mixamorig:LeftHandThumb1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandThumb2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandThumb3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandIndex1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandIndex2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandIndex3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandMiddle1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandMiddle2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandMiddle3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandRing1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandRing2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandRing3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandPinky1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandPinky2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftHandPinky3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightShoulder": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -35,
+        -35,
+        -40
+      ],
+      "max_deg": [
+        35,
+        35,
+        40
+      ]
+    },
+    "mixamorig:RightArm": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -105,
+        -110,
+        -115
+      ],
+      "max_deg": [
+        105,
+        110,
+        115
+      ]
+    },
+    "mixamorig:RightForeArm": {
+      "axis_mode": "auto_hinge",
+      "flexion_deg": 150,
+      "hyperextension_deg": 5,
+      "lateral_slack_deg": 12,
+      "hinge_axis": 0,
+      "bend_direction": [
+        0.32831159234046936,
+        -0.9063045382499695,
+        -0.26612699031829834
+      ],
+      "twist_axis": 1,
+      "twist_deg": 34.99999983559887
+    },
+    "mixamorig:RightHand": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -45,
+        -50
+      ],
+      "max_deg": [
+        65,
+        45,
+        50
+      ]
+    },
+    "mixamorig:RightHandThumb1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandThumb2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandThumb3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandIndex1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandIndex2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandIndex3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandMiddle1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandMiddle2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandMiddle3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandRing1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandRing2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandRing3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandPinky1": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -65,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        65,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandPinky2": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:RightHandPinky3": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -90,
+        -38,
+        -38
+      ],
+      "max_deg": [
+        90,
+        38,
+        38
+      ]
+    },
+    "mixamorig:LeftUpLeg": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -100,
+        -60,
+        -55
+      ],
+      "max_deg": [
+        100,
+        60,
+        55
+      ]
+    },
+    "mixamorig:LeftLeg": {
+      "axis_mode": "auto_hinge",
+      "flexion_deg": 145,
+      "hyperextension_deg": 5,
+      "lateral_slack_deg": 10,
+      "hinge_axis": 0,
+      "bend_direction": [
+        0.08596406131982803,
+        0.994476318359375,
+        -0.060224294662475586
+      ],
+      "twist_axis": 1,
+      "twist_deg": 12.000000333930423
+    },
+    "mixamorig:LeftFoot": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -45,
+        -25,
+        -35
+      ],
+      "max_deg": [
+        45,
+        25,
+        35
+      ]
+    },
+    "mixamorig:LeftToeBase": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -40,
+        -20,
+        -20
+      ],
+      "max_deg": [
+        40,
+        20,
+        20
+      ]
+    },
+    "mixamorig:RightUpLeg": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -100,
+        -60,
+        -55
+      ],
+      "max_deg": [
+        100,
+        60,
+        55
+      ]
+    },
+    "mixamorig:RightLeg": {
+      "axis_mode": "auto_hinge",
+      "flexion_deg": 145,
+      "hyperextension_deg": 5,
+      "lateral_slack_deg": 10,
+      "hinge_axis": 0,
+      "bend_direction": [
+        -0.08596383780241013,
+        0.9944763779640198,
+        -0.06022431701421738
+      ],
+      "twist_axis": 1,
+      "twist_deg": 12.000000333930423
+    },
+    "mixamorig:RightFoot": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -45,
+        -25,
+        -35
+      ],
+      "max_deg": [
+        45,
+        25,
+        35
+      ]
+    },
+    "mixamorig:RightToeBase": {
+      "axis_mode": "all_local",
+      "min_deg": [
+        -40,
+        -20,
+        -20
+      ],
+      "max_deg": [
+        40,
+        20,
+        20
+      ]
+    }
+  }
+}
