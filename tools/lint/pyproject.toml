@@ -1,0 +1,14 @@
+[project]
+name = "project-lint"
+version = "0.1.0"
+description = "Shared static rules for all Python code in this repository."
+requires-python = ">=3.12"
+dependencies = [
+    "ast-grep-cli>=0.40,<1",
+    "poethepoet>=0.35,<1",
+]
+
+[tool.poe.tasks]
+strings = "ast-grep scan --config ../../sgconfig.yml ../.."
+test = "ast-grep test --config ../../sgconfig.yml --skip-snapshot-tests"
+check = ["test", "strings"]

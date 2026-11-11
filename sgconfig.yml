@@ -1,0 +1,4 @@
+ruleDirs:
+  - tools/lint/python
+testConfigs:
+  - testDir: tools/lint/tests

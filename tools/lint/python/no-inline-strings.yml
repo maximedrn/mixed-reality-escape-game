@@ -1,0 +1,33 @@
+id: no-inline-strings
+language: Python
+severity: error
+message: Extract this literal into utils/constants.py, utils/messages.py or config/defaults.py.
+ignores:
+  - "**/tests/**"
+  - "**/utils/constants.py"
+  - "**/utils/messages.py"
+  - "**/config/defaults.py"
+rule:
+  all:
+    - kind: string
+    - not:
+        inside:
+          kind: expression_statement
+          has:
+            kind: string
+    - not:
+        inside:
+          kind: type
+          stopBy: end
+    # Static export names are identifiers required by Python tooling.
+    - not:
+        inside:
+          any:
+            - pattern: __all__ = $EXPORTS
+            - pattern: "__all__: $TYPE = $EXPORTS"
+          stopBy: end
+    # Pydantic's MyPy plugin requires this decorator mode to be lexical.
+    - not:
+        inside:
+          pattern: model_validator(mode="after")
+          stopBy: end

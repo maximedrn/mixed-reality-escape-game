@@ -1,0 +1,15 @@
+id: no-inline-strings
+valid:
+  - '"""Module documentation."""'
+  - 'value: Literal["LOCAL"] = TOKEN'
+  - '__all__ = ["public_function"]'
+  - '__all__: list[str] = ["PublicModel"]'
+  - '@model_validator(mode="after")'
+  - 'print(MESSAGE)'
+invalid:
+  - 'print("single-use message")'
+  - 'value: str = "single-use value"'
+  - 'value = {"key": True}'
+  - 'path = Path("inputs/file.glb")'
+  - 'value = f"prefix-{identifier}"'
+  - 'allowed: str = TOKEN; print("still forbidden")'
