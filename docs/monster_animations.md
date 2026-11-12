@@ -270,6 +270,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A01 — Attente voûtée (`idle`)
 
+![Animation idle](../assets/motion/monster/animation/examples/idle.gif)
+
 **Type :** boucle · **Priorité :** P0 · **Durée indicative :** 6–10 s
 
 - **Intention :** donner l'impression d'un corps debout uniquement parce qu'il n'a pas encore eu la force de s'asseoir.
@@ -287,6 +289,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a02"></a>
 
 ### A02 — Pause d'épuisement (`idle_exhausted`)
+
+![Animation idle_exhausted](../assets/motion/monster/animation/examples/idle_exhausted.gif)
 
 **Type :** unique · **Priorité :** P1 · **Durée indicative :** 4–7 s
 
@@ -306,6 +310,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A03 — Marche boiteuse (`limp_walk`)
 
+![Animation limp_walk](../assets/motion/monster/animation/examples/limp_walk.gif)
+
 **Type :** boucle · **Priorité :** P0 · **Durée indicative :** 3–5 s / cycle
 
 - **Intention :** seul mode de déplacement habituel, même en poursuite. La silhouette doit être immédiatement reconnaissable.
@@ -323,6 +329,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a04"></a>
 
 ### A04 — Départ pénible (`walk_start`)
+
+![Animation walk_start](../assets/motion/monster/animation/examples/walk_start.gif)
 
 **Type :** unique · **Priorité :** P1 · **Durée indicative :** 1,5–3 s
 
@@ -342,6 +350,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A05 — Arrêt lourd (`walk_stop`)
 
+![Animation walk_stop](../assets/motion/monster/animation/examples/walk_stop.gif)
+
 **Type :** unique · **Priorité :** P1 · **Durée indicative :** 1–2,5 s
 
 - **Intention :** le monstre ne s'immobilise pas proprement ; il laisse mourir son élan.
@@ -359,6 +369,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a06"></a>
 
 ### A06 — Rotation vers la gauche (`turn_left`)
+
+![Animation turn_left](../assets/motion/monster/animation/examples/turn_left.gif)
 
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
@@ -378,6 +390,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A07 — Rotation vers la droite (`turn_right`)
 
+![Animation turn_right](../assets/motion/monster/animation/examples/turn_right.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
 - **Intention :** même logique que [A06](#a06), mais sans simplement inverser la vidéo : la jambe faible reste la même.
@@ -395,6 +409,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a08"></a>
 
 ### A08 — Prise de conscience (`alert`)
+
+![Animation alert](../assets/motion/monster/animation/examples/alert.gif)
 
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 1,5–3 s
 
@@ -414,6 +430,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A09 — Recherche visuelle (`look_around`)
 
+![Animation look_around](../assets/motion/monster/animation/examples/look_around.gif)
+
 **Type :** boucle · **Priorité :** P0 · **Durée indicative :** 4–7 s
 
 - **Intention :** chercher quelqu'un lentement, sans vigilance héroïque ni mouvements nerveux.
@@ -431,6 +449,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a10"></a>
 
 ### A10 — Regard vers le sol (`look_down`)
+
+![Animation look_down](../assets/motion/monster/animation/examples/look_down.gif)
 
 **Type :** unique · **Priorité :** P1 · **Durée indicative :** 1,5–3 s
 
@@ -450,6 +470,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A11 — Se pencher vers une table (`bend_down`)
 
+![Animation bend_down](../assets/motion/monster/animation/examples/bend_down.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
 - **Intention :** amener péniblement la tête sous la hauteur du plateau, tout en conservant l'équilibre.
@@ -467,6 +489,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a12"></a>
 
 ### A12 — Se relever après inspection (`bend_up`)
+
+![Animation bend_up](../assets/motion/monster/animation/examples/bend_up.gif)
 
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
@@ -486,6 +510,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A13 — Se baisser devant une porte (`door_duck`)
 
+![Animation door_duck](../assets/motion/monster/animation/examples/door_duck.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–3,5 s
 
 - **Intention :** reconnaître qu'un corps de 3 m ne peut pas passer normalement sous un linteau d'environ 2 m.
@@ -503,6 +529,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a14"></a>
 
 ### A14 — Franchir une porte courbé (`door_walk`)
+
+![Animation door_walk](../assets/motion/monster/animation/examples/door_walk.gif)
 
 **Type :** boucle / progression · **Priorité :** P0 · **Durée indicative :** Selon passage
 
@@ -522,6 +550,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A15 — Retrouver sa posture après la porte (`door_stand`)
 
+![Animation door_stand](../assets/motion/monster/animation/examples/door_stand.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
 - **Intention :** reprendre une posture « normale » pour ce monstre, pas une station debout droite.
@@ -539,6 +569,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a16"></a>
 
 ### A16 — Attaque lente à longue portée (`arm_attack`)
+
+![Animation arm_attack](../assets/motion/monster/animation/examples/arm_attack.gif)
 
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
@@ -558,6 +590,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A17 — Réaction à un objet reçu (`hit_reaction`)
 
+![Animation hit_reaction](../assets/motion/monster/animation/examples/hit_reaction.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 0,8–2 s
 
 - **Intention :** accusation physique d'un choc, sans transformer le monstre en personnage agile.
@@ -575,6 +609,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a18"></a>
 
 ### A18 — Étourdissement (`stunned`)
+
+![Animation stunned](../assets/motion/monster/animation/examples/stunned.gif)
 
 **Type :** boucle / maintien · **Priorité :** P0 · **Durée indicative :** 2–5 s selon règles
 
@@ -594,6 +630,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A19 — Récupération après étourdissement (`stun_recovery`)
 
+![Animation stun_recovery](../assets/motion/monster/animation/examples/stun_recovery.gif)
+
 **Type :** unique · **Priorité :** P0 · **Durée indicative :** 2–4 s
 
 - **Intention :** revenir très laborieusement à un état fonctionnel après un choc.
@@ -612,6 +650,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 
 ### A20 — Perte de la cible (`target_lost`)
 
+![Animation target_lost](../assets/motion/monster/animation/examples/target_lost.gif)
+
 **Type :** unique · **Priorité :** P1 · **Durée indicative :** 2–4 s
 
 - **Intention :** manifester une confusion lente quand le joueur disparaît.
@@ -629,6 +669,8 @@ Voir le joueur, entendre un objet, savoir qu'une porte est proche ou entrer à p
 <a id="a21"></a>
 
 ### A21 — Observation sous une table (`look_under_table`)
+
+![Animation look_under_table](../assets/motion/monster/animation/examples/look_under_table.gif)
 
 **Type :** maintien / boucle · **Priorité :** P0 · **Durée indicative :** 3–6 s
 
