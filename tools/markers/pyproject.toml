@@ -39,6 +39,7 @@ module-root = ""
 
 [tool.uv]
 no-build = false
+exclude-newer = "3 days"
 
 [tool.ruff]
 line-length = 79
