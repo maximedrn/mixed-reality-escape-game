@@ -95,6 +95,8 @@ jobs:
       # Scope authentication to the secret URL; keep the token out of Git config.
       - name: Configure GitLab authentication
         run: |
+          # LFS must retain the repository path to select this scoped helper.
+          git config --local credential.useHttpPath true
           git config --local --replace-all "credential.${GITLAB_REPOSITORY_URL}.helper" ''
           git config --local --add "credential.${GITLAB_REPOSITORY_URL}.helper" \
             '!f() { if [ "$1" = get ]; then printf "username=oauth2\npassword=%s\n" "$GITLAB_TOKEN"; fi; }; f'
