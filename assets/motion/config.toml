@@ -1,6 +1,111 @@
 [inputs]
 model = "monster/models/rigged.glb"
-animation = "monster/animations/limp_walk.json"
+constraints = "monster/constraints.json"
 
 [outputs]
-glb = "monster/animations/limp_walk.glb"
+format = "glb"
+
+[[animations]]
+name = "idle"
+input = "monster/animation/examples/idle.json"
+output = "monster/animation/examples/idle.glb"
+
+[[animations]]
+name = "idle_exhausted"
+input = "monster/animation/examples/idle_exhausted.json"
+output = "monster/animation/examples/idle_exhausted.glb"
+
+[[animations]]
+name = "limp_walk"
+input = "monster/animation/examples/limp_walk.json"
+output = "monster/animation/examples/limp_walk.glb"
+
+[[animations]]
+name = "walk_start"
+input = "monster/animation/examples/walk_start.json"
+output = "monster/animation/examples/walk_start.glb"
+
+[[animations]]
+name = "walk_stop"
+input = "monster/animation/examples/walk_stop.json"
+output = "monster/animation/examples/walk_stop.glb"
+
+[[animations]]
+name = "turn_left"
+input = "monster/animation/examples/turn_left.json"
+output = "monster/animation/examples/turn_left.glb"
+
+[[animations]]
+name = "turn_right"
+input = "monster/animation/examples/turn_right.json"
+output = "monster/animation/examples/turn_right.glb"
+
+[[animations]]
+name = "alert"
+input = "monster/animation/examples/alert.json"
+output = "monster/animation/examples/alert.glb"
+
+[[animations]]
+name = "look_around"
+input = "monster/animation/examples/look_around.json"
+output = "monster/animation/examples/look_around.glb"
+
+[[animations]]
+name = "look_down"
+input = "monster/animation/examples/look_down.json"
+output = "monster/animation/examples/look_down.glb"
+
+[[animations]]
+name = "bend_down"
+input = "monster/animation/examples/bend_down.json"
+output = "monster/animation/examples/bend_down.glb"
+
+[[animations]]
+name = "bend_up"
+input = "monster/animation/examples/bend_up.json"
+output = "monster/animation/examples/bend_up.glb"
+
+[[animations]]
+name = "door_duck"
+input = "monster/animation/examples/door_duck.json"
+output = "monster/animation/examples/door_duck.glb"
+
+[[animations]]
+name = "door_walk"
+input = "monster/animation/examples/door_walk.json"
+output = "monster/animation/examples/door_walk.glb"
+
+[[animations]]
+name = "door_stand"
+input = "monster/animation/examples/door_stand.json"
+output = "monster/animation/examples/door_stand.glb"
+
+[[animations]]
+name = "arm_attack"
+input = "monster/animation/examples/arm_attack.json"
+output = "monster/animation/examples/arm_attack.glb"
+
+[[animations]]
+name = "hit_reaction"
+input = "monster/animation/examples/hit_reaction.json"
+output = "monster/animation/examples/hit_reaction.glb"
+
+[[animations]]
+name = "stunned"
+input = "monster/animation/examples/stunned.json"
+output = "monster/animation/examples/stunned.glb"
+
+[[animations]]
+name = "stun_recovery"
+input = "monster/animation/examples/stun_recovery.json"
+output = "monster/animation/examples/stun_recovery.glb"
+
+[[animations]]
+name = "target_lost"
+input = "monster/animation/examples/target_lost.json"
+output = "monster/animation/examples/target_lost.glb"
+
+[[animations]]
+name = "look_under_table"
+input = "monster/animation/examples/look_under_table.json"
+output = "monster/animation/examples/look_under_table.glb"
