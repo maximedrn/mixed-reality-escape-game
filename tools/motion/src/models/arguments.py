@@ -35,6 +35,7 @@ class BuildArguments(CommandArguments):
     model: Path | None = None
     animation: Path | None = None
     output: Path | None = None
+    name: str | None = None
 
 
 class ExportArguments(CommandArguments):

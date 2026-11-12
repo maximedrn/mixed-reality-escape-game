@@ -1,6 +1,0 @@
-[inputs]
-model = "inputs/rig.glb"
-animation = "inputs/motion.json"
-
-[outputs]
-glb = "exports/motion.glb"

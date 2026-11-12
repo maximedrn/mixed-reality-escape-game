@@ -3,6 +3,16 @@
 from typing import Final, Literal
 
 GLB_SUFFIX: Final[str] = ".glb"
+GLB_FORMAT: Final[Literal["glb"]] = "glb"
+NAME_OPTION: Final[str] = "--name"
+CLIP_FIELD: Final[str] = "clip"
+NAME_FIELD: Final[str] = "name"
+AXIS_MODE_FIELD: Final[str] = "axis_mode"
+ALL_LOCAL_MODE: Final[Literal["all_local"]] = "all_local"
+AUTO_HINGE_MODE: Final[Literal["auto_hinge"]] = "auto_hinge"
+EULER_AXES: Final[Literal["xyz"]] = "xyz"
+IGNORE_WARNING: Final[Literal["ignore"]] = "ignore"
+GIMBAL_LOCK_WARNING: Final[str] = "Gimbal lock detected.*"
 JOINT_NAME_TEMPLATE: Final[str] = "joint_{index}"
 JOINT_NAME_SUFFIX: Final[Literal["_"]] = "_"
 MATRIX_KEY: Final[Literal["matrix"]] = "matrix"

@@ -2,6 +2,29 @@
 
 from typing import Final
 
+DUPLICATE_ANIMATION_NAMES_ERROR: Final[str] = "Animation names must be unique"
+DUPLICATE_OUTPUTS_ERROR: Final[str] = "Animation outputs must be distinct"
+UNKNOWN_ANIMATION_ERROR: Final[str] = "Animation not configured: {name}"
+AMBIGUOUS_OVERRIDE_ERROR: Final[str] = (
+    "Select one animation with --name before overriding "
+    "--animation or --output"
+)
+SELECT_ANIMATION_HELP: Final[str] = "Build only the configured animation name"
+CONSTRAINT_SAMPLES_MESSAGE: Final[str] = (
+    "Joint limits baked into {count} rotation samples"
+)
+LIMIT_ORDER_ERROR: Final[str] = "Joint limit minimum exceeds maximum"
+HINGE_AXIS_ERROR: Final[str] = (
+    "Hinge and twist axes must differ; bend_direction must be nonzero"
+)
+UNKNOWN_LIMIT_JOINT_ERROR: Final[str] = (
+    "Joint limit references unknown joint: {name}"
+)
+HINGE_CHILD_ERROR: Final[str] = "Hinge joint has no child skin joint: {name}"
+HINGE_DIRECTION_ERROR: Final[str] = (
+    "Bend direction cannot calibrate hinge: {name}"
+)
+
 NODE_TRANSFORM_ERROR: Final[str] = (
     "Node matrix must contain a nonsingular TRS transform without shear"
 )

@@ -3,9 +3,10 @@
 from pathlib import Path
 from typing import Self
 
-from pydantic import FilePath, model_validator
+from pydantic import Field, FilePath, model_validator
 
 from src.models.base import FrozenModel
+from src.models.motion import Motion
 from src.utils.constants import GLB_SUFFIX
 from src.utils.messages import (
     BUILD_DESTINATIONS_ERROR,
@@ -19,6 +20,8 @@ class BuildRequest(FrozenModel):
     model: FilePath
     animation: FilePath
     output_glb: Path
+    constraints: FilePath | None = None
+    name: str | None = Field(default=None, min_length=1)
 
     @model_validator(mode="after")
     def validate_destinations(self) -> Self:
@@ -28,7 +31,9 @@ class BuildRequest(FrozenModel):
         :rtype: Self
         """
         sources: set[Path] = {
-            path.resolve() for path in (self.model, self.animation)
+            path.resolve()
+            for path in (self.model, self.animation, self.constraints)
+            if path is not None
         }
         glb: Path = self.output_glb.resolve()
         if glb in sources:
@@ -42,3 +47,12 @@ class BuildResult(FrozenModel):
     """Return only output files that actually exist after publication."""
 
     glb: FilePath
+    constrained_samples: int = Field(default=0, ge=0)
+
+
+class PreparedBuild(FrozenModel):
+    """Carry a validated, constrained clip awaiting publication."""
+
+    request: BuildRequest
+    motion: Motion
+    constrained_samples: int = Field(default=0, ge=0)

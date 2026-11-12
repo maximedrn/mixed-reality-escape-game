@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Final
 
 from src.config.defaults import DEFAULT_CONFIG
-from src.config.settings import load_config, project_path
 from src.models.arguments import (
     BuildArguments,
     Command,
@@ -16,11 +15,10 @@ from src.models.arguments import (
     ExportArguments,
     ValidateArguments,
 )
-from src.models.build import BuildRequest, BuildResult
-from src.models.configuration import ProjectConfig
+from src.models.build import BuildResult
 from src.models.motion import Motion
-from src.services.build import build
 from src.services.motion_io import export_motion, load_motion
+from src.services.project import build_project
 from src.utils.constants import (
     ANIMATION_OPTION,
     BUILD,
@@ -31,17 +29,20 @@ from src.utils.constants import (
     INPUT,
     MODEL_OPTION,
     MOTION,
+    NAME_OPTION,
     OUTPUT_OPTION,
     VALIDATE,
 )
 from src.utils.messages import (
     ANIMATED_GLB_MESSAGE,
     CLI_DESCRIPTION,
+    CONSTRAINT_SAMPLES_MESSAGE,
     EXPORT_JSON_HELP,
     GENERATE_ANIMATED_GLB_HELP,
     JSON_EXPORTED_MESSAGE,
     MOTION_VALID_MESSAGE,
     OUTPUT_ANIMATED_GLB_PATH_HELP,
+    SELECT_ANIMATION_HELP,
     VALIDATE_MOTION_JSON_HELP,
 )
 
@@ -67,6 +68,7 @@ def create_parser() -> ArgumentParser:
     generate.add_argument(CONFIG, type=Path, default=DEFAULT_CONFIG)
     generate.add_argument(MODEL_OPTION, type=Path)
     generate.add_argument(ANIMATION_OPTION, type=Path)
+    generate.add_argument(NAME_OPTION, help=SELECT_ANIMATION_HELP)
     generate.add_argument(
         OUTPUT_OPTION, type=Path, help=OUTPUT_ANIMATED_GLB_PATH_HELP
     )
@@ -126,24 +128,14 @@ def main(argv: list[str] | None = None) -> None:
             )
         else:
             options: BuildArguments = BuildArguments.model_validate(raw)
-            config_file: Path = options.config.expanduser().resolve()
-            cfg: ProjectConfig = load_config(config_file)
-            model: Path = options.model or project_path(
-                config_file, cfg.inputs.model
-            )
-            animation: Path = options.animation or project_path(
-                config_file, cfg.inputs.animation
-            )
-            glb: Path = options.output or project_path(
-                config_file, cfg.outputs.glb
-            )
-            result: BuildResult = build(
-                BuildRequest(
-                    model=model.resolve(),
-                    animation=animation.resolve(),
-                    output_glb=glb.resolve(),
-                )
-            )
-            print(ANIMATED_GLB_MESSAGE.format(glb=result.glb))
+            result: BuildResult
+            for result in build_project(options):
+                print(ANIMATED_GLB_MESSAGE.format(glb=result.glb))
+                if result.constrained_samples:
+                    print(
+                        CONSTRAINT_SAMPLES_MESSAGE.format(
+                            count=result.constrained_samples
+                        )
+                    )
     except (OSError, ValueError, RuntimeError) as error:
         parser.error(str(error))
