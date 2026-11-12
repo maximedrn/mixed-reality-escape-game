@@ -40,13 +40,7 @@ uv run --locked --project tools/markers poe -C tools/markers format
 uv run --locked --project tools/markers poe -C tools/markers check
 ```
 
-### 4. Run tests
-
-```bash
-uv run --locked --project tools/markers poe -C tools/markers test
-```
-
-### 5. Build the package
+### 4. Build the package
 
 ```bash
 uv build --project tools/markers

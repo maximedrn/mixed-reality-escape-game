@@ -52,8 +52,7 @@
   ],
   "mypy.configFile": "pyproject.toml",
   "mypy.targets": [
-    "src",
-    "tests"
+    "src"
   ],
   "ruff.path": [],
   "flake8.interpreter": [

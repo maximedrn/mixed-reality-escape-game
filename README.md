@@ -129,7 +129,7 @@ cmake -DTASK=lint -DVERBOSE=ON -P cmake/Tasks.cmake
 # Install the motion processing environment and Python dependencies.
 cmake -DTASK=motion-setup -P cmake/Tasks.cmake
 
-# Validate motion Python code (formatting, lint, types and tests).
+# Validate motion Python code (formatting, lint and types).
 cmake -DTASK=motion-check -P cmake/Tasks.cmake
 
 # Test the shared Python rules and scan every Python project in the repository.

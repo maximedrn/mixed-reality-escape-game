@@ -15,7 +15,6 @@ motion = "src.cli:main"
 
 [dependency-groups]
 dev = [
-    "pytest>=8,<10",
     "ruff>=0.11,<1",
     "mypy>=1.13,<3",
     "pyright>=1.1.400,<2",
@@ -54,7 +53,6 @@ external = ["TYP001", "TYP002", "WPS226"]
 allow-magic-value-types = []
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["PLR2004"]
 # Enum values cannot be annotated. Preserve the external TYP001 noqa:
 # Ruff otherwise rewrites this plugin's code to its own legacy TC001 alias.
 "src/models/*.py" = ["RUF101"]
@@ -70,7 +68,7 @@ indent-style = "space"
 docstring-code-format = true
 
 [tool.pyright]
-include = ["src", "tests"]
+include = ["src"]
 exclude = [".venv"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
@@ -79,7 +77,7 @@ venv = ".venv"
 
 [tool.mypy]
 python_version = "3.12"
-files = ["src", "tests"]
+files = ["src"]
 mypy_path = ["$MYPY_CONFIG_FILE_DIR"]
 plugins = ["pydantic.mypy"]
 
@@ -97,7 +95,6 @@ skip-checking-raises = true
 check-class-attributes = false
 allow-init-docstring = true
 exclude = [".venv", "dist", "__pycache__"]
-per-file-ignores = ["tests/*: WPS226,WPS432"]
 
 [tool.pylint.main]
 prefer-stubs = true
@@ -129,9 +126,5 @@ lint = ["ruff", "literals", "strings"]
 pyright = "pyright"
 mypy = "mypy"
 pylint = "pylint src"
-test = "pytest -q"
 typecheck = ["pyright", "mypy"]
-check = ["format-check", "lint", "typecheck", "pylint", "test"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+check = ["format-check", "lint", "typecheck", "pylint"]

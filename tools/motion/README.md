@@ -38,13 +38,7 @@ uv run --locked --project tools/motion poe -C tools/motion format
 uv run --locked --project tools/motion poe -C tools/motion check
 ```
 
-### 5. Run tests
-
-```bash
-uv run --locked --project tools/motion poe -C tools/motion test
-```
-
-### 6. Build the package
+### 5. Build the package
 
 ```bash
 uv build --project tools/motion

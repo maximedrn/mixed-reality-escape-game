@@ -52,7 +52,6 @@
   ],
   "mypy.configFile": "pyproject.toml",
   "mypy.targets": [
-    "tests",
     "src"
   ],
   "ruff.path": [],

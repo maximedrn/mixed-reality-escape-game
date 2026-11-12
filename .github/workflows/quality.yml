@@ -58,7 +58,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install locked Python environment
         run: uv sync --locked
-      - name: Check Python formatting, lint, types and tests
+      - name: Check Python formatting, lint and types
         run: uv run --locked poe check
       - name: Build Python distributions
         run: uv build

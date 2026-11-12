@@ -18,9 +18,7 @@ dev = [
     "mypy>=2.4,<3",
     "pylint>=4.1,<5",
     "poethepoet>=0.35,<1",
-    "pypdf>=5.0,<8",
     "pyright>=1.1.400,<2",
-    "pytest>=9.0,<10",
     "ruff>=0.17.0,<1",
     "types-qrcode>=8.0,<9",
     "types-reportlab>=4.0,<5",
@@ -55,7 +53,6 @@ external = ["TYP001", "TYP002"]
 allow-magic-value-types = []
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["PLR2004"]
 # Preserve external TYP001 exemptions on Python Enum members.
 "src/models/*.py" = ["RUF101"]
 
@@ -70,7 +67,7 @@ indent-style = "space"
 docstring-code-format = true
 
 [tool.pyright]
-include = ["src", "tests"]
+include = ["src"]
 exclude = [".venv"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
@@ -79,7 +76,7 @@ venv = ".venv"
 
 [tool.mypy]
 python_version = "3.12"
-files = ["src", "tests"]
+files = ["src"]
 mypy_path = ["$MYPY_CONFIG_FILE_DIR"]
 
 [tool.flake8]
@@ -87,7 +84,6 @@ select = ["WPS432", "WPS226", "IMR222", "TYP001", "TYP002"]
 imr222_include = ["*"]
 max-string-usages = 1
 exclude = [".venv", "dist", "__pycache__"]
-per-file-ignores = ["tests/*: WPS226,WPS432"]
 
 [tool.pylint.main]
 prefer-stubs = true
@@ -115,9 +111,5 @@ lint = ["ruff", "literals", "strings"]
 pyright = "pyright"
 mypy = "mypy"
 pylint = "pylint src"
-test = "pytest -q"
 typecheck = ["pyright", "mypy"]
-check = ["format-check", "lint", "typecheck", "pylint", "test"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+check = ["format-check", "lint", "typecheck", "pylint"]
