@@ -13,6 +13,7 @@ from src.utils.constants import (
     GLTF,
     HEX_DIGITS,
     METERS_UNIT,
+    MOTION_SCHEMA_VERSION,
     POSITIVE_Z_FORWARD_AXIS,
     Y_UP_AXIS,
 )
@@ -26,6 +27,10 @@ from src.utils.messages import (
     INVALID_RIG_SIGNATURE_ERROR,
     LOOP_ROTATIONS_ERROR,
     MOTION_FRAME_COUNT_ERROR,
+    TRANSLATION_FRAME_COUNT_ERROR,
+    TRANSLATION_JOINT_COUNT_ERROR,
+    TRANSLATION_LOOP_ERROR,
+    TRANSLATION_SCHEMA_ERROR,
 )
 
 MAX_FPS: Final[int] = 240
@@ -33,6 +38,7 @@ SHA256_HEX_LENGTH: Final[int] = 64
 MIN_LOOP_DOT: Final[float] = 0.9999
 MIN_QUATERNION_NORM: Final[float] = 0.98
 MAX_QUATERNION_NORM: Final[float] = 1.02
+LOOP_TRANSLATION_TOLERANCE_M: Final[float] = 1e-5
 
 
 class ClipInfo(FrozenModel):
@@ -70,12 +76,38 @@ class Marker(FrozenModel):
 
 
 class RigPose(FrozenModel):
-    """Lossless local rotations for the source humanoid skeleton."""
+    """Lossless local rotations and optional absolute local translations."""
 
     bone_names: list[str] = Field(min_length=1)
     rotations_xyzw: list[list[tuple[float, float, float, float]]] = Field(
         min_length=2
     )
+    translation_bone_names: list[str] = Field(default_factory=list[str])
+    translations_xyz: list[list[tuple[float, float, float]]] = Field(
+        default_factory=list[list[tuple[float, float, float]]]
+    )
+
+    # Pydantic's MyPy plugin requires the validator mode to remain lexical.
+    @model_validator(mode="after")  # noqa: WPS226
+    def validate_translations(self) -> Self:
+        """Require unique translation joints and one vector per joint/frame.
+
+        :return: The validated local pose channels.
+        :rtype: Self
+        """
+        if len(set(self.translation_bone_names)) != len(
+            self.translation_bone_names
+        ):
+            raise ValueError(DUPLICATE_RIG_JOINT_NAMES_ERROR)
+        if self.translation_bone_names or self.translations_xyz:
+            if len(self.translations_xyz) != len(self.rotations_xyzw):
+                raise ValueError(TRANSLATION_FRAME_COUNT_ERROR)
+            if any(
+                len(frame) != len(self.translation_bone_names)
+                for frame in self.translations_xyz
+            ):
+                raise ValueError(TRANSLATION_JOINT_COUNT_ERROR)
+        return self
 
 
 class Motion(FrozenModel):
@@ -86,7 +118,7 @@ class Motion(FrozenModel):
     field.
     """
 
-    schema_version: Literal[1] = 1
+    schema_version: Literal[1, 2] = MOTION_SCHEMA_VERSION
     clip: ClipInfo
     coordinates: CoordinateSystem
     source_rig_signature: str = Field(
@@ -142,6 +174,21 @@ class Motion(FrozenModel):
                 self.rig_pose.rotations_xyzw[-1]
             )
             _validate_loop(start, end)
+            if self.rig_pose.translation_bone_names and any(
+                abs(left - right) > LOOP_TRANSLATION_TOLERANCE_M
+                for first, last in zip(
+                    self.rig_pose.translations_xyz[0],
+                    self.rig_pose.translations_xyz[-1],
+                    strict=True,
+                )
+                for left, right in zip(first, last, strict=True)
+            ):
+                raise ValueError(TRANSLATION_LOOP_ERROR)
+        if self.schema_version == 1 and (
+            self.rig_pose.translation_bone_names
+            or self.rig_pose.translations_xyz
+        ):
+            raise ValueError(TRANSLATION_SCHEMA_ERROR)
         if len(self.source_rig_signature) != SHA256_HEX_LENGTH or any(
             ch not in HEX_DIGITS for ch in self.source_rig_signature
         ):

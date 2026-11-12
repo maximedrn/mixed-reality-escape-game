@@ -10,7 +10,7 @@ from hashlib import sha256
 from json import dumps
 from pathlib import Path
 from struct import pack, unpack_from
-from typing import BinaryIO, Final, Self
+from typing import BinaryIO, Final, Literal, Self
 
 from numpy import (
     allclose,
@@ -27,7 +27,9 @@ from numpy import (
     generic,
     int8,
     int16,
+    interp,
     intp,
+    isfinite,
     ndarray,
     searchsorted,
     stack,
@@ -77,6 +79,7 @@ from src.utils.constants import (
     LITTLE_ENDIAN,
     MATRIX_KEY,
     MOTION_METADATA_TEMPLATE,
+    MOTION_SCHEMA_VERSION,
     RIGHT,
     ROTATION_PATH,
     SCALE_KEY,
@@ -92,9 +95,10 @@ from src.utils.messages import (
     ANIMATED_BONE_NOT_FOUND_ERROR,
     ANIMATED_JOINTS_MUST_USE_GL_ERROR,
     CLIP_TIMING_ERROR,
-    DUPLICATE_ROTATION_CHANNELS_ERROR,
+    DUPLICATE_TRANSFORM_CHANNEL_ERROR,
     EMBEDDED_BUFFER_REQUIRED_ERROR,
     EVERY_SKIN_JOINT_MUST_HAVE_ERROR,
+    FPS_RANGE_ERROR,
     GLB_CHUNKS_REQUIRED_ERROR,
     INPUT_ANIMATION_COUNT_ERROR,
     INVALID_GLB_HEADER_ERROR,
@@ -102,14 +106,15 @@ from src.utils.messages import (
     MULTIPLE_NODE_PARENTS_ERROR,
     NODE_TRANSFORM_ERROR,
     NOT_A_GLB_FILE_ERROR,
-    ROTATION_CHANNELS_ONLY_ERROR,
     ROTATION_KEYS_REQUIRED_ERROR,
     SKINNED_ARMATURE_COUNT_ERROR,
     SOURCE_REST_POSE_ERROR,
     SPARSE_ACCESSOR_UNSUPPORTED_ERROR,
+    TRANSFORM_KEYS_ERROR,
     TRUNCATED_GLB_CHUNK_ERROR,
     UNEXPECTED_ANIMATED_NODE_ERROR,
     UNSUPPORTED_GLTF_INTERPOLATION_ERROR,
+    UNSUPPORTED_TRANSFORM_CHANNEL_ERROR,
 )
 
 HEADER_SIZE: Final[int] = 12
@@ -265,10 +270,14 @@ class Glb:
             raise ValueError(EVERY_SKIN_JOINT_MUST_HAVE_ERROR)
         return [name for name in names if name is not None]
 
-    def signature(self: Self) -> str:
-        """Hash rest joints, excluding geometry and scene roots.
+    def signature(self: Self, schema_version: Literal[1, 2] = 1) -> str:
+        """Hash rest joints with versioned numeric serialization.
 
-        :return: Hash rest joints, excluding geometry and scene roots.
+        Version 2 serializes all transform components as floating point.
+
+        :param schema_version: Motion schema selecting the hash convention.
+        :type schema_version: Literal[1, 2]
+        :return: Rest skeleton hash excluding geometry and root height.
         :rtype: str
         """
         joints: list[int] = self.joint_indices
@@ -288,9 +297,21 @@ class Glb:
                     parent=(
                         nodes[parent].name if parent is not None else None
                     ),
-                    translation=translation,
-                    rotation=node.rotation,
-                    scale=node.scale,
+                    translation=(
+                        [float(value) for value in translation]
+                        if schema_version == MOTION_SCHEMA_VERSION
+                        else translation
+                    ),
+                    rotation=(
+                        [float(value) for value in node.rotation]
+                        if schema_version == MOTION_SCHEMA_VERSION
+                        else node.rotation
+                    ),
+                    scale=(
+                        [float(value) for value in node.scale]
+                        if schema_version == MOTION_SCHEMA_VERSION
+                        else node.scale
+                    ),
                 )
             )
         blob: str = dumps(
@@ -400,10 +421,10 @@ class Glb:
             file.write(self.binary)
 
 
-def _sample_rotation(
-    glb: Glb, sampler: Sampler, timestamps: NDArray[float64]
+def _sample_transform(
+    glb: Glb, sampler: Sampler, timestamps: NDArray[float64], path: str
 ) -> NDArray[float64]:
-    """Resample an animated node as normalized XYZW quaternions.
+    """Resample a rotation with SLERP or a translation with linear blending.
 
     :param glb: Validated binary glTF document.
     :type glb: Glb
@@ -411,7 +432,9 @@ def _sample_rotation(
     :type sampler: Sampler
     :param timestamps: Timestamps.
     :type timestamps: NDArray[float64]
-    :return: Resample an animated node as normalized XYZW quaternions.
+    :param path: Rotation or translation target property.
+    :type path: str
+    :return: Sampled local transform vectors.
     :rtype: NDArray[float64]
     """
     keys: NDArray[float64] = (
@@ -425,22 +448,89 @@ def _sample_rotation(
                 interpolation=interpolation
             )
         )
-    if len(keys) < MIN_ROTATION_KEYS:
-        raise ValueError(ROTATION_KEYS_REQUIRED_ERROR)
+    if (
+        samples.shape != (len(keys), 4 if path == ROTATION_PATH else 3)
+        or not isfinite(samples).all()
+    ):
+        raise ValueError(TRANSFORM_KEYS_ERROR)
     result: NDArray[float64]
     if sampler.interpolation == Interpolation.STEP:
         indices: NDArray[intp] = searchsorted(keys, timestamps, side=RIGHT) - 1
         result = samples[clip(indices, 0, len(keys) - 1)]
-    else:
+    elif path == ROTATION_PATH:
         # SciPy uses (x,y,z,w), identical to glTF.
         result = Slerp(keys, Rotation.from_quat(samples))(
             clip(timestamps, keys[0], keys[-1])
         ).as_quat()
-    index: int
-    for index in range(1, len(result)):
-        if dot(result[index - 1], result[index]) < 0:
-            result[index] = -result[index]
+    else:
+        result = stack(
+            [interp(timestamps, keys, samples[:, axis]) for axis in range(3)],
+            axis=1,
+        )
+    if path == ROTATION_PATH:
+        index: int
+        for index in range(1, len(result)):
+            if dot(result[index - 1], result[index]) < 0:
+                result[index] = -result[index]
     return result
+
+
+def _animation_channels(
+    glb: Glb, fps: int, path: str
+) -> tuple[list[tuple[str, Sampler]], NDArray[float64]]:
+    """Validate all transform channels and share their complete timeline.
+
+    :param glb: Validated binary glTF document.
+    :type glb: Glb
+    :param fps: Sampling rate in frames per second.
+    :type fps: int
+    :param path: Transform property to collect.
+    :type path: str
+    :return: Selected joint samplers and the complete animation timeline.
+    :rtype: tuple[list[tuple[str, Sampler]], NDArray[float64]]
+    """
+    if fps <= 0:
+        raise ValueError(FPS_RANGE_ERROR)
+    animations: list[Animation] = glb.data.animations
+    if len(animations) != 1:
+        raise ValueError(INPUT_ANIMATION_COUNT_ERROR)
+    animation: Animation = animations[0]
+    channels: list[Channel] = animation.channels
+    samplers: list[Sampler] = animation.samplers
+    selected: list[tuple[str, Sampler]] = []
+    seen: set[tuple[int, str]] = set()
+    max_time: float = 0.0
+    channel: Channel
+    for channel in channels:
+        target: Target = channel.target
+        if target.path not in (ROTATION_PATH, TRANSLATION_KEY):
+            raise ValueError(UNSUPPORTED_TRANSFORM_CHANNEL_ERROR)
+        identity: tuple[int, str] = (target.node, target.path)
+        if identity in seen:
+            raise ValueError(DUPLICATE_TRANSFORM_CHANNEL_ERROR)
+        seen.add(identity)
+        name: str | None = glb.data.nodes[target.node].name
+        if name is None or name not in glb.joint_names:
+            raise ValueError(UNEXPECTED_ANIMATED_NODE_ERROR.format(name=name))
+        sampler: Sampler = samplers[channel.sampler]
+        times: NDArray[float64] = (
+            glb.accessor(sampler.input).flatten().astype(float64)
+        )
+        if (
+            len(times) < MIN_ROTATION_KEYS
+            or not isfinite(times).all()
+            or times[0] < 0
+            or (times[1:] <= times[:-1]).any()
+        ):
+            raise ValueError(TRANSFORM_KEYS_ERROR)
+        max_time = max(max_time, float(times[-1]))
+        if target.path == path:
+            selected.append((name, sampler))
+    frames: int = round(max_time * fps) + 1
+    times = arange(frames, dtype=float) / fps
+    if abs(times[-1] - max_time) > FRAME_TIME_TOLERANCE:
+        raise ValueError(CLIP_TIMING_ERROR)
+    return selected, times
 
 
 def sampled_animation(
@@ -452,47 +542,59 @@ def sampled_animation(
     :type glb: Glb
     :param fps: Sampling rate in frames per second.
     :type fps: int
-    :return: Return bone-name order and XYZW rotations sampled at the given
-        FPS.
+    :return: Joint names, local rotations and the complete frame count.
     :rtype: tuple[list[str], NDArray[float64], int]
     """
-    animations: list[Animation] = glb.data.animations
-    if len(animations) != 1:
-        raise ValueError(INPUT_ANIMATION_COUNT_ERROR)
-    animation: Animation = animations[0]
-    channels: list[Channel] = animation.channels
-    samplers: list[Sampler] = animation.samplers
-    rotation_channels: list[tuple[str, Sampler]] = []
-    max_time: float = 0.0
-    channel: Channel
-    for channel in channels:
-        target: Target = channel.target
-        if target.path != ROTATION_PATH:
-            raise ValueError(ROTATION_CHANNELS_ONLY_ERROR)
-        name: str | None = glb.data.nodes[target.node].name
-        if name is None or name not in glb.joint_names:
-            raise ValueError(UNEXPECTED_ANIMATED_NODE_ERROR.format(name=name))
-        sampler: Sampler = samplers[channel.sampler]
-        times: NDArray[float64] = (
-            glb.accessor(sampler.input).flatten().astype(float64)
-        )
-        max_time = max(max_time, float(times[-1]))
-        rotation_channels.append((name, sampler))
-    frames: int = round(max_time * fps) + 1
-    times = arange(frames, dtype=float) / fps
-    if abs(times[-1] - max_time) > FRAME_TIME_TOLERANCE:
-        raise ValueError(CLIP_TIMING_ERROR)
-    bone_names: list[str] = [name for name, _sampler in rotation_channels]
-    if len(bone_names) != len(set(bone_names)):
-        raise ValueError(DUPLICATE_ROTATION_CHANNELS_ERROR)
+    channels: list[tuple[str, Sampler]]
+    times: NDArray[float64]
+    channels, times = _animation_channels(glb, fps, ROTATION_PATH)
+    if not channels:
+        raise ValueError(ROTATION_KEYS_REQUIRED_ERROR)
     poses: NDArray[float64] = stack(
         [
-            _sample_rotation(glb, sampler, times)
-            for _name, sampler in rotation_channels
+            _sample_transform(glb, sampler, times, ROTATION_PATH)
+            for _name, sampler in channels
         ],
         axis=1,
     )
-    return bone_names, poses, frames
+    return [name for name, _sampler in channels], poses, len(times)
+
+
+def sampled_translations(
+    glb: Glb, fps: int, ground_offset_y: float = 0.0
+) -> tuple[list[str], NDArray[float64], int]:
+    """Read absolute local translations, optionally removing root grounding.
+
+    :param glb: Validated binary glTF document.
+    :type glb: Glb
+    :param fps: Sampling rate in frames per second.
+    :type fps: int
+    :param ground_offset_y: Ground offset baked into translated scene roots.
+    :type ground_offset_y: float
+    :return: Joint names, local translations and the complete frame count.
+    :rtype: tuple[list[str], NDArray[float64], int]
+    """
+    channels: list[tuple[str, Sampler]]
+    times: NDArray[float64]
+    channels, times = _animation_channels(glb, fps, TRANSLATION_KEY)
+    names: list[str] = [name for name, _sampler in channels]
+    poses: NDArray[float64] = (
+        stack(
+            [
+                _sample_transform(glb, sampler, times, TRANSLATION_KEY)
+                for _name, sampler in channels
+            ],
+            axis=1,
+        )
+        if channels
+        else empty((len(times), 0, 3))
+    )
+    index: int
+    name: str
+    for index, name in enumerate(names):
+        if glb.by_name[name] in glb.data.scenes[glb.data.scene].nodes:
+            poses[:, index, 1] -= ground_offset_y
+    return names, poses, len(times)
 
 
 def marker_trajectories(
@@ -500,6 +602,8 @@ def marker_trajectories(
     marker_bones: list[str],
     bone_names: list[str],
     rotation_frames: NDArray[float64],
+    translation_bone_names: list[str] | None = None,
+    translation_frames: NDArray[float64] | None = None,
 ) -> NDArray[float64]:
     """Evaluate glTF joint-head XYZ for every frame in metres.
 
@@ -511,10 +615,18 @@ def marker_trajectories(
     :type bone_names: list[str]
     :param rotation_frames: Rotation frames.
     :type rotation_frames: NDArray[float64]
+    :param translation_bone_names: Independently animated translation joints.
+    :type translation_bone_names: list[str] | None
+    :param translation_frames: Absolute local XYZ samples in metres.
+    :type translation_frames: NDArray[float64] | None
     :return: Evaluate glTF joint-head XYZ for every frame in metres.
     :rtype: NDArray[float64]
     """
     indices: dict[str, int] = glb.by_name
+    name: str
+    for name in [*bone_names, *(translation_bone_names or [])]:
+        if name not in indices:
+            raise ValueError(ANIMATED_BONE_NOT_FOUND_ERROR.format(name=name))
     parents: dict[int, int] = glb.parent_indices()
     nodes: list[Node] = glb.data.nodes
     order: list[int] = []
@@ -546,8 +658,6 @@ def marker_trajectories(
     )
     frame_id: int
     frame_rotations: NDArray[float64]
-    marker_id: int
-    joint: int
     for frame_id, frame_rotations in enumerate(rotation_frames):
         world_t: list[NDArray[float64]] = _evaluate_frame(
             nodes,
@@ -556,14 +666,21 @@ def marker_trajectories(
             base_transforms,
             animated_node_ids,
             frame_rotations,
+            {
+                indices[name]: translation_frames[frame_id, column]
+                for column, name in enumerate(translation_bone_names or [])
+            }
+            if translation_frames is not None
+            else {},
         )
-        for marker_id, joint in enumerate(marker_node_ids):
-            positions[frame_id, marker_id] = world_t[joint]
+        positions[frame_id] = asarray(
+            [world_t[joint] for joint in marker_node_ids]
+        )
     return positions
 
 
 def build_animated_glb(base: Path, motion: Motion, output: Path) -> None:
-    """Apply exact local rotations from JSON to the unchanged base rig.
+    """Apply exact local rotations and translations to the source rig.
 
     :param base: Static source rig file.
     :type base: Path
@@ -577,13 +694,16 @@ def build_animated_glb(base: Path, motion: Motion, output: Path) -> None:
     glb: Glb = Glb(base)
     if glb.data.animations:
         raise ValueError(ANIMATED_BASE_MODEL_ERROR)
-    if glb.signature() != motion.source_rig_signature:
+    if glb.signature(motion.schema_version) != motion.source_rig_signature:
         raise ValueError(SOURCE_REST_POSE_ERROR)
     indices: dict[str, int] = glb.by_name
     name: str
     marker: Marker
     root: int
-    for name in motion.rig_pose.bone_names:
+    for name in [
+        *motion.rig_pose.bone_names,
+        *motion.rig_pose.translation_bone_names,
+    ]:
         if name not in indices:
             raise ValueError(ANIMATED_BONE_NOT_FOUND_ERROR.format(name=name))
     for marker in motion.markers:
@@ -608,19 +728,69 @@ def build_animated_glb(base: Path, motion: Motion, output: Path) -> None:
     animation: Animation = Animation(
         name=motion.clip.name, samplers=[], channels=[]
     )
+    _append_transform_channels(
+        glb, motion, animation, input_accessor, ROTATION_PATH
+    )
+    _append_transform_channels(
+        glb, motion, animation, input_accessor, TRANSLATION_KEY
+    )
+    glb.data.animations = [animation]
+    glb.data.asset.extras = dict(
+        glb.data.asset.extras,
+        motion=(MOTION_METADATA_TEMPLATE.format(name=motion.clip.name)),
+    )
+    glb.write(output)
+
+
+def _append_transform_channels(
+    glb: Glb,
+    motion: Motion,
+    animation: Animation,
+    input_accessor: int,
+    path: str,
+) -> None:
+    """Append verified local pose vectors using a shared timestamp accessor.
+
+    :param glb: Destination rig and embedded binary buffer.
+    :type glb: Glb
+    :param motion: Source pose samples and ground offset.
+    :type motion: Motion
+    :param animation: Animation receiving the new channels.
+    :type animation: Animation
+    :param input_accessor: Shared timestamp accessor index.
+    :type input_accessor: int
+    :param path: Rotation or translation target property.
+    :type path: str
+    :return: No return value.
+    :rtype: None
+    """
+    rotation: bool = path == ROTATION_PATH
+    names: list[str] = (
+        motion.rig_pose.bone_names
+        if rotation
+        else motion.rig_pose.translation_bone_names
+    )
+    values: NDArray[float32] = asarray(
+        motion.rig_pose.rotations_xyzw
+        if rotation
+        else motion.rig_pose.translations_xyz,
+        dtype=FLOAT32_LE,
+    )
     bone_id: int
     bone_name: str
-    frame: int
-    for bone_id, bone_name in enumerate(motion.rig_pose.bone_names):
-        keys: NDArray[float32] = asarray(
-            [frame[bone_id] for frame in motion.rig_pose.rotations_xyzw],
-            dtype=FLOAT32_LE,
+    for bone_id, bone_name in enumerate(names):
+        keys: NDArray[float32] = values[:, bone_id].copy()
+        if rotation:
+            frame: int
+            for frame in range(1, len(keys)):
+                if dot(keys[frame - 1], keys[frame]) < 0:
+                    keys[frame] = -keys[frame]
+            keys /= norm(keys, axis=1, keepdims=True)
+        elif glb.by_name[bone_name] in glb.data.scenes[glb.data.scene].nodes:
+            keys[:, 1] += motion.ground_offset_y
+        accessor: int = glb.add_accessor(
+            keys, AccessorKind.VEC4 if rotation else AccessorKind.VEC3
         )
-        for frame in range(1, len(keys)):
-            if dot(keys[frame - 1], keys[frame]) < 0:
-                keys[frame] = -keys[frame]
-        keys /= norm(keys, axis=1, keepdims=True)
-        accessor: int = glb.add_accessor(keys, AccessorKind.VEC4)
         channel_id: int = len(animation.samplers)
         animation.samplers.append(
             Sampler(
@@ -632,15 +802,9 @@ def build_animated_glb(base: Path, motion: Motion, output: Path) -> None:
         animation.channels.append(
             Channel(
                 sampler=channel_id,
-                target=Target(node=indices[bone_name], path=ROTATION_PATH),
+                target=Target(node=glb.by_name[bone_name], path=path),
             )
         )
-    glb.data.animations = [animation]
-    glb.data.asset.extras = dict(
-        glb.data.asset.extras,
-        motion=(MOTION_METADATA_TEMPLATE.format(name=motion.clip.name)),
-    )
-    glb.write(output)
 
 
 def _local_transform(
@@ -678,6 +842,7 @@ def _evaluate_frame(
     base_transforms: list[NDArray[float64]],
     animated_node_ids: list[int],
     frame_rotations: NDArray[float64],
+    translations: dict[int, NDArray[float64]],
 ) -> list[NDArray[float64]]:
     """Evaluate affine joint transforms for one sampled frame.
 
@@ -693,6 +858,8 @@ def _evaluate_frame(
     :type animated_node_ids: list[int]
     :param frame_rotations: Local XYZW quaternions for this frame.
     :type frame_rotations: NDArray[float64]
+    :param translations: Absolute local XYZ keyed by translated node index.
+    :type translations: dict[int, NDArray[float64]]
     :return: Joint-head positions in world space.
     :rtype: list[NDArray[float64]]
     """
@@ -705,6 +872,9 @@ def _evaluate_frame(
         local[node_id] = _local_transform(
             nodes[node_id], Rotation.from_quat(quat)
         )
+    translation: NDArray[float64]
+    for node_id, translation in translations.items():
+        local[node_id][:3, 3] = translation
     world: list[NDArray[float64]] = [eye(4, dtype=float64) for _ in nodes]
     for node_id in order:
         parent: int | None = parents.get(node_id)

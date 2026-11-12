@@ -3,6 +3,7 @@
 from typing import Final, Literal
 
 GLB_SUFFIX: Final[str] = ".glb"
+MOTION_SCHEMA_VERSION: Final[Literal[2]] = 2
 GLB_FORMAT: Final[Literal["glb"]] = "glb"
 NAME_OPTION: Final[str] = "--name"
 CLIP_FIELD: Final[str] = "clip"

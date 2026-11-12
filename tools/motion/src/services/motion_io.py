@@ -18,15 +18,20 @@ from src.models.motion import (
     Motion,
     RigPose,
 )
-from src.services.glb import Glb, marker_trajectories, sampled_animation
+from src.services.glb import (
+    Glb,
+    marker_trajectories,
+    sampled_animation,
+    sampled_translations,
+)
 from src.utils.constants import (
     JSON_MODE,
+    MOTION_SCHEMA_VERSION,
     NEWLINE,
     TEXT_ENCODING,
 )
 from src.utils.messages import (
     ANIMATED_REST_POSE_ERROR,
-    ANIMATION_LOOP_ERROR,
     FPS_RANGE_ERROR,
     GLB_SCENE_ROOTS_DIFFER_ERROR,
     HORIZONTAL_ROOT_OFFSET_ERROR,
@@ -78,19 +83,32 @@ def export_motion(
         raise ValueError(FPS_RANGE_ERROR)
     base_glb: Glb = Glb(base_file)
     animated_glb: Glb = Glb(animation_file)
-    if base_glb.signature() != animated_glb.signature():
+    if base_glb.signature(MOTION_SCHEMA_VERSION) != animated_glb.signature(
+        MOTION_SCHEMA_VERSION
+    ):
         raise ValueError(ANIMATED_REST_POSE_ERROR)
     bones: list[str]
     rotations: NDArray[float64]
     _count: int
     bones, rotations, _count = sampled_animation(animated_glb, fps)
+    ground_offset: float = _ground_offset(base_glb, animated_glb)
+    translation_bones: list[str]
+    translations: NDArray[float64]
+    translation_bones, translations, _count = sampled_translations(
+        animated_glb, fps, ground_offset
+    )
     markers: list[Marker] = [
         Marker(name=name, bone=name) for name in base_glb.joint_names
     ]
     positions: NDArray[float64] = marker_trajectories(
-        animated_glb, [marker.bone for marker in markers], bones, rotations
+        base_glb,
+        [marker.bone for marker in markers],
+        bones,
+        rotations,
+        translation_bones,
+        translations,
     )
-    ground_offset: float = _ground_offset(base_glb, animated_glb)
+    positions[:, :, 1] += ground_offset
 
     start_rotations: NDArray[float64] = rotations[0]
     end_rotations: NDArray[float64] = rotations[-1]
@@ -100,28 +118,34 @@ def export_motion(
             1.0,
             atol=LOOP_DOT_TOLERANCE,
         )
+        and (
+            not translation_bones
+            or allclose(
+                translations[0],
+                translations[-1],
+                atol=ROOT_OFFSET_TOLERANCE,
+                rtol=0,
+            )
+        )
     )
     name: str = animated_glb.data.animations[0].name
     motion: Motion = Motion(
-        schema_version=1,
+        schema_version=MOTION_SCHEMA_VERSION,
         clip=ClipInfo(name=name, fps=fps, loop=looping, in_place=True),
         coordinates=CoordinateSystem(),
-        source_rig_signature=base_glb.signature(),
+        source_rig_signature=base_glb.signature(MOTION_SCHEMA_VERSION),
         markers=markers,
         positions_xyz=positions.tolist(),
-        rig_pose=RigPose(bone_names=bones, rotations_xyzw=rotations.tolist()),
+        rig_pose=RigPose(
+            bone_names=bones,
+            rotations_xyzw=rotations.tolist(),
+            translation_bone_names=translation_bones,
+            translations_xyz=translations.tolist()
+            if translation_bones
+            else [],
+        ),
         ground_offset_y=ground_offset,
     )
-    if motion.clip.loop:
-        starts: NDArray[float64] = asarray(
-            motion.rig_pose.rotations_xyzw[0], dtype=float64
-        )
-        ends: NDArray[float64] = asarray(
-            motion.rig_pose.rotations_xyzw[-1], dtype=float64
-        )
-        closed: NDArray[float64] = absolute((starts * ends).sum(axis=1))
-        if not allclose(closed, 1.0, atol=LOOP_DOT_TOLERANCE):
-            raise ValueError(ANIMATION_LOOP_ERROR)
     output_file.parent.mkdir(parents=True, exist_ok=True)
     output_file.write_text(
         dumps(motion.model_dump(mode=JSON_MODE), indent=2, ensure_ascii=False)
@@ -146,7 +170,10 @@ def validate_trajectories(base_file: Path, motion: Motion) -> float:
     :rtype: float
     """
     base_glb: Glb = Glb(base_file)
-    if base_glb.signature() != motion.source_rig_signature:
+    if (
+        base_glb.signature(motion.schema_version)
+        != motion.source_rig_signature
+    ):
         raise ValueError(MOTION_REST_POSE_ERROR)
     pose: NDArray[float64] = asarray(
         motion.rig_pose.rotations_xyzw, dtype=float64
@@ -156,6 +183,8 @@ def validate_trajectories(base_file: Path, motion: Motion) -> float:
         [m.bone for m in motion.markers],
         motion.rig_pose.bone_names,
         pose,
+        motion.rig_pose.translation_bone_names,
+        asarray(motion.rig_pose.translations_xyz, dtype=float64),
     )
     expected[:, :, 1] += motion.ground_offset_y
     actual: NDArray[float64] = asarray(motion.positions_xyz, dtype=float64)

@@ -2,6 +2,29 @@
 
 from typing import Final
 
+TRANSLATION_FRAME_COUNT_ERROR: Final[str] = (
+    "Translation and rotation frame counts must match"
+)
+TRANSLATION_JOINT_COUNT_ERROR: Final[str] = (
+    "Each translation frame must contain one XYZ vector per named joint"
+)
+TRANSLATION_LOOP_ERROR: Final[str] = (
+    "Translation channels must close at the loop boundary"
+)
+TRANSLATION_SCHEMA_ERROR: Final[str] = (
+    "Animated translations require motion schema version 2"
+)
+UNSUPPORTED_TRANSFORM_CHANNEL_ERROR: Final[str] = (
+    "Only skin-joint rotation and translation channels are supported"
+)
+DUPLICATE_TRANSFORM_CHANNEL_ERROR: Final[str] = (
+    "A joint must have at most one animation channel per transform property"
+)
+TRANSFORM_KEYS_ERROR: Final[str] = (
+    "Transform channels require at least two finite, increasing timestamps "
+    "and matching vector samples"
+)
+
 DUPLICATE_ANIMATION_NAMES_ERROR: Final[str] = "Animation names must be unique"
 DUPLICATE_OUTPUTS_ERROR: Final[str] = "Animation outputs must be distinct"
 UNKNOWN_ANIMATION_ERROR: Final[str] = "Animation not configured: {name}"
@@ -34,9 +57,6 @@ ANIMATED_GLB_MESSAGE: Final[str] = "Animated GLB: {glb}"
 ANIMATED_REST_POSE_ERROR: Final[str] = (
     "Animated file does not match the base rig's rest pose"
 )
-ANIMATION_LOOP_ERROR: Final[str] = (
-    "Animation not cyclic: first/last rotations differ"
-)
 BUILD_DESTINATIONS_ERROR: Final[str] = (
     "Build destination must differ from all inputs"
 )
@@ -55,7 +75,6 @@ CLI_DESCRIPTION: Final[str] = (
 )
 DUPLICATE_MARKER_NAMES_ERROR: Final[str] = "Duplicate marker names"
 DUPLICATE_RIG_JOINT_NAMES_ERROR: Final[str] = "Duplicate rig joint names"
-DUPLICATE_ROTATION_CHANNELS_ERROR: Final[str] = "Duplicate rotation channels"
 DUPLICATE_TRACKED_JOINTS_ERROR: Final[str] = "Duplicate tracked joints"
 EMBEDDED_BUFFER_REQUIRED_ERROR: Final[str] = (
     "Only embedded single-buffer GLBs are supported"
@@ -114,10 +133,6 @@ OUTPUT_ANIMATION_COUNT_ERROR: Final[str] = (
 )
 ROOT_MATRIX_UNSUPPORTED_ERROR: Final[str] = (
     "Root matrix nodes are not supported for JSON export"
-)
-ROTATION_CHANNELS_ONLY_ERROR: Final[str] = (
-    "Only in-place rotation animations are supported; root translations "
-    "and scale channels are forbidden"
 )
 ROTATION_KEYS_REQUIRED_ERROR: Final[str] = (
     "At least two rotational keys are required"

@@ -98,7 +98,12 @@ def constrain_motion(
             rest * Rotation.from_euler(EULER_AXES, limited, degrees=True)
         ).as_quat()
     positions: NDArray[float64] = marker_trajectories(
-        rig, [marker.bone for marker in motion.markers], names, rotations
+        rig,
+        [marker.bone for marker in motion.markers],
+        names,
+        rotations,
+        motion.rig_pose.translation_bone_names,
+        asarray(motion.rig_pose.translations_xyz, dtype=float64),
     )
     positions[:, :, 1] += motion.ground_offset_y
     return ConstraintResult(
@@ -110,7 +115,10 @@ def constrain_motion(
             markers=motion.markers,
             positions_xyz=positions.tolist(),
             rig_pose=RigPose(
-                bone_names=names, rotations_xyzw=rotations.tolist()
+                bone_names=names,
+                rotations_xyzw=rotations.tolist(),
+                translation_bone_names=motion.rig_pose.translation_bone_names,
+                translations_xyz=motion.rig_pose.translations_xyz,
             ),
             ground_offset_y=motion.ground_offset_y,
         ),

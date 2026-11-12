@@ -12,7 +12,12 @@ from src.models.build import BuildRequest, BuildResult, PreparedBuild
 from src.models.constraints import ConstraintResult
 from src.models.motion import Motion
 from src.services.constraints import constrain_motion
-from src.services.glb import Glb, build_animated_glb, sampled_animation
+from src.services.glb import (
+    Glb,
+    build_animated_glb,
+    sampled_animation,
+    sampled_translations,
+)
 from src.services.motion_io import load_motion, validate_trajectories
 from src.utils.constants import (
     ANIMATED_GLB,
@@ -26,6 +31,7 @@ from src.utils.messages import (
 )
 
 ROTATION_MATCH_TOLERANCE: Final[float] = 1e-6
+TRANSLATION_MATCH_TOLERANCE_M: Final[float] = 1e-6
 
 
 def validate_export(path: Path, motion: Motion) -> None:
@@ -62,6 +68,21 @@ def validate_export(path: Path, motion: Motion) -> None:
             1,
             rtol=0,
             atol=ROTATION_MATCH_TOLERANCE,
+        ):
+            raise ValueError(OUTPUT_ANIMATION_CONTENT_ERROR)
+        translation_names: list[str]
+        translations: NDArray[float64]
+        translation_names, translations, frames = sampled_translations(
+            artifact, motion.clip.fps, motion.ground_offset_y
+        )
+        if translation_names != motion.rig_pose.translation_bone_names or (
+            translation_names
+            and not allclose(
+                translations,
+                asarray(motion.rig_pose.translations_xyz, dtype=float64),
+                rtol=0,
+                atol=TRANSLATION_MATCH_TOLERANCE_M,
+            )
         ):
             raise ValueError(OUTPUT_ANIMATION_CONTENT_ERROR)
     except (ValueError, IndexError, KeyError) as error:
