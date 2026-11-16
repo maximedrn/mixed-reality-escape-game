@@ -4,24 +4,24 @@ _A mixed-reality escape game on Meta Quest 3. The player explores a real-world l
 
 ## Platform Compatibility
 
-| Tool / Feature             | Windows | macOS  | Linux  |
-|----------------------------|:-------:|:------:|:------:|
-| **Unity 6.3 LTS**          |    ✅    |  ✅    |  ✅ ¹  |
-| Unity Editor / Play Mode   |    ✅    |  ✅    |  ✅ ¹  |
-| Android Build Support      |    ✅    |  ✅    |  ✅ ¹  |
-| Meta Quest 3 Build (APK)   |    ✅    |  ✅    |  ✅ ¹  |
-| OpenXR / Meta XR SDK       |    ✅    |  ✅    |  ✅ ¹  |
-| Meta XR Simulator          |    ✅    |  ✅ ²  |  ❌    |
-| Physical Quest 3 Testing   |    ✅    |  ✅    |  ✅ ¹  |
-| **VS Code / C# Dev Kit**   |    ✅    |  ✅    |  ✅    |
-| .NET SDK 10 / Roslyn       |    ✅    |  ✅    |  ✅    |
-| CSharpier                  |    ✅    |  ✅    |  ✅    |
-| CMake 3.20+                |    ✅    |  ✅    |  ✅    |
-| uv / pre-commit            |    ✅    |  ✅    |  ✅    |
-| Git / Git LFS              |    ✅    |  ✅    |  ✅    |
-| Unity Test Framework       |    ✅    |  ✅    |  ✅ ¹  |
-| **Blender**                |    ✅    |  ✅    |  ✅    |
-| Python / Ruff              |    ✅    |  ✅    |  ✅    |
+| Tool / Feature           | Windows | macOS | Linux |
+| ------------------------ | :-----: | :---: | :---: |
+| **Unity 6.3 LTS**        |    ✅   |  ✅   |  ✅ ¹ |
+| Unity Editor / Play Mode |    ✅   |  ✅   |  ✅ ¹ |
+| Android Build Support    |    ✅   |  ✅   |  ✅ ¹ |
+| Meta Quest 3 Build (APK) |    ✅   |  ✅   |  ✅ ¹ |
+| OpenXR / Meta XR SDK     |    ✅   |  ✅   |  ✅ ¹ |
+| Meta XR Simulator        |    ✅   |  ✅ ² |  ❌   |
+| Physical Quest 3 Testing |    ✅   |  ✅   |  ✅ ¹ |
+| **VS Code / C# Dev Kit** |    ✅   |  ✅   |  ✅   |
+| .NET SDK 10 / Roslyn     |    ✅   |  ✅   |  ✅   |
+| CSharpier                |    ✅   |  ✅   |  ✅   |
+| CMake 3.20+              |    ✅   |  ✅   |  ✅   |
+| uv / pre-commit          |    ✅   |  ✅   |  ✅   |
+| Git / Git LFS            |    ✅   |  ✅   |  ✅   |
+| Unity Test Framework     |    ✅   |  ✅   |  ✅ ¹ |
+| **Blender**              |    ✅   |  ✅   |  ✅   |
+| Python / Ruff            |    ✅   |  ✅   |  ✅   |
 
 **Notes:**
 
