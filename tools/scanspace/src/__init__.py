@@ -1,0 +1,1 @@
+"""Clean architectural ScanSpace floorplans."""

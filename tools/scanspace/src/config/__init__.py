@@ -1,0 +1,1 @@
+"""Provide configurable ScanSpace defaults."""
