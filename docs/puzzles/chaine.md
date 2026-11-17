@@ -29,8 +29,8 @@ La trappe relache est objet lié à une autre quete
 
 ## Difficultés techniques
 
-- Interaction particulière à développer : …
-- Dépendances éventuelles : …
+- Simulation physique de la corde (différente option, à décider en fonction des performances voulues)
+- Génération des trappes de manières cohérentes (pas les unes a coté des autres, pas au dessus des murs)
 
 ## Remarques
 
