@@ -37,13 +37,13 @@ La disposition peut changer d'une partie à l'autre, **sans liste de configurati
 
 Les objets de gameplay existent uniquement dans Unity. Ils peuvent être sélectionnés, déplacés, tournés ou activés selon les interactions retenues. Ils suivent le repère de la scène : **aucun marqueur physique n'est nécessaire pour chacun d'eux**.
 
-Le système d'[items](gameplay/items/README.md) distingue définitions réutilisables et instances en scène, avec des capacités configurables. Leur masse et leur physique déterminent les collisions ; celles-ci émettent des événements que le gameplay, la perception auditive et les réactions directes traitent indépendamment.
+Les définitions, capacités, collisions et événements sont décrits dans la [documentation des items](gameplay/items/README.md).
 
 Le détail des énigmes reste à décider en équipe, à partir des [propositions](gameplay/puzzles.md).
 
 ## Architecture logique du monstre
 
-La [documentation de l'IA](monster/ai/README.md) décrit la perception, la mémoire, la FSM classique, la navigation et le déplacement, les réactions aux items, l'intégration des animations et les profils de difficulté. Les capteurs utilisent les positions réelles pour tester la visibilité et les collisions ; la FSM et la mémoire ne reçoivent que des observations limitées et des destinations estimées. Unity génère le NavMesh au début de la partie ; notre A* calcule les chemins sur le graphe extrait.
+Les modules de perception, mémoire, FSM, navigation et animation sont présentés dans la [documentation de l'IA](monster/ai/README.md). Les capteurs utilisent les positions réelles pour leurs tests, mais la FSM ne reçoit que des observations limitées ; voir la [perception](monster/ai/perception.md) et la [navigation](monster/ai/navigation.md).
 
 ## Recalage spatial
 

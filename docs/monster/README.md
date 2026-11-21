@@ -6,14 +6,11 @@ Humanoïde d'environ trois mètres, très maigre, aux bras disproportionnés. Il
 
 Sa menace repose sur son allonge, sa persistance, ses réactions et la difficulté à l'éviter dans une pièce unique, pas sur une vitesse de course élevée.
 
-## Règles
+## Règles générales
 
-- En l'absence de stimulus exploitable, il patrouille continuellement. Les pauses d'animation liées à une action restent possibles, mais il n'a pas d'état comportemental `Idle`.
-- Il perçoit surtout des directions et des indices par la vision et l'audition. Il ne connaît pas en permanence la position exacte du joueur.
-- Les tables et les murs sont pris en compte dans la perception et la navigation.
-- Le monstre est immortel. Les bruits environnementaux perçus peuvent le distraire ; les impacts directs peuvent provoquer `Reaction`, le ralentir ou l'étourdir temporairement.
-- Le niveau de difficulté adapte son comportement et ses paramètres. En `Peaceful`, aucun monstre n'est généré.
-- Les déplacements virtuels du monstre ne doivent jamais exiger du joueur qu'il coure ou esquive physiquement vers des obstacles réels.
+Le monstre est immortel et [patrouille](ai/behavior.md) sans stimulus exploitable. Sa [perception](ai/perception.md) est limitée ; les [items](ai/item_reactions.md) peuvent le distraire ou interrompre temporairement. En difficulté [`Peaceful`](ai/difficulty.md), aucun monstre n'est généré.
+
+Son déplacement virtuel ne doit jamais obliger le joueur à courir ou esquiver physiquement vers un obstacle réel.
 
 ## Ressources du personnage
 
@@ -31,10 +28,3 @@ Ces ressources concernent le personnage, pas le décor statique de l'[environnem
 
 - [Animations](animations.md)
 - [Architecture de l'IA](ai/README.md)
-- [Comportements](ai/behavior.md)
-- [Perception](ai/perception.md)
-- [Mémoire](ai/memory.md)
-- [Navigation](ai/navigation.md)
-- [Intégration des animations](ai/animation_integration.md)
-- [Réactions aux items](ai/item_reactions.md)
-- [Difficulté](ai/difficulty.md)

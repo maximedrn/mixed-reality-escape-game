@@ -46,7 +46,7 @@ flowchart TD
 ### Application proposée
 
 1. Vérifier que l'item a touché le monstre et que l'événement est valide.
-2. Calculer `impactStrength = mass * impactSpeed` en kg·m/s à partir de la vitesse avant collision et de la masse de l'item.
+2. Recevoir `impactStrength`, calculé par les [interactions physiques des items](../../gameplay/items/environment_interactions.md) à partir de la masse et de la vitesse avant impact.
 3. Pour chaque règle configurée, calculer `effectiveThreshold = rule.minImpactStrength * impactThresholdMultiplier` ; elle est éligible si `impactStrength >= effectiveThreshold` et si le monstre a bien été touché.
 4. Retenir pour la première version le seul effet éligible le plus important : `Stun > Slow > Reaction > None`. Cela évite plusieurs effets directs automatiques pour une collision ; la durée effective dépend du profil lorsque l'effet en comporte une.
 5. Consulter l'autorisation d'interruption de l'action courante ; une action non interruptible n'est pas interrompue arbitrairement et une frappe déjà appliquée n'est pas annulée rétroactivement.

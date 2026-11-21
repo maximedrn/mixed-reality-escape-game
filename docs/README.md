@@ -4,36 +4,9 @@
 
 ## Le concept
 
-Le joueur explore une version virtuelle de la salle dans laquelle il se trouve. Le thème actuellement retenu est une **salle d'alchimie médiévale fantasy low-poly**. Les dimensions et la position des éléments physiques doivent rester cohérentes avec cette représentation virtuelle.
+Le joueur explore une version virtuelle de la pièce réelle, sur le thème d'une **salle d'alchimie médiévale fantasy low-poly**. L'échelle et les obstacles virtuels doivent correspondre à la salle physique.
 
-## Fonctionnement général
-
-```mermaid
-flowchart LR
-    A[Pièce réelle] --> B[Scan 3D]
-    B --> C[Décor statique retravaillé]
-    A --> D[Suivi Quest + QR fixes]
-    D --> E[Recalage de la scène]
-    A --> F[QR des tables]
-    F --> G[Tables habillées en objets du décor]
-    C --> H[Scène VR]
-    E --> H
-    G --> H
-    I[Objets interactifs virtuels] --> H
-```
-
-## Les choix retenus
-
-- **Une seule pièce** pour commencer, sans couloir obligatoire.
-- **VR** pour l'affichage principal. La MR reste une extension.
-- Scan 3D de la salle, sans intégrer définitivement les tables mobiles au décor.
-- Suivi spatial natif du Quest, complété par les **QR codes fixes** pour recaler la pièce au fil de l'utilisation.
-- Détection des **tables par leurs propres QR codes avant chaque partie**. Leur position peut changer d'une partie à l'autre.
-- Chaque table est **remplacée visuellement par un modèle adapté au thème du décor**, dès le MVP 1.
-- Objets à manipuler **uniquement virtuels**. Les interactions exactes restent à valider.
-- Environnement sombre, ambiance sonore et torche virtuelle dès le MVP 1.
-- Items physiques avec collisions et interactions avec l'environnement, indépendamment du monstre.
-- Mode `Peaceful` jouable sans monstre.
+Le MVP utilise une seule pièce en VR. Le Quest et des QR codes fixes assurent le recalage ; les tables, repérées par leurs propres QR codes avant chaque partie, reçoivent un habillage virtuel et restent fixes pendant la session. Les items restent purement virtuels et fonctionnent aussi en mode `Peaceful`, sans monstre. Le détail spatial figure dans l'[architecture](architecture.md) ; la MR et le suivi continu des tables sont des [extensions](extensions.md).
 
 ## Les deux MVP
 

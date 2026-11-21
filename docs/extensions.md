@@ -2,8 +2,6 @@
 
 Des idées pour aller plus loin **après les MVP**, sans en faire des obligations maintenant.
 
-___
-
 ## Affichage et immersion
 
 ### Réalité mixte (MR)
@@ -13,8 +11,6 @@ Passer du décor VR à la vraie salle en passthrough, avec les indices, le monst
 On pourrait aussi **recouvrir visuellement les tables détectées par QR code** pour leur donner une autre apparence en MR. C'est distinct de leur habillage en VR, qui est déjà obligatoire : en MR, il faut gérer la présence de l'image réelle de la table et les occlusions.
 
 **Difficulté :** moyenne à élevée suivant le rendu recherché.
-
-___
 
 ## Mobilier et environnement
 
@@ -39,8 +35,6 @@ Une disposition différente **entre deux parties est déjà prise en charge par 
 Étendre l'expérience à plusieurs zones, avec recalage entre les pièces, décor supplémentaire et navigation adaptée.
 
 **Difficulté :** moyenne à élevée.
-
-___
 
 ## Gameplay
 
@@ -86,37 +80,13 @@ Permettre un jour de manipuler un vrai objet ou d'utiliser directement un élém
 
 **Difficulté :** élevée ; non retenu actuellement.
 
-___
-
-## Vue d'ensemble
-
-```mermaid
-flowchart LR
-    A([MVP 1 + MVP 2]) --> B[Affichage]
-    A --> C[Mobilier]
-    A --> D[Gameplay]
-
-    B --> E[MR et habillage des tables en passthrough]
-    D --> F[Perception de la lumiere]
-
-    C --> G[Suivi continu des tables]
-    G --> H[Labyrinthe évolutif]
-    C --> I[Autres pièces]
-
-    D --> J[Objets bonus et énigmes variables]
-    D --> K[Monstre enrichi]
-    D --> L[Interactions physiques]
-    D --> M[Perception des pas du joueur]
-    D --> O[Acoustique plus evoluee]
-```
-
 ## Comparatif rapide
 
 | Extension                                            | Difficulté estimée |
 | ---------------------------------------------------- | ------------------ |
-| Perception de la lumière par le monstre               | À évaluer         |
-| Perception des pas du joueur                          | À évaluer         |
-| Modèle acoustique et occlusion éventuelle             | À évaluer         |
+| Perception de la lumière par le monstre              | À évaluer          |
+| Perception des pas du joueur                         | À évaluer          |
+| Modèle acoustique et occlusion éventuelle            | À évaluer          |
 | Objets virtuels supplémentaires                      | Variable           |
 | Réalité mixte et habillage des tables en passthrough | Moyenne à élevée   |
 | Énigmes / indices variables                          | Moyenne            |

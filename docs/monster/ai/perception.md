@@ -89,13 +89,11 @@ Si le joueur est visible, le capteur classe sa distance : `distance <= attackDis
 
 ## 3. Audition
 
-Tout item physique peut émettre un `NoiseEvent` lors d'une collision significative, y compris après un rebond. L'intensité dépend de la vitesse juste avant cette collision (voir [interactions](../../gameplay/items/environment_interactions.md)). Le capteur reçoit la position, l'intensité, le type, l'origine et, si pertinent, la cible touchée ; il exclut les bruits produits par le monstre et ceux des collisions qui le touchent, sans empêcher leur lecture sonore pour le joueur.
+Tout item physique peut émettre un `NoiseEvent` lors d'une collision significative, y compris après un rebond. Le capteur reçoit la position, l'intensité, le type, l'origine et, si pertinent, la cible touchée ; il exclut les bruits produits par le monstre et ceux des collisions qui le touchent, sans empêcher leur lecture sonore pour le joueur.
 
-Proposition de détection minimale :
+Le bruit et `noiseIntensity` sont calculés par les [interactions physiques des items](../../gameplay/items/environment_interactions.md). Détection auditive minimale :
 
 ```text
-impactSpeed = length(preImpactVelocity)
-noiseIntensity = k * impactSpeed
 heard = NOT isMonsterRelatedNoise
         AND noiseIntensity >= hearingThreshold
         AND distanceToSource <= hearingRange

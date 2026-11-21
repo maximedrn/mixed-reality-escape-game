@@ -57,17 +57,4 @@ flowchart TD
 
 ## 3. Mise à jour
 
-Proposition : à chaque tick de décision, récupérer les observations et les événements en attente, actualiser la mémoire, traiter les interruptions, puis exécuter le comportement courant. Le déplacement et les animations continuent entre ces ticks. Le graphe est construit au démarrage ; A* ne se relance que lorsque le chemin doit réellement changer.
-
-| Échange                      | Information                                                                                                                                               |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Perception → mémoire / FSM   | `kind`, `observerPosition` (position propre du monstre), `direction`, `timestamp`, `visualBand` pour la vision et `intensity` éventuelle pour l'audition. |
-| Mémoire → FSM                | Pistes encore valides et zones estimées.                                                                                                                  |
-| Réactions → FSM              | Impact valide, effet et durée effective.                                                                                                                  |
-| FSM → navigation             | Destination navigable souhaitée, demande de recalcul.                                                                                                     |
-| Navigation / mouvement → FSM | Chemin disponible, destination atteinte, blocage ou échec.                                                                                                |
-| FSM / mouvement → animation  | Action, vitesse effective, rotation.                                                                                                                      |
-| Animation → FSM / combat     | Fin d'action, fenêtre d'impact, récupération.                                                                                                             |
-| Combat → FSM                 | Résultat des vérifications de portée et de frappe.                                                                                                        |
-
-Les fréquences et noms d'interfaces exacts seront choisis à l'implémentation. Les données de difficulté sont partagées en lecture par les modules ; la FSM reste propriétaire des transitions comportementales.
+À chaque tick de décision, traiter les [observations](perception.md#4-format-dobservation-proposé), actualiser la [mémoire](memory.md), gérer les interruptions, puis exécuter le [comportement](behavior.md). Le déplacement et les animations continuent entre ces ticks ; A* est relancé seulement si le chemin doit changer. La navigation signale l'arrivée, le blocage ou l'échec ; l'animation signale les fins d'action et fenêtres de frappe. Les données de [difficulté](difficulty.md) sont partagées en lecture, et la FSM reste propriétaire des transitions. Les fréquences et interfaces exactes seront choisies à l'implémentation.

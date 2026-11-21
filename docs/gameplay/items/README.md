@@ -1,18 +1,15 @@
 # Items
 
-Un **item** est un type d'objet susceptible de servir au gameplay, aux énigmes ou aux interactions physiques avec la salle. Son classement ne décide pas s'il est saisissable, transportable, lançable, cassable ou activable. Sa définition réutilisable est distincte de l'état de chaque `ItemInstance` créée dans Unity. Les modèles 3D des items sont techniquement des assets Unity/Blender, mais le [catalogue des assets d'environnement](../../environment/assets.md) ne les duplique pas.
+Un **item** est un objet susceptible de servir au gameplay ou aux énigmes, quelle que soit sa taille. Les [assets d'environnement](../../environment/assets.md) décrivent l'architecture, le mobilier et le décor fixe. Un modèle d'item est aussi un asset au sens de Unity/Blender, mais il ne figure que dans le [catalogue des items](catalog.md). Ce classement ne fixe pas ses capacités de manipulation.
 
-Le système doit fonctionner sans monstre en difficulté `Peaceful`. Les items peuvent transmettre des événements aux énigmes, à la perception et aux réactions du monstre, sans modifier directement l'état de l'IA.
+Le système fonctionne aussi en mode `Peaceful`, sans monstre. Il transmet des événements aux énigmes et, si le monstre existe, à ses modules de perception et de réaction, sans dépendre de l'IA.
 
 ## Organisation proposée
 
-| Élément          | Responsabilité                                                                |
-| ---------------- | ----------------------------------------------------------------------------- |
-| `ItemDefinition` | Définition réutilisable : identifiant, capacités et propriétés configurables. |
-| `ItemInstance`   | Occurrence en scène et état courant.                                          |
-| Capacités        | Propriétés combinables, indépendantes du type concret d'objet.                |
-| Physique         | Masse, vélocité, collisions, bruit et casse lorsque pertinents.               |
-| Événements       | Transmission aux énigmes et aux autres systèmes intéressés.                   |
+| Élément          | Responsabilité                                                   |
+| ---------------- | ---------------------------------------------------------------- |
+| `ItemDefinition` | Définition réutilisable : capacités et propriétés configurables. |
+| `ItemInstance`   | Référence à sa définition et état courant.                       |
 
 ```mermaid
 flowchart LR
@@ -23,7 +20,7 @@ flowchart LR
     E --> A[Perception et réactions du monstre si présent]
 ```
 
-Des `ScriptableObject` pour les définitions et des composants Unity pour les instances constituent une proposition technique, non une obligation d'implémentation. Les modalités de manipulation des items par le joueur seront documentées ultérieurement.
+Des `ScriptableObject` et composants Unity sont une proposition technique. Les [capacités](specifications.md), les [collisions et événements](environment_interactions.md) et la manipulation par le joueur ont des responsabilités distinctes ; cette dernière sera documentée ultérieurement.
 
 ## Documentation
 

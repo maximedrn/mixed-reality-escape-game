@@ -1,93 +1,97 @@
 # Catalogue des items
 
-Ce catalogue réunit les types d'objets de gameplay et les modèles susceptibles d'y servir. **Un modèle présent dans Blender n'implique aucune capacité de manipulation ou fonction de gameplay validée.** Les variantes correspondent aux modèles distincts identifiés dans la scène locale `blender/presentation/room-presentation-dense.blend`, inspectée en lecture seule. `—` indique qu'aucun modèle n'est encore choisi.
+Ce catalogue recense les types d'items et leurs modèles, selon la [classification assets/items](README.md). Une ressource disponible n'a pas nécessairement de rôle, de capacité ou d'intégration Unity validés. Les variantes sont les modèles distincts identifiés dans la scène locale `blender/presentation/room-presentation-dense.blend` ; `—` signifie qu'aucun modèle n'est choisi. Les [états de disponibilité](../../environment/assets.md#états) sont communs aux deux catalogues.
 
 > [!IMPORTANT]
-> Pour l'instant, les listes d'assets et d'items se basent sur la scène de présentation réalisée sous Blender. Elles ne sont pas définitives et restent modifiables. Par exemple, les sources de lumière seront probablement supprimées en dehors du mode Peaceful. La disposition et les ajustements du mobilier pourront également évoluer.
+> Pour l'instant, les listes d'assets et d'items se basent sur la scène de présentation réalisée sous Blender. Elles ne sont pas définitives : des ressources peuvent être ajoutées, supprimées ou modifiées. Par exemple, les sources de lumière seront probablement supprimées en dehors du mode Peaceful. La disposition et les ajustements du mobilier pourront également évoluer.
 
-La [définition des capacités](specifications.md) et les [interactions physiques](environment_interactions.md) sont communes aux items. Les rôles restant à choisir sont signalés sans attribuer automatiquement `Throwable`, `Breakable`, `isGrabbable` ou un effet sur le monstre.
+Voir les [capacités](specifications.md) et les [interactions physiques](environment_interactions.md).
 
 ## Éclairage
 
-| Item            | Description / rôle                                                                                                                                              | Variantes | Source                | État                            |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------: | --------------------- | ------------------------------- |
-| Torche portable | Éclairage principal du joueur ; modèle portable et modalités d'utilisation à choisir. Les torches murales sont des [assets fixes](../../environment/assets.md). |         — | À définir             | Rôle retenu ; modèle à définir  |
-| Bougies         | Modèle `Candle_1` avec flamme visuelle. Usage de gameplay à définir.                                                                                            |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir |
+| Item            | Modèle                          | Variantes | Source                | État       |
+| --------------- | ------------------------------- | --------: | --------------------- | ---------- |
+| Torche portable | Modèle portable à choisir       |         — | À définir             | À définir  |
+| Bougies         | `Candle_1` avec flamme visuelle |         1 | Fantasy Props MegaKit | Disponible |
+
+Les torches murales sont des [assets fixes](../../environment/assets.md).
 
 ## Distraction
 
-| Item      | Description / rôle                                                                                       | Variantes | Source                | État                             |
-| --------- | -------------------------------------------------------------------------------------------------------- | --------: | --------------------- | -------------------------------- |
-| Cailloux  | Distraction sonore par collision ; modèle et règles d'impact à définir.                                  |         — | À définir             | Rôle envisagé ; modèle à définir |
-| Bouteille | Modèle `Bottle_1` ; les bouteilles sont envisagées comme distraction sonore. Casse et usage à confirmer. |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir  |
+| Item      | Modèle           | Variantes | Source                | État       |
+| --------- | ---------------- | --------: | --------------------- | ---------- |
+| Cailloux  | Modèle à choisir |         — | À définir             | À définir  |
+| Bouteille | `Bottle_1`       |         1 | Fantasy Props MegaKit | Disponible |
 
 ## Alchimie et contenants
 
-| Item                                           | Description / rôle                                                                                                                                    | Variantes | Source                | État                              |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------: | --------------------- | --------------------------------- |
-| Fiole vide                                     | Contenant sans liquide identifié ; aucun modèle explicitement distingué comme vide.                                                                   |         — | À définir             | À définir                         |
-| Petite fiole                                   | Modèle `SM_Magic_SmallBottle` ; contenu et fonction à définir.                                                                                        |         1 | Magic Props           | Modèle présent ; rôle à définir   |
-| Ensemble de petites bouteilles                 | Modèle composé `SmallBottles_1`.                                                                                                                      |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir   |
-| Bouchon de fiole                               | Aucun bouchon autonome identifié.                                                                                                                     |         — | À définir             | À définir                         |
-| Fioles contenant un liquide / potions colorées | Modèles `SM_Magic_PotionBottle_Blue`, `SM_Magic_PotionBottle_Green` et `SM_Magic_PotionBottle_Red` ; leur apparence n'établit pas un effet de potion. |         3 | Magic Props           | Modèles présents ; rôle à définir |
-| Potion, modèle 4                               | Modèle `Potion_4` ; mécanique et contenu à définir.                                                                                                   |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir   |
-| Chaudron                                       | Modèle `SM_Magic_Cauldron` ; équipement classé comme item, manipulation à définir.                                                                    |         1 | Magic Props           | Modèle présent ; rôle à définir   |
-| Appareil de distillation                       | Équipement envisagé, non identifié dans la scène de présentation.                                                                                     |         — | À définir             | À définir                         |
-| Balance                                        | Équipement envisagé, non identifié dans la scène de présentation.                                                                                     |         — | À définir             | À définir                         |
-| Mortier et pilon                               | Ensemble `SM_Magic_MortarPestle`.                                                                                                                     |         1 | Magic Props           | Modèle présent ; rôle à définir   |
-| Bocal d'ingrédients                            | Modèle `SM_Magic_IngredientJar` ; contenu à définir.                                                                                                  |         1 | Magic Props           | Modèle présent ; rôle à définir   |
-| Calice                                         | Modèle `Chalice`.                                                                                                                                     |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir   |
-| Chope                                          | Modèle `Mug`.                                                                                                                                         |         1 | Fantasy Props MegaKit | Modèle présent ; rôle à définir   |
-| Autres ustensiles d'alchimie                   | Besoins supplémentaires à préciser avant de choisir un modèle.                                                                                        |         — | À définir             | À définir                         |
+| Item                                           | Modèle                                                                                   | Variantes | Source                | État       |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------- | --------: | --------------------- | ---------- |
+| Fiole vide                                     | Aucun modèle explicitement distingué comme vide                                          |         — | À définir             | À définir  |
+| Petite fiole                                   | `SM_Magic_SmallBottle`                                                                   |         1 | Magic Props           | Disponible |
+| Ensemble de petites bouteilles                 | `SmallBottles_1` (modèle composé)                                                        |         1 | Fantasy Props MegaKit | Disponible |
+| Bouchon de fiole                               | Aucun bouchon autonome identifié                                                         |         — | À définir             | À définir  |
+| Fioles contenant un liquide / potions colorées | `SM_Magic_PotionBottle_Blue`, `SM_Magic_PotionBottle_Green`, `SM_Magic_PotionBottle_Red` |         3 | Magic Props           | Disponible |
+| Potion, modèle 4                               | `Potion_4`                                                                               |         1 | Fantasy Props MegaKit | Disponible |
+| Chaudron                                       | `SM_Magic_Cauldron`                                                                      |         1 | Magic Props           | Disponible |
+| Appareil de distillation                       | Modèle non identifié dans la scène                                                       |         — | À définir             | À définir  |
+| Balance                                        | Modèle non identifié dans la scène                                                       |         — | À définir             | À définir  |
+| Mortier et pilon                               | `SM_Magic_MortarPestle` (ensemble)                                                       |         1 | Magic Props           | Disponible |
+| Bocal d'ingrédients                            | `SM_Magic_IngredientJar`                                                                 |         1 | Magic Props           | Disponible |
+| Calice                                         | `Chalice`                                                                                |         1 | Fantasy Props MegaKit | Disponible |
+| Chope                                          | `Mug`                                                                                    |         1 | Fantasy Props MegaKit | Disponible |
+| Autres ustensiles d'alchimie                   | Modèles à préciser                                                                       |         — | À définir             | À définir  |
+
+Le contenu des fioles, potions et bocaux n'est pas fixé ; leur apparence ne détermine aucun effet.
 
 Une énigme de mélange de liquides, d'ingrédients et de recettes est **une proposition**, sans système de fluides ni fabrication de potions défini pour le MVP.
 
 ## Ingrédients
 
-| Item                  | Description / rôle                                            | Variantes | Source      | État                            |
-| --------------------- | ------------------------------------------------------------- | --------: | ----------- | ------------------------------- |
-| Cristal               | Modèle `SM_Magic_Crystal` ; aucune propriété magique arrêtée. |         1 | Magic Props | Modèle présent ; rôle à définir |
-| Groupe de champignons | Modèle `SM_Magic_MushroomCluster`.                            |         1 | Magic Props | Modèle présent ; rôle à définir |
-| Bourse d'ingrédients  | Modèle `SM_Magic_IngredientPouch` ; contenu à définir.        |         1 | Magic Props | Modèle présent ; rôle à définir |
-| Autres ingrédients    | Nature, modèles et rôle à préciser.                           |         — | À définir   | À définir                       |
+| Item                  | Modèle                       | Variantes | Source      | État       |
+| --------------------- | ---------------------------- | --------: | ----------- | ---------- |
+| Cristal               | `SM_Magic_Crystal`           |         1 | Magic Props | Disponible |
+| Groupe de champignons | `SM_Magic_MushroomCluster`   |         1 | Magic Props | Disponible |
+| Bourse d'ingrédients  | `SM_Magic_IngredientPouch`   |         1 | Magic Props | Disponible |
+| Autres ingrédients    | Nature et modèles à préciser |         — | À définir   | À définir  |
 
 ## Documents et indices
 
-| Item                        | Description / rôle                                                                             | Variantes | Source                        | État                                 |
-| --------------------------- | ---------------------------------------------------------------------------------------------- | --------: | ----------------------------- | ------------------------------------ |
-| Groupes de livres moyens    | `BookGroup_Medium_1`, `BookGroup_Medium_2`, `BookGroup_Medium_3`.                              |         3 | Fantasy Props MegaKit         | Modèles présents ; lecture à définir |
-| Petits groupes de livres    | `BookGroup_Small_1`, `BookGroup_Small_2`, `BookGroup_Small_3`.                                 |         3 | Fantasy Props MegaKit         | Modèles présents ; lecture à définir |
-| Livres isolés               | `Book_5` et `Book_7`.                                                                          |         2 | Fantasy Props MegaKit         | Modèles présents ; lecture à définir |
-| Piles de livres             | `Book_Stack_1` et `Book_Stack_2`.                                                              |         2 | Fantasy Props MegaKit         | Modèles présents ; lecture à définir |
-| Grimoires                   | Modèle `SM_Magic_Spellbook`, complété par des pages procédurales dans la présentation Blender. |         1 | Magic Props + Blender         | Modèles présents ; lecture à définir |
-| Parchemins magiques         | Modèle `SM_Magic_Scroll`.                                                                      |         1 | Magic Props                   | Modèle présent ; contenu à définir   |
-| Parchemins, modèle 2        | Modèle `Scroll_2`.                                                                             |         1 | Fantasy Props MegaKit         | Modèle présent ; contenu à définir   |
-| Manuscrit ouvert sur lutrin | Modèle procédural `Dense_Open_Grimoire_Pages_Mesh`, distinct du lutrin fixe.                   |         1 | Géométrie procédurale Blender | Modélisé ; contenu à définir         |
-| Parchemins déroulés         | Modèle procédural `Dense_Unrolled_Parchment_Mesh`.                                             |         1 | Géométrie procédurale Blender | Modélisé ; contenu à définir         |
+| Item                        | Modèle                                                                                                                          | Variantes | Source                              | État       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------: | ----------------------------------- | ---------- |
+| Groupes de livres           | `BookGroup_Medium_1`, `BookGroup_Medium_2`, `BookGroup_Medium_3`, `BookGroup_Small_1`, `BookGroup_Small_2`, `BookGroup_Small_3` |         6 | Fantasy Props MegaKit               | Disponible |
+| Livres isolés               | `Book_5`, `Book_7`                                                                                                              |         2 | Fantasy Props MegaKit               | Disponible |
+| Piles de livres             | `Book_Stack_1`, `Book_Stack_2`                                                                                                  |         2 | Fantasy Props MegaKit               | Disponible |
+| Grimoires                   | `SM_Magic_Spellbook` + pages procédurales                                                                                       |         1 | Magic Props + Blender               | Disponible |
+| Parchemins                  | `SM_Magic_Scroll` (Magic Props), `Scroll_2` (Fantasy Props MegaKit)                                                             |         2 | Magic Props ; Fantasy Props MegaKit | Disponible |
+| Manuscrit ouvert sur lutrin | `Dense_Open_Grimoire_Pages_Mesh`, distinct du lutrin fixe                                                                       |         1 | Géométrie procédurale Blender       | Disponible |
+| Parchemins déroulés         | `Dense_Unrolled_Parchment_Mesh`                                                                                                 |         1 | Géométrie procédurale Blender       | Disponible |
+
+La lecture, l'ouverture et le transport de ces documents restent à définir.
 
 ## Accessoires et décoration potentiellement utiles
 
-| Item                       | Description / rôle                                                                          | Variantes | Source                                                | État                              |
-| -------------------------- | ------------------------------------------------------------------------------------------- | --------: | ----------------------------------------------------- | --------------------------------- |
-| Râtelier mural à chevilles | Modèle `Peg_Rack`, élément mural ; éventuelle fonction de jeu à définir.                    |         1 | Fantasy Props MegaKit                                 | Modèle présent ; rôle à définir   |
-| Grandes bourses            | Modèle `Pouch_Large`, complété par des cordons dans la présentation lorsqu'il est suspendu. |         1 | Fantasy Props MegaKit + géométrie procédurale Blender | Modèles présents ; rôle à définir |
+| Item                       | Modèle                                                     | Variantes | Source                                                | État       |
+| -------------------------- | ---------------------------------------------------------- | --------: | ----------------------------------------------------- | ---------- |
+| Râtelier mural à chevilles | `Peg_Rack`                                                 |         1 | Fantasy Props MegaKit                                 | Disponible |
+| Grandes bourses            | `Pouch_Large` + cordons procéduraux lorsqu'il est suspendu |         1 | Fantasy Props MegaKit + géométrie procédurale Blender | Disponible |
 
 ## Items propres aux énigmes proposées
 
-| Item   | Description / rôle                  | Variantes | Source  | État       |
-| ------ | ----------------------------------- | --------: | ------- | ---------- |
-| Chaine | Corde texturer en chaine simuler    |         — | À créer | À produire |
+| Item   | Modèle                           | Variantes | Source  | État       |
+| ------ | -------------------------------- | --------: | ------- | ---------- |
+| Chaine | Corde texturer en chaine simuler |         — | À créer | À produire |
 
 Une ressource peut figurer dans ce catalogue sans que l'énigme associée soit retenue.
 
 ## Fiches des premiers rôles envisagés
 
-| Item               | Rôle connu ou proposé                                                                                  | Capacités et propriétés restant à définir                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| Torche             | Éclairer le joueur au MVP ; sa lumière n'est pas un stimulus visuel propre pour l'IA du monstre.       | Modèle portable, masse éventuelle, disponibilité, règles d'impact et modalités de manipulation.        |
-| Caillou            | Produire une distraction sonore lors d'un impact. Réutilisation proposée si l'objet reste récupérable. | Modèle, masse, capacité de lancer, seuils et effet direct éventuel sur le monstre.                     |
-| Bouteille ou fiole | Produire potentiellement un bruit ; la casse d'une fiole est envisagée.                                | Correspondance entre modèles et rôles, masse, seuil de casse, réutilisation et règles d'impact direct. |
+| Item               | Rôle connu ou proposé                                                                                    | À définir                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Torche             | Éclairage principal ; lumière sans [stimulus visuel autonome](../../monster/ai/perception.md) pour l'IA. | Modèle portable, masse éventuelle, disponibilité, règles d'impact.               |
+| Caillou            | Distraction sonore par impact ; réutilisation proposée si récupérable.                                   | Modèle, masse, lancer, seuils, effet direct éventuel.                            |
+| Bouteille ou fiole | Bruit potentiel ; casse d'une fiole envisagée.                                                           | Correspondance modèle/rôle, masse, seuil de casse, réutilisation, impact direct. |
 
 La non-réutilisation d'une fiole après sa casse et la protection des indices indispensables contre une perte rendant la partie insoluble restent des **propositions**, à décider avec les énigmes retenues.
 
-Les valeurs de masse, bruit, seuil et durée seront fixées après implémentation et tests. Les modalités détaillées d'interaction joueur/items feront l'objet d'une documentation ultérieure. Voir les [réactions du monstre](../../monster/ai/item_reactions.md).
+Les valeurs de masse, bruit, seuil et durée seront fixées pendant les tests ; voir les [spécifications](specifications.md) et les [réactions du monstre](../../monster/ai/item_reactions.md).

@@ -14,18 +14,6 @@ Ce document sert à **proposer et comparer** les énigmes avant de choisir celle
 2. Décrire l'idée et les interactions, même si tout n'est pas encore décidé.
 3. Inscrire les ressources nécessaires dans le [catalogue des assets](../environment/assets.md) ou le [catalogue des items](items/catalog.md), puis les référencer dans la fiche par des liens, sans dupliquer leurs descriptions.
 4. Ajouter une ligne au tableau ci-dessus.
-5. Mettre à jour le statut de l'énigme selon la décision de l'équipe ; son référencement dans les catalogues ne signifie pas qu'elle est retenue pour le jeu.
-
-## Statuts
-
-| Statut               | Signification                   |
-| -------------------- | ------------------------------- |
-| **Proposée**         | Idée en discussion              |
-| **Exemple**          | Fiche illustrative non retenue  |
-| **Retenue**          | L'équipe a choisi de l'intégrer |
-| **En développement** | Implémentation commencée        |
-| **Terminée**         | Fonctionne dans le jeu          |
-| **Écartée**          | Non retenue pour le moment      |
 
 ## Difficulté technique
 
