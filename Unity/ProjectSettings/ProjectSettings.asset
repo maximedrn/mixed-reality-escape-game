@@ -543,6 +543,9 @@ PlayerSettings:
   - m_BuildTarget: AndroidPlayer
     m_APIs: 150000000b000000
     m_Automatic: 0
+  - m_BuildTarget: WindowsStandaloneSupport
+    m_APIs: 02000000
+    m_Automatic: 0
   m_BuildTargetVRSettings: []
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
@@ -835,7 +838,7 @@ PlayerSettings:
   webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
     Android: OVR_DISABLE_HAND_PINCH_BUTTON_MAPPING
-    Standalone: SENTIS_ANALYTICS_ENABLED;APP_UI_EDITOR_ONLY;OVR_DISABLE_HAND_PINCH_BUTTON_MAPPING
+    Standalone: SENTIS_ANALYTICS_ENABLED;APP_UI_EDITOR_ONLY;OVR_DISABLE_HAND_PINCH_BUTTON_MAPPING;ENABLE_RUNTIME_OPTIMIZER
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

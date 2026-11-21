@@ -1,0 +1,257 @@
+{
+  "calibration": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\calibration\\calibration.toml",
+  "results": [
+    {
+      "name": "idle_exhausted_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_1",
+      "details": ""
+    },
+    {
+      "name": "idle_exhausted_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_2",
+      "details": ""
+    },
+    {
+      "name": "idle_exhausted_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_3",
+      "details": ""
+    },
+    {
+      "name": "idle_exhausted_4",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_4",
+      "details": ""
+    },
+    {
+      "name": "idle_exhausted_5",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_5",
+      "details": ""
+    },
+    {
+      "name": "idle_exhausted_6",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\idle_exhausted_6",
+      "details": ""
+    },
+    {
+      "name": "locker_open_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\locker_open_1",
+      "details": ""
+    },
+    {
+      "name": "locker_open_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\locker_open_2",
+      "details": ""
+    },
+    {
+      "name": "locker_open_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\locker_open_3",
+      "details": ""
+    },
+    {
+      "name": "look_around_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_around_1",
+      "details": ""
+    },
+    {
+      "name": "look_around_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_around_2",
+      "details": ""
+    },
+    {
+      "name": "look_around_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_around_3",
+      "details": ""
+    },
+    {
+      "name": "look_down_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_down_1",
+      "details": ""
+    },
+    {
+      "name": "look_down_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_down_2",
+      "details": ""
+    },
+    {
+      "name": "look_down_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_down_3",
+      "details": ""
+    },
+    {
+      "name": "look_down_4",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_down_4",
+      "details": ""
+    },
+    {
+      "name": "look_under_table_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_under_table_1",
+      "details": ""
+    },
+    {
+      "name": "look_under_table_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_under_table_2",
+      "details": ""
+    },
+    {
+      "name": "look_under_table_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\look_under_table_3",
+      "details": ""
+    },
+    {
+      "name": "stun_recovery_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stun_recovery_1",
+      "details": ""
+    },
+    {
+      "name": "stun_recovery_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stun_recovery_3",
+      "details": ""
+    },
+    {
+      "name": "stunned_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stunned_1",
+      "details": ""
+    },
+    {
+      "name": "stunned_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stunned_2",
+      "details": ""
+    },
+    {
+      "name": "stunned_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stunned_3",
+      "details": ""
+    },
+    {
+      "name": "stunned_4",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\stunned_4",
+      "details": ""
+    },
+    {
+      "name": "target_lost_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\target_lost_1",
+      "details": ""
+    },
+    {
+      "name": "target_lost_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\target_lost_2",
+      "details": ""
+    },
+    {
+      "name": "target_lost_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\target_lost_3",
+      "details": ""
+    },
+    {
+      "name": "turn_left_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\turn_left_1",
+      "details": ""
+    },
+    {
+      "name": "turn_left_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\turn_left_2",
+      "details": ""
+    },
+    {
+      "name": "turn_right_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\turn_right_1",
+      "details": ""
+    },
+    {
+      "name": "turn_right_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\turn_right_2",
+      "details": ""
+    },
+    {
+      "name": "turn_right_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\turn_right_3",
+      "details": ""
+    },
+    {
+      "name": "walk_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_1",
+      "details": ""
+    },
+    {
+      "name": "walk_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_2",
+      "details": ""
+    },
+    {
+      "name": "walk_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_3",
+      "details": ""
+    },
+    {
+      "name": "walk_start_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_start_1",
+      "details": ""
+    },
+    {
+      "name": "walk_start_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_start_2",
+      "details": ""
+    },
+    {
+      "name": "walk_start_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_start_3",
+      "details": ""
+    },
+    {
+      "name": "walk_stop_1",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_stop_1",
+      "details": ""
+    },
+    {
+      "name": "walk_stop_2",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_stop_2",
+      "details": ""
+    },
+    {
+      "name": "walk_stop_3",
+      "status": "success",
+      "directory": "D:\\Programmation\\mixed-reality-escape-game\\assets\\motion\\monster\\animation\\capture\\raw\\walk_stop_3",
+      "details": ""
+    }
+  ]
+}

@@ -24,18 +24,20 @@ function(run_dotnet)
 endfunction()
 
 function(find_unity_solution OUTPUT)
-    file(GLOB SOLUTIONS "${UNITY_DIR}/*.slnx")
+    file(GLOB SOLUTIONS
+        "${UNITY_DIR}/*.slnx"
+        "${UNITY_DIR}/*.sln"
+    )
 
     if(NOT SOLUTIONS)
-        file(GLOB SOLUTIONS "${UNITY_DIR}/*.sln")
-    endif()
-
-    if(NOT SOLUTIONS)
-        message(FATAL_ERROR
-            "Unity solution not found. Regenerate project files in Unity."
+        message(WARNING
+            "Unity solution not found. Skipping Roslyn analysis."
         )
+        set(${OUTPUT} "" PARENT_SCOPE)
+        return()
     endif()
 
+    list(SORT SOLUTIONS)
     list(GET SOLUTIONS 0 SOLUTION)
     set(${OUTPUT} "${SOLUTION}" PARENT_SCOPE)
 endfunction()
@@ -54,6 +56,10 @@ endfunction()
 
 function(lint)
     find_unity_solution(SOLUTION)
+
+    if(NOT SOLUTION)
+        return()
+    endif()
 
     set(OPTIONS
         --include "${SRC}"

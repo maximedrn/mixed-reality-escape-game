@@ -1,6 +1,7 @@
 # Operating system files.
 .DS_Store
 Thumbs.db
+.history/
 
 # Generated printable markers.
 /assets/markers/exports/
@@ -30,6 +31,7 @@ indent.log
 /Unity/[Bb]uild/
 /Unity/[Bb]uilds/
 /Unity/.gradle/
+/Unity/Assets/#Meta/session_id.id
 
 # Generated IDE files.
 *.csproj

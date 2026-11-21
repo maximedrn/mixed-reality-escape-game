@@ -1,0 +1,652 @@
+[capture]
+calibration = "calibration/calibration.toml"
+detector = "rtmpose"
+rtmpose_model_name = "rtmw-x-l_256x192"
+confidence_threshold = 0.004
+
+[output]
+directory = "raw"
+
+[[animations]]
+name = "alert_1"
+videos = [
+    "videos/left_camera/alert/alert_1.mp4",
+    "videos/right_camera/alert/alert_1.mp4",
+]
+
+[[animations]]
+name = "alert_2"
+videos = [
+    "videos/left_camera/alert/alert_2.mp4",
+    "videos/right_camera/alert/alert_2.mp4",
+]
+
+[[animations]]
+name = "alert_3"
+videos = [
+    "videos/left_camera/alert/alert_3.mp4",
+    "videos/right_camera/alert/alert_3.mp4",
+]
+
+[[animations]]
+name = "attack_backhand_1"
+videos = [
+    "videos/left_camera/attack_backhand/attack_backhand_1.mp4",
+    "videos/right_camera/attack_backhand/attack_backhand_1.mp4",
+]
+
+[[animations]]
+name = "attack_backhand_2"
+videos = [
+    "videos/left_camera/attack_backhand/attack_backhand_2.mp4",
+    "videos/right_camera/attack_backhand/attack_backhand_2.mp4",
+]
+
+[[animations]]
+name = "attack_backhand_3"
+videos = [
+    "videos/left_camera/attack_backhand/attack_backhand_3.mp4",
+    "videos/right_camera/attack_backhand/attack_backhand_3.mp4",
+]
+
+[[animations]]
+name = "attack_down_1"
+videos = [
+    "videos/left_camera/attack_down/attack_down_1.mp4",
+    "videos/right_camera/attack_down/attack_down_1.mp4",
+]
+
+[[animations]]
+name = "attack_down_2"
+videos = [
+    "videos/left_camera/attack_down/attack_down_2.mp4",
+    "videos/right_camera/attack_down/attack_down_2.mp4",
+]
+
+[[animations]]
+name = "attack_down_3"
+videos = [
+    "videos/left_camera/attack_down/attack_down_3.mp4",
+    "videos/right_camera/attack_down/attack_down_3.mp4",
+]
+
+[[animations]]
+name = "attack_down_4"
+videos = [
+    "videos/left_camera/attack_down/attack_down_4.mp4",
+    "videos/right_camera/attack_down/attack_down_4.mp4",
+]
+
+[[animations]]
+name = "attack_down_5"
+videos = [
+    "videos/left_camera/attack_down/attack_down_5.mp4",
+    "videos/right_camera/attack_down/attack_down_5.mp4",
+]
+
+[[animations]]
+name = "attack_down_6"
+videos = [
+    "videos/left_camera/attack_down/attack_down_6.mp4",
+    "videos/right_camera/attack_down/attack_down_6.mp4",
+]
+
+[[animations]]
+name = "attack_final_1"
+videos = [
+    "videos/left_camera/attack_final/attack_final_1.mp4",
+    "videos/right_camera/attack_final/attack_final_1.mp4",
+]
+
+[[animations]]
+name = "attack_final_2"
+videos = [
+    "videos/left_camera/attack_final/attack_final_2.mp4",
+    "videos/right_camera/attack_final/attack_final_2.mp4",
+]
+
+[[animations]]
+name = "attack_final_3"
+videos = [
+    "videos/left_camera/attack_final/attack_final_3.mp4",
+    "videos/right_camera/attack_final/attack_final_3.mp4",
+]
+
+[[animations]]
+name = "attack_final_4"
+videos = [
+    "videos/left_camera/attack_final/attack_final_4.mp4",
+    "videos/right_camera/attack_final/attack_final_4.mp4",
+]
+
+[[animations]]
+name = "attack_up_1"
+videos = [
+    "videos/left_camera/attack_up/attack_up_1.mp4",
+    "videos/right_camera/attack_up/attack_up_1.mp4",
+]
+
+[[animations]]
+name = "attack_up_2"
+videos = [
+    "videos/left_camera/attack_up/attack_up_2.mp4",
+    "videos/right_camera/attack_up/attack_up_2.mp4",
+]
+
+[[animations]]
+name = "attack_up_3"
+videos = [
+    "videos/left_camera/attack_up/attack_up_3.mp4",
+    "videos/right_camera/attack_up/attack_up_3.mp4",
+]
+
+[[animations]]
+name = "attack_up_4"
+videos = [
+    "videos/left_camera/attack_up/attack_up_4.mp4",
+    "videos/right_camera/attack_up/attack_up_4.mp4",
+]
+
+[[animations]]
+name = "barrel_open_1"
+videos = [
+    "videos/left_camera/barrel_open/barrel_open_1.mp4",
+    "videos/right_camera/barrel_open/barrel_open_1.mp4",
+]
+
+[[animations]]
+name = "barrel_open_2"
+videos = [
+    "videos/left_camera/barrel_open/barrel_open_2.mp4",
+    "videos/right_camera/barrel_open/barrel_open_2.mp4",
+]
+
+[[animations]]
+name = "barrel_open_3"
+videos = [
+    "videos/left_camera/barrel_open/barrel_open_3.mp4",
+    "videos/right_camera/barrel_open/barrel_open_3.mp4",
+]
+
+[[animations]]
+name = "bend_down_left_1"
+videos = [
+    "videos/left_camera/bend_down_left/bend_down_left_1.mp4",
+    "videos/right_camera/bend_down_left/bend_down_left_1.mp4",
+]
+
+[[animations]]
+name = "bend_down_left_2"
+videos = [
+    "videos/left_camera/bend_down_left/bend_down_left_2.mp4",
+    "videos/right_camera/bend_down_left/bend_down_left_2.mp4",
+]
+
+[[animations]]
+name = "bend_down_left_3"
+videos = [
+    "videos/left_camera/bend_down_left/bend_down_left_3.mp4",
+    "videos/right_camera/bend_down_left/bend_down_left_3.mp4",
+]
+
+[[animations]]
+name = "bend_down_left_4"
+videos = [
+    "videos/left_camera/bend_down_left/bend_down_left_4.mp4",
+    "videos/right_camera/bend_down_left/bend_down_left_4.mp4",
+]
+
+[[animations]]
+name = "bend_down_right_1"
+videos = [
+    "videos/left_camera/bend_down_right/bend_down_right_1.mp4",
+    "videos/right_camera/bend_down_right/bend_down_right_1.mp4",
+]
+
+[[animations]]
+name = "bend_down_right_2"
+videos = [
+    "videos/left_camera/bend_down_right/bend_down_right_2.mp4",
+    "videos/right_camera/bend_down_right/bend_down_right_2.mp4",
+]
+
+[[animations]]
+name = "bend_down_right_3"
+videos = [
+    "videos/left_camera/bend_down_right/bend_down_right_3..mp4",
+    "videos/right_camera/bend_down_right/bend_down_right_3.mp4",
+]
+
+[[animations]]
+name = "bend_down_right_4"
+videos = [
+    "videos/left_camera/bend_down_right/bend_down_right_4.mp4",
+    "videos/right_camera/bend_down_right/bend_down_right_4.mp4",
+]
+
+[[animations]]
+name = "chest_open_1"
+videos = [
+    "videos/left_camera/chest_open/chest_open_1.mp4",
+    "videos/right_camera/chest_open/chest_open_1.mp4",
+]
+
+[[animations]]
+name = "chest_open_2"
+videos = [
+    "videos/left_camera/chest_open/chest_open_2.mp4",
+    "videos/right_camera/chest_open/chest_open_2.mp4",
+]
+
+[[animations]]
+name = "chest_open_3"
+videos = [
+    "videos/left_camera/chest_open/chest_open_3.mp4",
+    "videos/right_camera/chest_open/chest_open_3.mp4",
+]
+
+[[animations]]
+name = "chest_open_4"
+videos = [
+    "videos/left_camera/chest_open/chest_open_4.mp4",
+    "videos/right_camera/chest_open/chest_open_4.mp4",
+]
+
+[[animations]]
+name = "curtain_open_left_1"
+videos = [
+    "videos/left_camera/curtain_open_left/curtain_open_left_1.mp4",
+    "videos/right_camera/curtain_open_left/curtain_open_left_1.mp4",
+]
+
+[[animations]]
+name = "curtain_open_left_2"
+videos = [
+    "videos/left_camera/curtain_open_left/curtain_open_left_2.mp4",
+    "videos/right_camera/curtain_open_left/curtain_open_left_2.mp4",
+]
+
+[[animations]]
+name = "curtain_open_left_3"
+videos = [
+    "videos/left_camera/curtain_open_left/curtain_open_left_3.mp4",
+    "videos/right_camera/curtain_open_left/curtain_open_left_3.mp4",
+]
+
+[[animations]]
+name = "curtain_open_right_1"
+videos = [
+    "videos/left_camera/curtain_open_right/curtain_open_right_1.mp4",
+    "videos/right_camera/curtain_open_right/curtain_open_right_1.mp4",
+]
+
+[[animations]]
+name = "curtain_open_right_2"
+videos = [
+    "videos/left_camera/curtain_open_right/curtain_open_right_2.mp4",
+    "videos/right_camera/curtain_open_right/curtain_open_right_2.mp4",
+]
+
+[[animations]]
+name = "door_walk_1"
+videos = [
+    "videos/left_camera/door_walk/door_walk_1.mp4",
+    "videos/right_camera/door_walk/door_walk_1.mp4",
+]
+
+[[animations]]
+name = "door_walk_2"
+videos = [
+    "videos/left_camera/door_walk/door_walk_2.mp4",
+    "videos/right_camera/door_walk/door_walk_2.mp4",
+]
+
+[[animations]]
+name = "door_walk_3"
+videos = [
+    "videos/left_camera/door_walk/door_walk_3.mp4",
+    "videos/right_camera/door_walk/door_walk_3.mp4",
+]
+
+[[animations]]
+name = "door_walk_4"
+videos = [
+    "videos/left_camera/door_walk/door_walk_4.mp4",
+    "videos/right_camera/door_walk/door_walk_4.mp4",
+]
+
+[[animations]]
+name = "hit_reaction_1"
+videos = [
+    "videos/left_camera/hit_reaction/hit_reaction_1.mp4",
+    "videos/right_camera/hit_reaction/hit_reaction_1.mp4",
+]
+
+[[animations]]
+name = "hit_reaction_2"
+videos = [
+    "videos/left_camera/hit_reaction/hit_reaction_2.mp4",
+    "videos/right_camera/hit_reaction/hit_reaction_2.mp4",
+]
+
+[[animations]]
+name = "hit_reaction_3"
+videos = [
+    "videos/left_camera/hit_reaction/hit_reaction_3.mp4",
+    "videos/right_camera/hit_reaction/hit_reaction_3.mp4",
+]
+
+[[animations]]
+name = "idle_1"
+videos = [
+    "videos/left_camera/idle/idle_1.mp4",
+    "videos/right_camera/idle/idle_1.mp4",
+]
+
+[[animations]]
+name = "idle_2"
+videos = [
+    "videos/left_camera/idle/idle_2.mp4",
+    "videos/right_camera/idle/idle_2.mp4",
+]
+
+[[animations]]
+name = "idle_3"
+videos = [
+    "videos/left_camera/idle/idle_3.mp4",
+    "videos/right_camera/idle/idle_3.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_1"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_1.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_1.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_2"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_2.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_2.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_3"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_3.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_3.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_4"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_4.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_4.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_5"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_5.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_5.mp4",
+]
+
+[[animations]]
+name = "idle_exhausted_6"
+videos = [
+    "videos/left_camera/idle_exhausted/idle_exhausted_6.mp4",
+    "videos/right_camera/idle_exhausted/idle_exhausted_6.mp4",
+]
+
+[[animations]]
+name = "locker_open_1"
+videos = [
+    "videos/left_camera/locker_open/locker_open_1.mp4",
+    "videos/right_camera/locker_open/locker_open_1.mp4",
+]
+
+[[animations]]
+name = "locker_open_2"
+videos = [
+    "videos/left_camera/locker_open/locker_open_2.mp4",
+    "videos/right_camera/locker_open/locker_open_2.mp4",
+]
+
+[[animations]]
+name = "locker_open_3"
+videos = [
+    "videos/left_camera/locker_open/locker_open_3.mp4",
+    "videos/right_camera/locker_open/locker_open_3.mp4",
+]
+
+[[animations]]
+name = "look_around_1"
+videos = [
+    "videos/left_camera/look_around/look_around_1.mp4",
+    "videos/right_camera/look_around/look_around_1.mp4",
+]
+
+[[animations]]
+name = "look_around_2"
+videos = [
+    "videos/left_camera/look_around/look_around_2.mp4",
+    "videos/right_camera/look_around/look_around_2.mp4",
+]
+
+[[animations]]
+name = "look_around_3"
+videos = [
+    "videos/left_camera/look_around/look_around_3.mp4",
+    "videos/right_camera/look_around/look_around_3.mp4",
+]
+
+[[animations]]
+name = "look_down_1"
+videos = [
+    "videos/left_camera/look_down/look_down_1.mp4",
+    "videos/right_camera/look_down/look_down_1.mp4",
+]
+
+[[animations]]
+name = "look_down_2"
+videos = [
+    "videos/left_camera/look_down/look_down_2.mp4",
+    "videos/right_camera/look_down/look_down_2.mp4",
+]
+
+[[animations]]
+name = "look_down_3"
+videos = [
+    "videos/left_camera/look_down/look_down_3.mp4",
+    "videos/right_camera/look_down/look_down_3.mp4",
+]
+
+[[animations]]
+name = "look_down_4"
+videos = [
+    "videos/left_camera/look_down/look_down_4.mp4",
+    "videos/right_camera/look_down/look_down_4.mp4",
+]
+
+[[animations]]
+name = "look_under_table_1"
+videos = [
+    "videos/left_camera/look_under_table/look_under_table_1.mp4",
+    "videos/right_camera/look_under_table/look_under_table_1.mp4",
+]
+
+[[animations]]
+name = "look_under_table_2"
+videos = [
+    "videos/left_camera/look_under_table/look_under_table_2.mp4",
+    "videos/right_camera/look_under_table/look_under_table_2.mp4",
+]
+
+[[animations]]
+name = "look_under_table_3"
+videos = [
+    "videos/left_camera/look_under_table/look_under_table_3.mp4",
+    "videos/right_camera/look_under_table/look_under_table_3.mp4",
+]
+
+[[animations]]
+name = "stun_recovery_1"
+videos = [
+    "videos/left_camera/stun_recovery/stun_recovery_1.mp4",
+    "videos/right_camera/stun_recovery/stun_recovery_1.mp4",
+]
+
+[[animations]]
+name = "stun_recovery_3"
+videos = [
+    "videos/left_camera/stun_recovery/stun_recovery_3.mp4",
+    "videos/right_camera/stun_recovery/stun_recovery_3.mp4",
+]
+
+[[animations]]
+name = "stunned_1"
+videos = [
+    "videos/left_camera/stunned/stunned_1.mp4",
+    "videos/right_camera/stunned/stunned_1.mp4",
+]
+
+[[animations]]
+name = "stunned_2"
+videos = [
+    "videos/left_camera/stunned/stunned_2.mp4",
+    "videos/right_camera/stunned/stunned_2.mp4",
+]
+
+[[animations]]
+name = "stunned_3"
+videos = [
+    "videos/left_camera/stunned/stunned_3.mp4",
+    "videos/right_camera/stunned/stunned_3.mp4",
+]
+
+[[animations]]
+name = "stunned_4"
+videos = [
+    "videos/left_camera/stunned/stunned_4.mp4",
+    "videos/right_camera/stunned/stunned_4.mp4",
+]
+
+[[animations]]
+name = "target_lost_1"
+videos = [
+    "videos/left_camera/target_lost/target_lost_1.mp4",
+    "videos/right_camera/target_lost/target_lost_1.mp4",
+]
+
+[[animations]]
+name = "target_lost_2"
+videos = [
+    "videos/left_camera/target_lost/target_lost_2.mp4",
+    "videos/right_camera/target_lost/target_lost_2.mp4",
+]
+
+[[animations]]
+name = "target_lost_3"
+videos = [
+    "videos/left_camera/target_lost/target_lost_3.mp4",
+    "videos/right_camera/target_lost/target_lost_3.mp4",
+]
+
+[[animations]]
+name = "turn_left_1"
+videos = [
+    "videos/left_camera/turn_left/turn_left_1.mp4",
+    "videos/right_camera/turn_left/turn_left_1.mp4",
+]
+
+[[animations]]
+name = "turn_left_2"
+videos = [
+    "videos/left_camera/turn_left/turn_left_2.mp4",
+    "videos/right_camera/turn_left/turn_left_2.mp4",
+]
+
+[[animations]]
+name = "turn_right_1"
+videos = [
+    "videos/left_camera/turn_right/turn_right_1.mp4",
+    "videos/right_camera/turn_right/turn_right_1.mp4",
+]
+
+[[animations]]
+name = "turn_right_2"
+videos = [
+    "videos/left_camera/turn_right/turn_right_2.mp4",
+    "videos/right_camera/turn_right/turn_right_2.mp4",
+]
+
+[[animations]]
+name = "turn_right_3"
+videos = [
+    "videos/left_camera/turn_right/turn_right_3.mp4",
+    "videos/right_camera/turn_right/turn_right_3.mp4",
+]
+
+[[animations]]
+name = "walk_1"
+videos = [
+    "videos/left_camera/walk/walk_1.mp4",
+    "videos/right_camera/walk/walk_1.mp4",
+]
+
+[[animations]]
+name = "walk_2"
+videos = [
+    "videos/left_camera/walk/walk_2.mp4",
+    "videos/right_camera/walk/walk_2.mp4",
+]
+
+[[animations]]
+name = "walk_3"
+videos = [
+    "videos/left_camera/walk/walk_3.mp4",
+    "videos/right_camera/walk/walk_3.mp4",
+]
+
+[[animations]]
+name = "walk_start_1"
+videos = [
+    "videos/left_camera/walk_start/walk_start_1.mp4",
+    "videos/right_camera/walk_start/walk_start_1.mp4",
+]
+
+[[animations]]
+name = "walk_start_2"
+videos = [
+    "videos/left_camera/walk_start/walk_start_2.mp4",
+    "videos/right_camera/walk_start/walk_start_2.mp4",
+]
+
+[[animations]]
+name = "walk_start_3"
+videos = [
+    "videos/left_camera/walk_start/walk_start_3.mp4",
+    "videos/right_camera/walk_start/walk_start_3.mp4",
+]
+
+[[animations]]
+name = "walk_stop_1"
+videos = [
+    "videos/left_camera/walk_stop/walk_stop_1.mp4",
+    "videos/right_camera/walk_stop/walk_stop_1.mp4",
+]
+
+[[animations]]
+name = "walk_stop_2"
+videos = [
+    "videos/left_camera/walk_stop/walk_stop_2.mp4",
+    "videos/right_camera/walk_stop/walk_stop_2.mp4",
+]
+
+[[animations]]
+name = "walk_stop_3"
+videos = [
+    "videos/left_camera/walk_stop/walk_stop_3.mp4",
+    "videos/right_camera/walk_stop/walk_stop_3.mp4",
+]

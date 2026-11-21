@@ -35,7 +35,8 @@ Install the following tools before setting up the development environment.
 ### Required
 
 - [Git](https://git-scm.com/downloads) — Version control.
-- [Git LFS](https://git-lfs.com/) — Large asset management..
+- [Git LFS](https://git-lfs.com/) — Large asset management.
+- [Git-crypt](https://github.com/AGWA/git-crypt) — Encrypts sensitive files transparently within Git repositories.
 - [Unity Hub](https://unity.com/download) — Unity installation and project management.
 - [Unity 6.3 LTS](https://unity.com/releases/lts) — Game engine.
 - [.NET SDK 10](https://dotnet.microsoft.com/download/dotnet/10.0) — C# tooling, CSharpier and Roslyn.
@@ -74,11 +75,32 @@ All commands are executed from the repository root using a Bash-compatible termi
 ### 1. Clone the repository
 
 ```bash
+git lfs install
+
+# Clone repository
 git clone https://github.com/maximedrn/mixed-reality-escape-game.git
 cd mixed-reality-escape-game
 
-git lfs install
+# Unlock with the existing private key.
+git-crypt unlock "<path-to-git-crypt-key>"
+
+# Configure Git to use Unix (LF) line endings.
+git config --local core.autocrlf false
+git config --local core.eol lf
+
+# Configure MP4 encryption through Git LFS.
+git config --local filter.crypt-lfs.clean 'set -o pipefail; git-crypt clean | git lfs clean -- "%f"'
+git config --local filter.crypt-lfs.smudge 'set -o pipefail; git lfs smudge -- "%f" | git-crypt smudge'
+git config --local filter.crypt-lfs.required true
+
+# Restore encrypted MP4 files through the configured filter.
+git restore --source=HEAD --worktree -- ':(glob)**/*.mp4'
+
+# Retrieve other Git LFS assets.
 git lfs pull
+
+# Verify working tree.
+git status --short
 ```
 
 ### 2. Install development tools
