@@ -51,6 +51,7 @@ La production des animations peut commencer **en parallèle du MVP 1**. Son int�
 
 - [ ] Scanner la pièce, nettoyer le maillage et retirer les tables du décor statique.
 - [ ] Créer une première version thématisée du décor, même simple.
+- [ ] Mettre en place l'ambiance sombre, l'éclairage de la scène et l'ambiance sonore générale.
 - [ ] Séparer les modèles visibles des géométries de collision.
 - [ ] Importer la scène dans Unity et l'aligner avec le suivi du Quest.
 - [ ] Ajouter des QR codes fixes pour vérifier et corriger le recalage global.
@@ -79,18 +80,21 @@ La production des animations peut commencer **en parallèle du MVP 1**. Son int�
 **But :** manipuler des objets qui n'existent que dans le jeu.
 
 - [ ] Ajouter quelques objets virtuels de test.
+- [ ] Mettre en place les définitions et instances d'items, leurs capacités, leur physique et leur masse.
+- [ ] Gérer les collisions, la casse et les événements distincts d'impact et de bruit, puis tester ces systèmes sans monstre.
+- [ ] Intégrer la torche, les cailloux et les fioles sans fixer leurs paramètres de jeu.
 - [ ] Choisir et tester une méthode de ciblage / sélection compatible Quest 3.
 - [ ] Permettre de prendre, déplacer, tourner ou activer un objet selon son rôle.
 - [ ] Vérifier que les objets restent au bon endroit dans la scène.
 
-**Validé quand :** les interactions principales fonctionnent sur le casque. Le contenu des énigmes reste à choisir dans le [catalogue de propositions](puzzles.md).
+**Validé quand :** les interactions et collisions principales fonctionnent sur le casque. Le contenu des énigmes reste à choisir dans le [catalogue de propositions](gameplay/puzzles.md).
 
 ### Phase 4 — Boucle de jeu MVP 1
 
-**But :** avoir une petite partie jouable sans monstre.
+**But :** avoir une petite partie jouable sans monstre, selon le principe du mode `Peaceful`.
 
 - [ ] Enchaîner recalage de la pièce, détection des tables et lancement du jeu.
-- [ ] Choisir une ou plusieurs idées dans le [catalogue d’énigmes](puzzles.md), puis ajouter une progression simple avec ces objets.
+- [ ] Choisir une ou plusieurs idées dans le [catalogue d’énigmes](gameplay/puzzles.md), puis ajouter une progression simple avec ces objets.
 - [ ] Définir une condition de victoire et la possibilité de recommencer.
 - [ ] Tester plusieurs dispositions de tables et une partie complète sur Quest 3.
 
@@ -100,13 +104,13 @@ La production des animations peut commencer **en parallèle du MVP 1**. Son int�
 
 ## MVP 2 — INF3002 : animations, monstre et IA
 
-Le MVP 2 reprend **la même pièce et les mêmes obstacles**. La référence pour les clips et les transitions est [monster_animations.md](monster_animations.md), conservé tel quel.
+Le MVP 2 reprend **la même pièce et les mêmes obstacles**. La référence pour les clips et les transitions est [animations.md](monster/animations.md), conservé tel quel.
 
 ### Phase 5 — Production des animations
 
 **But :** produire toutes les animations prévues pour le monstre avec **FreeMoCap**, puis les préparer pour Unity.
 
-- [ ] Reprendre le graphe d'états et la liste des mouvements de `monster_animations.md`.
+- [ ] Reprendre le graphe d'états et la liste des mouvements de `monster/animations.md`.
 - [ ] Capturer les mouvements du catalogue avec FreeMoCap.
 - [ ] Nettoyer et préparer les animations pour le personnage.
 - [ ] Vérifier les transitions et la cohérence des clips.
@@ -128,11 +132,13 @@ Le MVP 2 reprend **la même pièce et les mêmes obstacles**. La référence pou
 
 **But :** faire réagir le monstre au joueur et contourner les obstacles.
 
-- [ ] Préparer la navigation avec les murs et les tables détectées au début de partie.
-- [ ] Mettre en place le pathfinding pour contourner les tables, quelle que soit leur disposition.
-- [ ] Détecter le joueur à partir de sa position et de tests de visibilité.
-- [ ] Relier les comportements à la machine à états : patrouille, poursuite, perte de vue, recherche, retour, capture.
-- [ ] Déclencher les animations correspondant aux états du monstre.
+- [ ] Générer le NavMesh au début de la partie à partir des murs et tables calibrées ; extraire sa triangulation et construire le graphe.
+- [ ] Implémenter notre A* et le suivi des chemins pour contourner les obstacles, quelle que soit la disposition des tables.
+- [ ] Détecter le joueur par un cône de vision (produit scalaire et raycast) et classer sa distance de perception.
+- [ ] Percevoir les bruits environnementaux en excluant ceux liés au monstre.
+- [ ] Conserver des pistes en mémoire et estimer les destinations sans communiquer la position cachée du joueur à la FSM ou à la navigation.
+- [ ] Implémenter la FSM et ses transitions, les effets `Reaction`, `Slow` et `Stun`, ainsi que les profils de difficulté.
+- [ ] Synchroniser les comportements et déplacements avec le système d'animation existant.
 
 **Validé quand :** le monstre se déplace et change de comportement selon la situation, sans traverser les obstacles de la scène.
 
@@ -143,6 +149,10 @@ Le MVP 2 reprend **la même pièce et les mêmes obstacles**. La référence pou
 - [ ] Ajouter le monstre à la boucle de jeu.
 - [ ] Gérer la capture du joueur et la défaite.
 - [ ] Tester le monstre avec différentes positions de tables.
+- [ ] Vérifier les cinq niveaux, dont l'absence de monstre en `Peaceful`, et la cohérence des comportements et transitions.
+- [ ] Vérifier l'indépendance du bruit, des effets directs et de la casse, les rebonds successifs et l'exclusion des bruits liés au monstre.
+- [ ] Vérifier `attackDistance` et `attackRange`, ainsi que l'absence de frappe à travers les obstacles.
+- [ ] Équilibrer masses, seuils, distances, coefficients et durées pendant les tests.
 - [ ] Vérifier animations, recalage, interactions et performances sur Quest 3.
 - [ ] Corriger les problèmes bloquant une partie complète.
 
@@ -160,4 +170,4 @@ Le MVP 2 reprend **la même pièce et les mêmes obstacles**. La référence pou
 | IA en jeu                 | Navigation + perception + animations      |
 | Partie complète           | MVP 1 + monstre intégré                   |
 
-Les fonctionnalités hors MVP sont regroupées dans [extensions.md](extensions.md). Les ressources nécessaires sont listées dans [assets.md](assets.md).
+Les fonctionnalités hors MVP sont regroupées dans [extensions.md](extensions.md). Les ressources d'environnement sont listées dans le [catalogue des assets](environment/assets.md) et les objets de gameplay dans le [catalogue des items](gameplay/items/catalog.md).

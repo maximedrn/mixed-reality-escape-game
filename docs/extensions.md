@@ -14,12 +14,6 @@ On pourrait aussi **recouvrir visuellement les tables détectées par QR code** 
 
 **Difficulté :** moyenne à élevée suivant le rendu recherché.
 
-### Ambiance sombre et lampe
-
-Créer un décor plus sombre, éventuellement avec une lampe virtuelle disponible dès le départ ou à retrouver dans le jeu.
-
-**Difficulté :** faible à moyenne suivant les effets.
-
 ___
 
 ## Mobilier et environnement
@@ -52,7 +46,7 @@ ___
 
 ### Objets virtuels supplémentaires
 
-Ajouter des objets avec des effets sur le jeu ou le monstre : attirer son attention, le ralentir, déclencher un événement, débloquer une étape, etc.
+Ajouter des objets dont les comportements dépassent les [spécifications actuelles](gameplay/items/README.md), sans reprendre les réactions de base déjà prévues au MVP.
 
 **Difficulté :** variable.
 
@@ -64,9 +58,27 @@ Prévoir plusieurs énigmes ou changer certains emplacements d'indices entre les
 
 ### Monstre plus évolué
 
-Affiner sa recherche après perte de vue, ajouter des réactions aux objets, enrichir les transitions ou utiliser des déformations visuelles ponctuelles (*blend shapes*). Le catalogue de [monster_animations.md](monster_animations.md) reste la référence.
+Enrichir la recherche, les transitions ou les déformations visuelles ponctuelles (*blend shapes*) au-delà des mécanismes du MVP. Le catalogue des [animations du monstre](monster/animations.md) reste la référence.
 
 **Difficulté :** moyenne à élevée.
+
+### Perception de la lumière par le monstre
+
+Permettre éventuellement au monstre de détecter la lumière de la torche, avec une influence possible de la difficulté. La torche éclaire déjà le joueur au MVP, sans stimulus visuel propre pour l'IA.
+
+**Difficulté :** à évaluer.
+
+### Perception des pas du joueur
+
+Étendre l'audition de l'IA aux bruits de pas du joueur. L'ambiance sonore et les sons destinés au joueur font déjà partie du MVP.
+
+**Difficulté :** à évaluer.
+
+### Acoustique plus évoluée
+
+Affiner éventuellement le modèle sonore et l'occlusion acoustique au-delà du calcul simple du MVP.
+
+**Difficulté :** à évaluer.
 
 ### Interactions avec des objets physiques
 
@@ -85,7 +97,7 @@ flowchart LR
     A --> D[Gameplay]
 
     B --> E[MR et habillage des tables en passthrough]
-    B --> F[Ambiance sombre et lampe]
+    D --> F[Perception de la lumiere]
 
     C --> G[Suivi continu des tables]
     G --> H[Labyrinthe évolutif]
@@ -94,13 +106,17 @@ flowchart LR
     D --> J[Objets bonus et énigmes variables]
     D --> K[Monstre enrichi]
     D --> L[Interactions physiques]
+    D --> M[Perception des pas du joueur]
+    D --> O[Acoustique plus evoluee]
 ```
 
 ## Comparatif rapide
 
 | Extension                                            | Difficulté estimée |
 | ---------------------------------------------------- | ------------------ |
-| Ambiance sombre / lampe                              | Faible à moyenne   |
+| Perception de la lumière par le monstre               | À évaluer         |
+| Perception des pas du joueur                          | À évaluer         |
+| Modèle acoustique et occlusion éventuelle             | À évaluer         |
 | Objets virtuels supplémentaires                      | Variable           |
 | Réalité mixte et habillage des tables en passthrough | Moyenne à élevée   |
 | Énigmes / indices variables                          | Moyenne            |

@@ -7,7 +7,7 @@ On sépare la scène en **trois catégories d'objets 3D**. Le décor ne doit pas
 | Catégorie                       | Contenu                                     | Gestion                                                |
 | ------------------------------- | ------------------------------------------- | ------------------------------------------------------ |
 | **Environnement statique**      | Murs, sol, plafond, structure de la pièce   | Scan 3D + Blender, recalage global Quest / QR fixes    |
-| **Mobilier amovible**           | Tables sur rouesz                            | QR codes propres aux tables, modèles 3D indépendants   |
+| **Mobilier amovible**           | Tables sur roues                            | QR codes propres aux tables, modèles 3D indépendants   |
 | **Objets interactifs virtuels** | Indices, mécanismes et autres objets de jeu | Placés dans le repère virtuel, sans QR code individuel |
 
 ## 1. Environnement statique
@@ -17,7 +17,7 @@ On sépare la scène en **trois catégories d'objets 3D**. Le décor ne doit pas
 3. Garder les bonnes dimensions, puis créer le décor visuel souhaité.
 4. Importer dans Unity le **décor visible** et une **géométrie simplifiée** pour les collisions et la navigation.
 
-Le scan sert de base à la géométrie, pas forcément de modèle final : on peut remplacer les matériaux, les murs et les détails, sans changer l'agencement de la salle.
+Le scan sert de base à la géométrie, pas forcément de modèle final : on peut remplacer les matériaux, les murs et les détails, sans changer l'agencement de la salle. Voir la [présentation de l'environnement](environment/README.md) et son [catalogue d'assets](environment/assets.md).
 
 ## 2. Mobilier amovible
 
@@ -37,7 +37,13 @@ La disposition peut changer d'une partie à l'autre, **sans liste de configurati
 
 Les objets de gameplay existent uniquement dans Unity. Ils peuvent être sélectionnés, déplacés, tournés ou activés selon les interactions retenues. Ils suivent le repère de la scène : **aucun marqueur physique n'est nécessaire pour chacun d'eux**.
 
-Le détail des énigmes reste à décider en équipe, à partir des [propositions](puzzles.md).
+Le système d'[items](gameplay/items/README.md) distingue définitions réutilisables et instances en scène, avec des capacités configurables. Leur masse et leur physique déterminent les collisions ; celles-ci émettent des événements que le gameplay, la perception auditive et les réactions directes traitent indépendamment.
+
+Le détail des énigmes reste à décider en équipe, à partir des [propositions](gameplay/puzzles.md).
+
+## Architecture logique du monstre
+
+La [documentation de l'IA](monster/ai/README.md) décrit la perception, la mémoire, la FSM classique, la navigation et le déplacement, les réactions aux items, l'intégration des animations et les profils de difficulté. Les capteurs utilisent les positions réelles pour tester la visibilité et les collisions ; la FSM et la mémoire ne reçoivent que des observations limitées et des destinations estimées. Unity génère le NavMesh au début de la partie ; notre A* calcule les chemins sur le graphe extrait.
 
 ## Recalage spatial
 
@@ -101,6 +107,6 @@ Une fois la partie lancée, on ne redétecte pas en continu les tables dans le M
 | **ScanSpace**           | Première piste pour le scan 3D           |
 | **Blender**             | Nettoyage et création du décor           |
 | **`tools/markers`**     | Génération des QR codes                  |
-| **Unity AI Navigation** | Navigation du monstre dans le MVP 2      |
+| **Unity AI Navigation** | Génération du NavMesh ; A* sur le graphe extrait est implémenté par notre code |
 
 Voir la [roadmap](roadmap.md) pour l'ordre d'implémentation.

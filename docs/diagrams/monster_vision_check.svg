@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" width="900" height="530" role="img" aria-labelledby="title desc">
+  <title id="title">Test du champ de vision du monstre : produit scalaire et raycast</title>
+  <desc id="desc">À gauche, le vecteur forward et le vecteur vers le joueur forment un angle theta inférieur au demi-FOV, et aucun obstacle ne coupe le rayon. À droite, deux cas de rejet : joueur hors du cône ou occulté par une table. Les trois tests de distance, d'angle et de ligne de vue sont nécessaires.</desc>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --background: #ffffff;
+      --panel: #f1f5f9;
+      --border: #94a3b8;
+      --text: #1e293b;
+      --muted: #475569;
+      --direction: #2563eb;
+      --route: #047857;
+      --candidate: #a16207;
+      --invalid: #dc2626;
+      --invalid-bg: #fee2e2;
+      --selected-bg: #d1fae5;
+      --obstacle: #cbd5e1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --panel: #1e293b;
+        --border: #475569;
+        --text: #e2e8f0;
+        --muted: #cbd5e1;
+        --direction: #60a5fa;
+        --route: #34d399;
+        --candidate: #f59e0b;
+        --invalid: #ef4444;
+        --invalid-bg: #40252e;
+        --selected-bg: #153c35;
+        --obstacle: #334155;
+      }
+    }
+    text { font-family: system-ui, sans-serif; fill: var(--text); }
+    .muted { fill: var(--muted); }
+    .blue { fill: var(--direction); }
+    .green { fill: var(--route); }
+    .orange { fill: var(--candidate); }
+    .red { fill: var(--invalid); }
+    .mono { font-family: ui-monospace, monospace; }
+    .cone { fill: var(--direction); fill-opacity: .10; stroke: var(--direction); stroke-opacity: .7; stroke-width: 1.5; }
+    .panel { fill: var(--panel); stroke: var(--border); }
+  </style>
+  <defs>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--direction)"/></marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--route)"/></marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="var(--invalid)"/></marker>
+    <g id="monster"><circle r="13" fill="var(--text)"/><path d="M-4 -6L7 0L-4 6Z" fill="var(--background)"/></g>
+    <g id="player"><circle r="10" fill="var(--background)" stroke="var(--text)" stroke-width="2.2"/><circle r="3.5" fill="var(--text)"/></g>
+    <g id="cross" stroke="var(--invalid)" stroke-width="2.8" stroke-linecap="round"><path d="M-5 -5L5 5M-5 5L5 -5"/></g>
+    <g id="check" fill="none" stroke="var(--route)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M-6 0L-2 4L6 -5"/></g>
+  </defs>
+  <rect width="900" height="530" rx="14" fill="var(--background)"/>
+  <text x="24" y="33" font-size="20" font-weight="700">Détection visuelle : angle et ligne de vue</text>
+  <text x="876" y="32" text-anchor="end" font-size="12" class="muted">Coupe du cône · sans valeurs définitives</text>
+  <!-- Main accepted case. Cone total opening 80 degrees, target at 25 degrees. -->
+  <rect class="panel" x="24" y="52" width="487" height="374" rx="10"/>
+  <text x="44" y="80" font-size="15" font-weight="650" class="green">1. Joueur visible</text>
+  <path class="cone" d="M105 252L302.62 86.16A258 258 0 0 1 302.62 417.84Z"/>
+  <!-- forward and ray directions, same origin -->
+  <path d="M105 252H354" fill="none" stroke="var(--direction)" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow-blue)"/>
+  <text x="366" y="256" font-size="13" class="blue mono">forward</text>
+  <path d="M105 252L315.26 153.95" fill="none" stroke="var(--route)" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="225" y="164" font-size="13" font-weight="600" class="green" transform="rotate(-25 225 164)">toPlayer · raycast</text>
+  <!-- arcs: total FOV and target angle -->
+  <path d="M145.60 217.93A53 53 0 0 1 145.60 286.07" fill="none" stroke="var(--direction)" stroke-width="1.5"/>
+  <path d="M187.47 213.54A91 91 0 0 1 196 252" fill="none" stroke="var(--candidate)" stroke-width="2.5"/>
+  <text x="201" y="228" font-size="17" font-weight="700" class="orange">θ</text>
+  <path d="M207 252A102 102 0 0 1 183.14 317.56" fill="none" stroke="var(--direction)" stroke-width="1.5"/>
+  <text x="218" y="293" font-size="13" class="blue">FOV / 2</text>
+  <text x="104" y="319" font-size="12" class="blue">FOV total</text>
+  <path d="M145 303L150 283" fill="none" stroke="var(--direction)" stroke-width="1.2"/>
+  <use href="#monster" x="105" y="252"/>
+  <text x="105" y="279" text-anchor="middle" font-size="12">Monstre</text>
+  <use href="#player" x="322.51" y="150.57"/>
+  <text x="341" y="147" font-size="13">Joueur</text>
+  <rect x="335" y="180" width="157" height="48" rx="7" fill="var(--selected-bg)"/>
+  <use href="#check" x="350" y="195"/><text x="363" y="199" font-size="12" class="green">θ ≤ FOV / 2</text>
+  <use href="#check" x="350" y="214"/><text x="363" y="218" font-size="12" class="green">Raycast libre</text>
+  <text x="44" y="400" font-size="12" class="muted">Le joueur doit également être à portée de vision.</text>
+  <!-- Outside cone -->
+  <rect class="panel" x="525" y="52" width="351" height="180" rx="10"/>
+  <text x="545" y="80" font-size="15" font-weight="650" class="red">2. Hors du cône</text>
+  <path class="cone" d="M565 161L657.69 83.22A121 121 0 0 1 657.69 238.78Z" transform="translate(0 -12)"/>
+  <path d="M565 149H683" stroke="var(--direction)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow-blue)"/>
+  <path d="M565 149L611 212" stroke="var(--invalid)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-red)"/>
+  <path d="M605 149A40 40 0 0 1 588.6 181.3" fill="none" stroke="var(--candidate)" stroke-width="1.6"/>
+  <text x="609" y="178" class="orange" font-size="13">θ</text>
+  <use href="#monster" x="565" y="149"/><use href="#player" x="617" y="220"/>
+  <use href="#cross" x="729" y="138"/><text x="743" y="142" class="red" font-size="13">θ &gt; FOV / 2</text>
+  <text x="719" y="165" class="muted" font-size="12">Non visible</text>
+  <!-- Occluded -->
+  <rect class="panel" x="525" y="246" width="351" height="180" rx="10"/>
+  <text x="545" y="274" font-size="15" font-weight="650" class="red">3. Ligne de vue bloquée</text>
+  <path class="cone" d="M565 342L639.31 279.65A97 97 0 0 1 639.31 404.35Z"/>
+  <path d="M565 342H661" stroke="var(--direction)" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <path d="M565 342H607" stroke="var(--invalid)" stroke-width="2.6"/>
+  <path d="M637 342H653" stroke="var(--invalid)" stroke-width="1.5" stroke-dasharray="4 4" opacity=".65"/>
+  <rect x="608" y="316" width="29" height="52" rx="3" fill="var(--obstacle)" stroke="var(--border)"/>
+  <use href="#cross" x="607" y="342"/>
+  <text x="622" y="388" font-size="11" text-anchor="middle" class="muted">Table</text>
+  <use href="#monster" x="565" y="342"/><use href="#player" x="653" y="342"/>
+  <use href="#check" x="729" y="324"/><text x="743" y="328" font-size="13" class="green">θ ≤ FOV / 2</text>
+  <use href="#cross" x="729" y="347"/><text x="743" y="351" font-size="13" class="red">Raycast bloqué</text>
+  <text x="719" y="374" font-size="12" class="muted">Non visible</text>
+  <!-- Calculation -->
+  <rect class="panel" x="24" y="442" width="852" height="66" rx="9"/>
+  <text x="43" y="465" font-size="13" class="mono">dot = forward · toPlayer = cos(θ)</text>
+  <text x="43" y="488" font-size="13" class="mono orange">Dans le cône si dot ≥ cos(FOV / 2)</text>
+  <path d="M465 455V495" stroke="var(--border)"/>
+  <text x="484" y="465" font-size="13" font-weight="650">Joueur visible si :</text>
+  <text x="484" y="488" font-size="12" class="muted">À portée + dans le cône + ligne de vue libre</text>
+</svg>

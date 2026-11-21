@@ -4,17 +4,7 @@
 
 ## Le concept
 
-Le joueur explore une version virtuelle de la salle dans laquelle il se trouve. On peut changer complètement le thème du décor (médiéval, laboratoire, fantastique…), mais **les dimensions et la position des éléments physiques restent cohérentes**.
-
-Le jeu repose sur trois éléments :
-
-| Élément                | Dans la vraie salle                       | Dans le casque                                                 |
-| ---------------------- | ----------------------------------------- | -------------------------------------------------------------- |
-| **Décor statique**     | Sol, murs, plafond                        | Décor 3D issu d'un scan, retravaillé dans Blender              |
-| **Tables amovibles**   | Tables sur roulettes, disposées librement | Éléments du décor à la même position : autels, blocs, bureaux… |
-| **Objets interactifs** | Rien à manipuler physiquement             | Indices et mécanismes entièrement virtuels                     |
-
-Les énigmes ne sont pas encore définies. L'objectif est d'abord d'avoir un environnement cohérent et des interactions qui fonctionnent.
+Le joueur explore une version virtuelle de la salle dans laquelle il se trouve. Le thème actuellement retenu est une **salle d'alchimie médiévale fantasy low-poly**. Les dimensions et la position des éléments physiques doivent rester cohérentes avec cette représentation virtuelle.
 
 ## Fonctionnement général
 
@@ -41,22 +31,29 @@ flowchart LR
 - Détection des **tables par leurs propres QR codes avant chaque partie**. Leur position peut changer d'une partie à l'autre.
 - Chaque table est **remplacée visuellement par un modèle adapté au thème du décor**, dès le MVP 1.
 - Objets à manipuler **uniquement virtuels**. Les interactions exactes restent à valider.
+- Environnement sombre, ambiance sonore et torche virtuelle dès le MVP 1.
+- Items physiques avec collisions et interactions avec l'environnement, indépendamment du monstre.
+- Mode `Peaceful` jouable sans monstre.
 
 ## Les deux MVP
 
 | MVP                 | Objectif                                                                                                     |
 | ------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **MVP 1 — INF3001** | Salle VR alignée, tables détectées et transformées visuellement, objets interactifs et courte boucle de jeu. |
-| **MVP 2 — INF3002** | Monstre animé, navigation entre les obstacles, perception et comportement selon ses états.                   |
+| **MVP 2 — INF3002** | Monstre animé, perception visuelle et auditive, réactions aux collisions, mémoire, FSM et navigation.        |
 
 Le déroulement détaillé est dans la [roadmap](roadmap.md).
 
 ## Documentation
 
 - [Architecture](architecture.md) — les trois catégories d'objets et le recalage.
+- [Environnement](environment/README.md) — la salle virtuelle et sa direction artistique.
+- [Assets d'environnement](environment/assets.md) — architecture, mobilier, rangement et éclairage fixe.
+- [Gameplay](gameplay/README.md) — règles générales.
+- [Items](gameplay/items/README.md) — catalogue, spécifications et physique.
+- [Idées d’énigmes](gameplay/puzzles.md) — les propositions de l’équipe, sans choix imposé.
+- [Monstre](monster/README.md) — concept et ressources du personnage.
+- [Architecture de l'IA](monster/ai/README.md) — modules et échanges.
+- [Animations du monstre](monster/animations.md) — document de référence.
 - [Roadmap](roadmap.md) — toutes les phases des MVP 1 et 2.
 - [Extensions](extensions.md) — les fonctionnalités qu'on garde pour plus tard.
-- [Animations du monstre](monster_animations.md) — document de référence, inchangé.
-
-- [Assets](assets.md) — les ressources communes aux MVP.
-- [Idées d’énigmes](puzzles.md) — les propositions de l’équipe, sans choix imposé.
