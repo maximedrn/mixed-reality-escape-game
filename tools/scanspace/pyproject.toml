@@ -8,7 +8,7 @@ dependencies = [
     "numpy>=1.26,<3",
     "pydantic>=2.10,<3",
     "trimesh>=4.5,<5",
-    "pillow>=10,<13",
+    "pillow>=10,<14",
 ]
 
 [project.scripts]
