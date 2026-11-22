@@ -20,13 +20,14 @@ flowchart LR
     E --> A[Perception et réactions du monstre si présent]
 ```
 
-Des `ScriptableObject` et composants Unity sont une proposition technique. Les [capacités](specifications.md), les [collisions et événements](environment_interactions.md) et la manipulation par le joueur ont des responsabilités distinctes ; cette dernière sera documentée ultérieurement.
+Des `ScriptableObject` et composants Unity sont une proposition technique. Les [capacités](specifications.md), les [collisions et événements](environment_interactions.md) et les [interactions joueur/items](player_interactions.md) ont des responsabilités distinctes.
 
 ## Documentation
 
 - [Catalogue des items](catalog.md)
 - [Spécifications communes](specifications.md)
 - [Interactions physiques avec l'environnement](environment_interactions.md)
+- [Interactions joueur/items](player_interactions.md)
 - [Réactions du monstre](../../monster/ai/item_reactions.md)
 - [Propositions d'énigmes](../puzzles.md)
 - [Catalogue des assets d'environnement](../../environment/assets.md)

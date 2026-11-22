@@ -83,7 +83,7 @@ La production des animations peut commencer **en parallèle du MVP 1**. Son int�
 - [ ] Mettre en place les définitions et instances d'items, leurs capacités, leur physique et leur masse.
 - [ ] Gérer les collisions, la casse et les événements distincts d'impact et de bruit, puis tester ces systèmes sans monstre.
 - [ ] Intégrer la torche, les cailloux et les fioles sans fixer leurs paramètres de jeu.
-- [ ] Choisir et tester une méthode de ciblage / sélection compatible Quest 3.
+- [ ] Implémenter et tester le [ciblage par proximité des mains et les gestes définis](gameplay/items/player_interactions.md) sur Quest 3.
 - [ ] Permettre de prendre, déplacer, tourner ou activer un objet selon son rôle.
 - [ ] Vérifier que les objets restent au bon endroit dans la scène.
 

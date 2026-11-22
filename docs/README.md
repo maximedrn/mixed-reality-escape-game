@@ -24,6 +24,7 @@ Le déroulement détaillé est dans la [roadmap](roadmap.md).
 - [Assets d'environnement](environment/assets.md) — architecture, mobilier, rangement et éclairage fixe.
 - [Gameplay](gameplay/README.md) — règles générales.
 - [Items](gameplay/items/README.md) — catalogue, spécifications et physique.
+- [Interactions joueur/items](gameplay/items/player_interactions.md) — gestes et manipulation des items en VR.
 - [Idées d’énigmes](gameplay/puzzles.md) — les propositions de l’équipe, sans choix imposé.
 - [Monstre](monster/README.md) — concept et ressources du personnage.
 - [Architecture de l'IA](monster/ai/README.md) — modules et échanges.

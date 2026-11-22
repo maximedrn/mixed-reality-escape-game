@@ -2,16 +2,14 @@
 
 ## 1. Types et capacités
 
-Le type concret identifie l'objet (torche, caillou, fiole, indice...). Ses capacités décrivent ce qu'il peut faire. Elles se combinent librement, sans créer un enum distinct pour chaque combinaison d'items.
+Le type concret identifie l'objet (torche, caillou, fiole, indice...). Les quatre capacités statiques ci-dessous sont indépendantes et combinables. Les noms `is…` désignent le test du flag correspondant dans `capabilities`, et non des champs supplémentaires.
 
-| Capacité      | Signification                      |
-| ------------- | ---------------------------------- |
-| `QuestItem`   | Associé à une énigme ou une quête. |
-| `Grabbable`   | Peut être saisi.                   |
-| `Throwable`   | Peut être lancé.                   |
-| `Breakable`   | Peut se casser.                    |
-| `Activatable` | Possède une action activable.      |
-| `Reusable`    | Prévu pour plusieurs utilisations. |
+| Test | Flag | Signification |
+| --- | --- | --- |
+| `isGrabbable` | `Grabbable` | L'item peut être saisi, déplacé et lancé directement ou indirectement. |
+| `isManipulable` | `Manipulable` | L'item possède au moins une manipulation spécifique et continue en `Pinch`. |
+| `isActivatable` | `Activatable` | L'item possède au moins une activation ponctuelle en `Point`. |
+| `isBreakable` | `Breakable` | L'item peut être brisé. |
 
 Implémentation C# proposée :
 
@@ -20,16 +18,16 @@ Implémentation C# proposée :
 public enum ItemCapabilities
 {
     None        = 0,
-    QuestItem   = 1 << 0,
-    Grabbable   = 1 << 1,
-    Throwable   = 1 << 2,
-    Breakable   = 1 << 3,
-    Activatable = 1 << 4,
-    Reusable    = 1 << 5
+    Grabbable   = 1 << 0,
+    Manipulable = 1 << 1,
+    Activatable = 1 << 2,
+    Breakable   = 1 << 3
 }
 ```
 
-L'ancien `Interactable` signifiait « manipulable ou utilisable par le joueur ». `Grabbable` et `Activatable` en couvrent une partie, mais le sort des autres usages reste **à définir** avant migration ; aucune capacité n'est attribuée automatiquement à un item. `isGrabbable` et `isReusable` deviennent ici des flags statiques proposés, sans définir les gestes ou contrôles VR.
+La saisie concerne l'item entier ; les manipulations et activations spécifiques utilisent les [points d'interaction](player_interactions.md#points-dinteraction) lorsqu'ils sont nécessaires. `Grabbable` suffit pour les deux modes de lancer. `Breakable` est indépendant des gestes. L'association à une énigme ou une quête décrit le rôle de l'item, sans flag supplémentaire.
+
+`Reusable` et `EquippedItem` restent **à définir** et ne font pas partie des capacités retenues.
 
 Le bruit d'impact ne requiert pas de capacité dédiée ; voir les [interactions physiques](environment_interactions.md). Les effets directs sur le monstre restent configurés par `impactRules`.
 
@@ -66,7 +64,7 @@ La vitesse, le bruit et la sévérité sont définis dans les [collisions et év
 | `isActive`  | Bool    | Objet activé, par exemple une torche. |
 
 La position et la vélocité sont fournies par le Transform et le Rigidbody lorsqu'ils existent. Il n'est pas nécessaire de dupliquer ces données.
-Une capacité statique comme `Reusable` ou `Breakable` ne remplace pas l'état courant : un item cassé peut rester `Breakable` sans pouvoir être cassé de nouveau.
+Une capacité statique comme `Breakable` ne remplace pas l'état courant : un item cassé peut rester `Breakable` sans pouvoir être cassé de nouveau.
 
 ## 3. Équilibrage
 

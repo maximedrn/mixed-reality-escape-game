@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620" height="550" viewBox="0 -12 620 550" role="img" aria-labelledby="title desc">
+  <title id="title">OpenHand</title>
+  <desc id="desc">Main ouverte vue à la première personne, de trois quarts côté pouce et index.</desc>
+  <style>
+    svg { color: #383838; }
+    .light { stop-color: #f5f5f5; }
+    .mid { stop-color: #dedede; }
+    .shadow { stop-color: #acacac; }
+    .rear-light { stop-color: #dadada; }
+    .rear-dark { stop-color: #a9a9a9; }
+    .nail-light { stop-color: #f8f8f8; }
+    .nail-dark { stop-color: #bdbdbd; }
+    .contour { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .edge { fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; opacity: .66; }
+    .crease { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; opacity: .40; }
+    .fine { fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; opacity: .22; }
+    .glint { fill: none; stroke: #fff; stroke-linecap: round; opacity: .19; }
+    .nail { fill: url(#nail); stroke: currentColor; stroke-width: 1.25; stroke-opacity: .55; }
+    @media (prefers-color-scheme: dark) {
+      svg { color: #e0e0e0; }
+      .light { stop-color: #626262; }
+      .mid { stop-color: #454545; }
+      .shadow { stop-color: #282828; }
+      .rear-light { stop-color: #505050; }
+      .rear-dark { stop-color: #303030; }
+      .nail-light { stop-color: #858585; }
+      .nail-dark { stop-color: #494949; }
+      .glint { opacity: .15; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="skin" x1=".15" y1=".05" x2=".85" y2=".9" gradientUnits="objectBoundingBox">
+      <stop class="light" offset="0"/><stop class="mid" offset=".53"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="backFinger" x1=".15" y1=".15" x2=".9" y2=".8" gradientUnits="objectBoundingBox">
+      <stop class="rear-light"/><stop class="rear-dark" offset="1"/>
+    </linearGradient>
+    <linearGradient id="nail" x1=".2" y1="0" x2=".8" y2="1" gradientUnits="objectBoundingBox">
+      <stop class="nail-light"/><stop class="nail-dark" offset="1"/>
+    </linearGradient>
+    <radialGradient id="volume">
+      <stop stop-color="white" stop-opacity=".33"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shade">
+      <stop stop-color="#000" stop-opacity=".21"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fingerFade" x1="0" y1="0" x2="0" y2="1"><stop offset=".58" stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+    <mask id="fade" maskUnits="userSpaceOnUse" x="215" y="0" width="330" height="250"><rect x="215" y="0" width="330" height="250" fill="url(#fingerFade)"/></mask>
+    <path id="outline" d="M18 528 C43 492 71 454 104 417 C140 376 164 320 190 279 C201 261 214 241 225 222 C235 195 242 169 258 148 C271 132 292 111 306 100 C315 92 323 90 327 100 C350 78 380 51 394 42 C402 37 409 35 414 42 C427 34 444 23 453 19 C464 15 471 23 472 28 C488 19 501 8 512 8 C523 7 530 16 529 28 C528 45 506 62 477 81 C461 100 442 117 425 138 C416 159 399 184 382 204 C373 227 357 263 357 290 C356 310 366 334 383 347 C397 359 414 357 438 352 C459 345 475 338 490 339 C522 339 549 344 566 359 C580 374 574 395 557 400 C535 405 503 404 478 410 C446 416 423 425 396 439 C376 450 356 455 329 467 C293 481 268 488 239 490 C225 501 215 515 201 528 Z"/>
+    <clipPath id="clip"><use xlink:href="#outline"/></clipPath>
+  </defs>
+  <use xlink:href="#outline" fill="url(#skin)"/>
+  <g clip-path="url(#clip)">
+    <!-- Receding fingers, traced from the visible finger overlaps. -->
+    <g mask="url(#fade)">
+    <path d="M225 222 C237 189 244 165 262 143 C276 127 293 110 306 100 C315 92 323 90 327 100 C310 117 288 139 273 165 C257 191 242 210 225 222Z" fill="url(#backFinger)"/>
+    <path d="M238 223 C263 195 279 155 310 121 C340 87 377 52 394 42 C402 37 409 35 414 42 C399 53 379 72 360 93 C325 121 309 155 285 189 C272 205 254 219 238 223Z" fill="url(#backFinger)"/>
+    <path d="M244 241 C274 216 303 172 326 139 C349 107 379 83 407 60 C423 45 440 30 453 19 C464 15 471 23 472 28 C455 38 429 56 406 76 C375 101 358 123 338 154 C319 186 280 226 244 241Z" fill="url(#backFinger)"/>
+    </g>
+    <ellipse cx="290" cy="294" rx="91" ry="169" transform="rotate(31 290 294)" fill="url(#volume)"/>
+    <ellipse cx="355" cy="340" rx="36" ry="94" transform="rotate(-28 355 340)" fill="url(#shade)"/>
+    <ellipse cx="428" cy="398" rx="91" ry="44" transform="rotate(-12 428 398)" fill="url(#volume)"/>
+    <ellipse cx="245" cy="471" rx="123" ry="29" transform="rotate(-16 245 471)" fill="url(#shade)"/>
+    <!-- Fingernails partially occluded by the next finger. -->
+    <path class="nail" d="M298 108 Q310 95 317 97 Q322 96 325 101 L306 119 Q301 119 298 108Z"/>
+    <path class="nail" d="M383 54 Q395 42 403 42 Q408 40 412 44 L392 61 Q386 61 383 54Z"/>
+    <path class="nail" d="M435 34 Q448 22 457 21 Q465 19 469 28 L449 40 Q441 42 435 34Z"/>
+    <path class="nail" d="M477 28 C488 19 503 10 512 11 C520 11 523 18 520 25 C512 35 495 43 484 43 Q477 39 477 28Z"/>
+    <path class="nail" d="M521 373 C525 364 541 359 550 361 C561 365 565 379 563 389 C557 396 542 399 525 398 C519 392 518 383 521 373Z"/>
+    <!-- Finger boundaries follow the perspective, fading at the knuckles. -->
+    <path class="edge" d="M327 100 C311 117 289 137 274 161 C262 178 252 199 241 213"/>
+    <path class="edge" d="M414 42 C394 57 376 75 359 93 C331 120 306 157 284 188 C271 208 254 225 240 235"/>
+    <path class="edge" d="M472 28 C450 43 421 61 400 81 C369 107 349 133 329 160 C305 191 289 212 261 236"/>
+    <path class="crease" d="M450 55 Q462 58 467 65 M447 59 Q456 62 461 68"/>
+    <path class="crease" d="M380 89 C398 88 410 99 418 112 M376 94 C390 95 404 105 410 118 M376 100 C383 111 395 120 407 120"/>
+    <path class="fine" d="M385 90 Q397 93 402 100 M372 106 Q385 124 400 125 M370 111 Q380 126 393 129"/>
+    <path class="crease" d="M330 96 Q343 97 352 106 M327 101 Q337 102 346 110"/>
+    <path class="fine" d="M286 138 Q296 139 301 146 M281 143 Q290 144 296 151 M280 149 Q285 150 290 155"/>
+    <path class="fine" d="M254 166 Q262 167 266 172 M252 171 Q258 173 261 177"/>
+    <!-- Thumb articulation and webbing. -->
+    <path class="crease" d="M466 350 C455 365 452 389 461 406 M474 350 C465 365 463 390 472 404 M482 353 C475 368 474 389 482 400"/>
+    <path class="fine" d="M451 355 Q441 379 451 407 M444 360 Q435 382 443 408 M487 358 Q499 378 487 397"/>
+    <path class="crease" d="M350 278 C345 311 356 338 379 354 C390 362 401 366 416 366"/>
+    <path class="fine" d="M344 292 C340 324 353 349 370 359 M338 307 C340 337 349 353 359 363"/>
+    <!-- Soft indication of tendons, not additional finger outlines. -->
+    <path class="glint" stroke-width="3" opacity=".15" d="M151 393 C196 344 226 291 267 251"/>
+    <path class="glint" stroke-width="2" opacity=".15" d="M163 348 C203 291 224 252 252 225"/>
+    <path class="glint" stroke-width="3" d="M530 370 Q545 363 553 367 M484 29 Q501 18 512 17"/>
+    <path class="fine" d="M194 351 C221 322 240 291 260 266 M234 407 C272 395 307 386 339 391"/>
+  </g>
+  <use xlink:href="#outline" class="contour"/>
+</svg>

@@ -19,8 +19,8 @@ Le monstre ne consulte pas directement la vraie position du joueur pour décider
 
 Les noms de classes sont indicatifs ; plusieurs modules peuvent être regroupés si cela simplifie l'implémentation.
 
-| Module                       | Responsabilité                                     | Document                                              |
-| ---------------------------- | -------------------------------------------------- | ----------------------------------------------------- |
+| Module                       | Responsabilité                                     | Document                                               |
+| ---------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
 | `MonsterBrain`               | État courant, transitions, priorités, décisions.   | [Comportement](behavior.md)                            |
 | `MonsterPerception`          | Acquisition des stimuli sensoriels.                | [Perception](perception.md)                            |
 | `MonsterMemory`              | Conservation, estimation et oubli des pistes.      | [Mémoire](memory.md)                                   |

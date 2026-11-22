@@ -1,6 +1,6 @@
 # Interactions physiques des items avec l'environnement
 
-Les modalités de sélection, de prise, de relâchement, de lancer et d'activation par le joueur seront documentées ultérieurement. Les contrats physiques ci-dessous valent quelle que soit l'origine du mouvement d'un item et fonctionnent aussi en mode `Peaceful`.
+Les gestes et la manipulation sont décrits dans les [interactions joueur/items](player_interactions.md). Les contrats physiques ci-dessous valent quelle que soit l'origine du mouvement d'un item et fonctionnent aussi en mode `Peaceful`.
 
 ## Collisions, impacts et bruit
 
@@ -29,7 +29,7 @@ La règle proposée est `canBreak = hasBreakableCapability AND impactSpeed >= br
 | `ImpactEvent` | Item, cible effectivement touchée, vitesse et sévérité de l'impact. | Réactions aux impacts directs. |
 | `OnBreak` | Instance cassée. | Item et énigmes. |
 
-`OnGrab`, `OnRelease`, `OnThrow` et `OnActivate` restent des noms d'événements proposés pour une conception ultérieure de la manipulation ; leur déclenchement et leur implémentation ne sont pas définis ici.
+`OnGrab`, `OnRelease`, `OnThrow` et `OnActivate` restent des noms d'événements proposés pour les [interactions joueur/items](player_interactions.md) ; leur déclenchement et leur implémentation ne sont pas définis dans ce document.
 
 Un impact direct sur le monstre peut produire `NoiseEvent` et `ImpactEvent`, mais son effet direct n'est appliqué qu'une fois. La [perception auditive](../../monster/ai/perception.md) filtre les bruits produits par le monstre et ceux des collisions qui le touchent, sans supprimer le son entendu par le joueur. Le capteur peut utiliser la vraie position de la source pour ses tests ; la mémoire et la FSM ne reçoivent que des observations limitées, sans position réelle automatiquement révélée. Ces échanges ne rendent pas la physique des items dépendante de la présence du monstre.
 

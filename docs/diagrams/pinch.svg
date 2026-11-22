@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620" height="550" viewBox="0 -12 620 550" role="img" aria-labelledby="title desc">
+<title id="title">Pinch</title><desc id="desc">Pincement fermé, pouce et index en contact, vu de profil à la première personne. Tracé d'après la photo de référence.</desc>
+<style>
+    svg { color: #383838; }
+    .light { stop-color: #f5f5f5; }
+    .mid { stop-color: #dedede; }
+    .shadow { stop-color: #acacac; }
+    .rear-light { stop-color: #dadada; }
+    .rear-dark { stop-color: #a9a9a9; }
+    .nail-light { stop-color: #f8f8f8; }
+    .nail-dark { stop-color: #bdbdbd; }
+    .contour { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .edge { fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; opacity: .66; }
+    .crease { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; opacity: .40; }
+    .fine { fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; opacity: .22; }
+    .glint { fill: none; stroke: #fff; stroke-linecap: round; opacity: .19; }
+    .nail { fill: url(#nail); stroke: currentColor; stroke-width: 1.25; stroke-opacity: .55; }
+    @media (prefers-color-scheme: dark) {
+      svg { color: #e0e0e0; }
+      .light { stop-color: #626262; }
+      .mid { stop-color: #454545; }
+      .shadow { stop-color: #282828; }
+      .rear-light { stop-color: #505050; }
+      .rear-dark { stop-color: #303030; }
+      .nail-light { stop-color: #858585; }
+      .nail-dark { stop-color: #494949; }
+      .glint { opacity: .15; }
+    }
+  </style>
+<defs>
+    <linearGradient id="skin" x1=".15" y1=".05" x2=".85" y2=".9" gradientUnits="objectBoundingBox">
+      <stop class="light" offset="0"/><stop class="mid" offset=".53"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="backFinger" x1=".15" y1=".15" x2=".9" y2=".8" gradientUnits="objectBoundingBox">
+      <stop class="rear-light"/><stop class="rear-dark" offset="1"/>
+    </linearGradient>
+    <linearGradient id="nail" x1=".2" y1="0" x2=".8" y2="1" gradientUnits="objectBoundingBox">
+      <stop class="nail-light"/><stop class="nail-dark" offset="1"/>
+    </linearGradient>
+    <radialGradient id="volume">
+      <stop stop-color="white" stop-opacity=".33"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shade">
+      <stop stop-color="#000" stop-opacity=".21"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fold" x1=".15" y1="0" x2=".85" y2="1">
+      <stop class="light"/><stop class="mid" offset=".5"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="pocket" x1=".2" y1="0" x2=".65" y2="1">
+      <stop class="rear-dark"/><stop class="rear-light" offset="1"/>
+    </linearGradient>
+    <radialGradient id="deep"><stop stop-color="#111" stop-opacity=".66"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient>
+    
+<path id="front" fill-rule="evenodd" clip-rule="evenodd" d="M -12 650 C 4 614 18 580 30 550 C 51 492 68 443 83 398 C 96 358 102 317 119 291 C 136 266 161 253 192 245 C 245 230 300 218 348 207 C 373 200 391 198 414 211 C 450 231 488 244 509 278 C 523 300 534 320 533 332 Q 532 340 528 344 C 544 349 550 360 546 374 C 544 390 526 402 507 416 C 482 435 465 457 443 481 C 421 510 399 538 371 568 C 328 615 300 636 276 650 Z
+M 480 344 C 467 333 463 313 449 301 C 431 303 414 290 400 275 Q 393 267 389 277 C 377 292 365 299 347 304 C 328 310 306 312 293 310 Q 287 309 284 316 C 277 331 265 344 255 349 Q 251 352 255 360 C 267 385 284 405 303 425 C 317 441 343 433 364 424 C 398 409 429 381 449 364 Q 465 351 480 344 Z"/>
+<path id="rear" d="M 131 278 C 151 250 157 222 169 190 C 176 166 190 157 218 137 C 240 120 249 110 273 98 C 304 81 343 65 378 63 C 402 62 425 65 443 59 C 457 54 470 60 472 75 C 473 90 463 105 450 110 C 430 118 405 114 386 120 C 355 130 327 145 304 158 C 306 173 305 182 297 200 C 286 221 272 238 254 255 C 217 280 172 296 131 278 Z"/>
+<clipPath id="frontClip"><use xlink:href="#front" clip-rule="evenodd"/></clipPath>
+<clipPath id="rearClip"><use xlink:href="#rear"/></clipPath>
+<linearGradient id="indexShade" x1=".25" y1="0" x2=".6" y2="1"><stop class="light"/><stop offset=".55" class="mid"/><stop offset="1" class="shadow"/></linearGradient>
+</defs>
+<g transform="translate(62 -20) scale(.82)">
+<!-- Partially occluded ring finger. -->
+<path d="M 226 262 C 252 239 277 218 295 187 C 302 173 308 165 318 171 Q 339 181 321 205 C 313 218 304 234 295 248 Z" fill="url(#backFinger)" stroke="currentColor" stroke-width="2.25" stroke-linejoin="round"/>
+<path class="fine" d="M305 173 Q318 170 323 179"/>
+<!-- Middle finger behind the index. -->
+<use xlink:href="#rear" fill="url(#skin)"/>
+<g clip-path="url(#rearClip)">
+<ellipse cx="247" cy="188" rx="45" ry="100" transform="rotate(36 247 188)" fill="url(#volume)"/>
+<ellipse cx="340" cy="113" rx="27" ry="98" transform="rotate(69 340 113)" fill="url(#volume)"/>
+<ellipse cx="307" cy="185" rx="37" ry="85" transform="rotate(42 307 185)" fill="url(#shade)"/>
+<ellipse cx="427" cy="102" rx="48" ry="18" transform="rotate(-9 427 102)" fill="url(#shade)"/>
+<path class="crease" d="M373 66 Q383 82 383 99 M380 65 Q390 79 390 94"/>
+<path class="fine" d="M365 69 Q376 83 376 94 M248 119 Q259 122 267 132 M244 124 Q257 125 261 137"/>
+<path class="nail" d="M434 64 Q444 59 453 61 Q466 63 467 73 Q456 80 443 77 Q437 74 434 64Z"/>
+<path class="glint" stroke-width="1.7" d="M441 64 Q454 61 462 66"/>
+</g>
+<use xlink:href="#rear" class="contour"/>
+<!-- Connected index, palm and thumb; the pinch opening is a true cut-out. -->
+<use xlink:href="#front" fill="url(#skin)" fill-rule="evenodd"/>
+<g clip-path="url(#frontClip)">
+<!-- Broad dorsal and wrist volumes. -->
+<ellipse cx="173" cy="461" rx="104" ry="185" transform="rotate(24 173 461)" fill="url(#volume)"/>
+<ellipse cx="61" cy="589" rx="67" ry="179" transform="rotate(25 61 589)" fill="url(#shade)"/>
+<ellipse cx="262" cy="607" rx="106" ry="56" transform="rotate(-43 262 607)" fill="url(#shade)"/>
+<ellipse cx="316" cy="496" rx="124" ry="62" transform="rotate(-28 316 496)" fill="url(#volume)"/>
+<!-- Index relief follows the three phalanges rather than a straight tube. -->
+<ellipse cx="301" cy="252" rx="112" ry="34" transform="rotate(-15 301 252)" fill="url(#volume)"/>
+<ellipse cx="327" cy="303" rx="75" ry="24" transform="rotate(-17 327 303)" fill="url(#shade)"/>
+<ellipse cx="391" cy="226" rx="45" ry="27" transform="rotate(12 391 226)" fill="url(#volume)"/>
+<ellipse cx="441" cy="267" rx="57" ry="24" transform="rotate(33 441 267)" fill="url(#volume)"/>
+<ellipse cx="443" cy="297" rx="46" ry="17" transform="rotate(28 443 297)" fill="url(#shade)"/>
+<ellipse cx="498" cy="310" rx="42" ry="18" transform="rotate(59 498 310)" fill="url(#volume)"/>
+<ellipse cx="484" cy="335" rx="25" ry="34" transform="rotate(-36 484 335)" fill="url(#shade)"/>
+<!-- Subtle creases following joint axes. -->
+<path class="crease" d="M367 208 Q379 220 379 237 M375 206 Q386 216 387 231"/>
+<path class="fine" d="M359 210 Q369 221 370 234 M383 207 Q393 218 395 230 M454 240 Q461 250 458 263 M462 244 Q468 254 465 265"/>
+<path class="glint" stroke-width="2.7" d="M193 247 Q278 223 347 211 M402 215 Q444 231 475 253"/>
+<!-- Thumb-index webbing and inner palm. -->
+<ellipse cx="249" cy="383" rx="37" ry="76" transform="rotate(-31 249 383)" fill="url(#shade)"/>
+<path class="crease" d="M224 353 Q226 381 257 411 Q280 436 303 442"/>
+<path class="fine" d="M212 360 Q216 393 246 419 M233 375 Q253 414 286 435 M247 431 Q275 449 304 451"/>
+<!-- Thumb: longitudinal volume, distal joint, visible nail. -->
+<ellipse cx="408" cy="462" rx="99" ry="36" transform="rotate(-44 408 462)" fill="url(#volume)"/>
+<ellipse cx="455" cy="447" rx="29" ry="65" transform="rotate(42 455 447)" fill="url(#shade)"/>
+<ellipse cx="513" cy="369" rx="34" ry="23" transform="rotate(-39 513 369)" fill="url(#volume)"/>
+<path class="crease" d="M435 394 Q444 418 449 440 M442 390 Q450 411 455 431"/>
+<path class="fine" d="M428 401 Q436 423 439 440 M450 388 Q457 407 460 420"/>
+<path class="nail" d="M507 357 C517 348 530 348 537 355 Q544 366 537 376 C531 384 518 390 511 385 Q503 374 507 357Z"/>
+<path class="glint" stroke-width="1.9" d="M513 357 Q526 350 534 357"/>
+<!-- Only the narrow edge of the index nail is visible in this pose. -->
+<path class="fine" d="M521 323 Q529 329 528 337"/>
+<!-- Dorsal tendons, restrained to stay consistent with the other icons. -->
+<path class="glint" stroke-width="3" d="M125 320 Q151 278 195 260 M101 424 Q138 345 171 319 M300 486 Q353 456 389 435"/>
+<path class="fine" d="M119 411 Q147 354 181 327 M153 487 Q187 437 216 416 M220 563 Q260 518 302 500"/>
+</g>
+<use xlink:href="#front" class="contour"/>
+<!-- A short contact seam, not a gap, between the two pads. -->
+<path class="edge" d="M480 344 C496 343 514 340 528 344"/>
+</g></svg>

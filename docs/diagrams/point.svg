@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620" height="550" viewBox="0 -12 620 550" role="img" aria-labelledby="title desc">
+  <title id="title">Point</title>
+  <desc id="desc">Geste de pointage vu à la première personne, côté pouce et index, calqué sur la photographie de référence.</desc>
+  <style>
+    svg { color: #383838; }
+    .light { stop-color: #f5f5f5; }
+    .mid { stop-color: #dedede; }
+    .shadow { stop-color: #acacac; }
+    .rear-light { stop-color: #dadada; }
+    .rear-dark { stop-color: #a9a9a9; }
+    .nail-light { stop-color: #f8f8f8; }
+    .nail-dark { stop-color: #bdbdbd; }
+    .contour { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .edge { fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; opacity: .66; }
+    .crease { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; opacity: .40; }
+    .fine { fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; opacity: .22; }
+    .glint { fill: none; stroke: #fff; stroke-linecap: round; opacity: .19; }
+    .nail { fill: url(#nail); stroke: currentColor; stroke-width: 1.25; stroke-opacity: .55; }
+    @media (prefers-color-scheme: dark) {
+      svg { color: #e0e0e0; }
+      .light { stop-color: #626262; }
+      .mid { stop-color: #454545; }
+      .shadow { stop-color: #282828; }
+      .rear-light { stop-color: #505050; }
+      .rear-dark { stop-color: #303030; }
+      .nail-light { stop-color: #858585; }
+      .nail-dark { stop-color: #494949; }
+      .glint { opacity: .15; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="skin" x1=".15" y1=".05" x2=".85" y2=".9" gradientUnits="objectBoundingBox">
+      <stop class="light" offset="0"/><stop class="mid" offset=".53"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="backFinger" x1=".15" y1=".15" x2=".9" y2=".8" gradientUnits="objectBoundingBox">
+      <stop class="rear-light"/><stop class="rear-dark" offset="1"/>
+    </linearGradient>
+    <linearGradient id="nail" x1=".2" y1="0" x2=".8" y2="1" gradientUnits="objectBoundingBox">
+      <stop class="nail-light"/><stop class="nail-dark" offset="1"/>
+    </linearGradient>
+    <radialGradient id="volume">
+      <stop stop-color="white" stop-opacity=".33"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shade">
+      <stop stop-color="#000" stop-opacity=".21"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fold" x1=".15" y1="0" x2=".85" y2="1">
+      <stop class="light"/><stop class="mid" offset=".5"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="pocket" x1=".2" y1="0" x2=".65" y2="1">
+      <stop class="rear-dark"/><stop class="rear-light" offset="1"/>
+    </linearGradient>
+    <radialGradient id="deep"><stop stop-color="#111" stop-opacity=".66"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient>
+    <path id="outline" d="M-48 650 C-18 598 7 547 36 500 C67 449 84 407 111 358 C135 313 150 287 173 255 C194 221 213 197 237 196 C250 194 259 196 274 191 C306 178 330 161 355 146 C385 127 407 107 433 91 C455 77 477 69 497 52 C514 43 533 27 546 26 C557 23 567 30 567 42 C568 56 557 68 547 79 C519 106 494 124 473 146 C451 168 425 190 399 218 C418 223 437 233 447 242 C461 253 462 266 457 285 C452 303 452 327 442 346 C464 339 485 330 506 325 C524 320 539 321 548 327 C562 335 563 349 554 361 C547 372 534 377 520 387 C495 414 470 440 445 464 C410 502 377 531 340 552 C308 573 278 584 250 596 C231 608 221 628 209 650 Z"/>
+    <clipPath id="clip"><use xlink:href="#outline"/></clipPath>
+    <path id="folded" d="M399 218 C418 223 437 233 447 242 C461 253 462 266 457 285 C452 303 452 327 442 346 C422 361 396 358 382 347 C373 337 370 316 374 290 C377 263 387 239 399 218 Z"/>
+    <clipPath id="fingerClip"><use xlink:href="#folded"/></clipPath>
+  </defs>
+  <g transform="translate(57 2) scale(.81)">
+    <use xlink:href="#outline" fill="url(#skin)"/>
+    <g clip-path="url(#clip)">
+      <!-- Gradients and volumes of the dorsal hand and wrist. -->
+      <ellipse cx="236" cy="377" rx="110" ry="190" transform="rotate(32 236 377)" fill="url(#volume)"/>
+      <ellipse cx="92" cy="535" rx="64" ry="155" transform="rotate(27 92 535)" fill="url(#shade)"/>
+      <ellipse cx="305" cy="538" rx="112" ry="56" transform="rotate(-30 305 538)" fill="url(#shade)"/>
+      <ellipse cx="405" cy="418" rx="111" ry="58" transform="rotate(-28 405 418)" fill="url(#volume)"/>
+      <ellipse cx="367" cy="184" rx="40" ry="139" transform="rotate(57 367 184)" fill="url(#volume)"/>
+      <ellipse cx="442" cy="160" rx="36" ry="100" transform="rotate(46 442 160)" fill="url(#shade)"/>
+      <!-- The other digits are curled behind the pointing index. -->
+      <use xlink:href="#folded" fill="url(#backFinger)"/>
+      <g clip-path="url(#fingerClip)">
+        <ellipse cx="380" cy="315" rx="41" ry="62" fill="url(#deep)"/>
+        <path d="M377 328 C388 322 402 325 413 336 Q430 347 430 352 Q407 362 386 350 Q373 343 377 328Z" fill="url(#fold)"/>
+        <path d="M399 218 C418 223 437 233 447 242 C461 253 462 266 457 285 C452 303 452 327 442 346 Q433 352 428 351 C412 335 404 319 401 306 Q391 307 375 306 C377 268 387 239 399 218Z" fill="url(#fold)"/>
+        <ellipse cx="429" cy="260" rx="28" ry="36" transform="rotate(-24 429 260)" fill="url(#volume)"/>
+        <ellipse cx="429" cy="317" rx="22" ry="36" fill="url(#shade)"/>
+        <path class="edge" d="M375 306 C388 307 401 299 415 288 Q426 280 433 269 M401 306 C404 325 415 339 428 351"/>
+        <path class="fine" d="M416 292 Q428 284 436 274 M418 326 Q432 332 439 341"/>
+      </g>
+      <path class="edge" d="M399 218 C387 240 377 261 374 286 C370 308 373 335 382 347 C394 359 420 361 442 346"/>
+      <!-- Webbing between thumb and index: no artificial cutout. -->
+      <ellipse cx="375" cy="331" rx="35" ry="70" transform="rotate(-10 375 331)" fill="url(#shade)" opacity=".65"/>
+      <path class="crease" d="M353 290 C352 315 361 341 378 354 Q393 366 416 361"/>
+      <path class="fine" d="M348 307 C350 337 363 357 386 368 M358 302 Q358 329 373 346"/>
+      <!-- Distal nail and finger joint folds. -->
+      <path class="nail" d="M530 44 C537 36 547 28 554 29 C562 30 564 38 562 44 C554 51 544 56 537 56 Q530 55 530 44Z"/>
+      <path class="glint" stroke-width="1.7" d="M537 43 Q548 33 556 33"/>
+      <path class="crease" d="M419 104 C431 105 444 112 450 121 M415 109 Q431 113 443 123 M410 115 Q424 118 435 127"/>
+      <path class="fine" d="M413 120 Q424 124 430 130 M484 66 Q496 68 504 77 M481 71 Q493 73 500 80"/>
+      <path class="glint" stroke-width="2.8" d="M287 195 C330 175 361 150 397 126 M441 95 Q474 75 501 57"/>
+      <!-- Thumb relief, joint and visible nail. -->
+      <ellipse cx="507" cy="355" rx="44" ry="30" transform="rotate(-24 507 355)" fill="url(#volume)"/>
+      <ellipse cx="478" cy="398" rx="27" ry="39" transform="rotate(44 478 398)" fill="url(#shade)"/>
+      <path class="nail" d="M535 335 C543 329 552 334 556 342 C559 351 554 360 547 365 Q540 366 534 359 Q530 348 535 335Z"/>
+      <path class="glint" stroke-width="1.6" d="M540 337 Q550 335 553 343"/>
+      <path class="crease" d="M502 334 C496 344 493 356 494 370 M508 334 Q501 353 503 367 M514 337 Q507 350 509 361"/>
+      <path class="fine" d="M488 339 Q483 355 485 375 M518 338 Q513 352 515 358"/>
+      <!-- Discrete dorsal tendons and knuckle highlights. -->
+      <path class="glint" stroke-width="3.1" d="M187 265 Q217 215 245 204 M122 409 C159 343 188 304 218 276 M383 388 Q448 366 492 338"/>
+      <path class="fine" d="M132 384 C163 324 194 278 230 251 M164 430 C201 374 235 341 265 322 M215 486 Q267 426 320 414"/>
+      <path class="glint" stroke-width="2" d="M228 475 Q267 439 304 426"/>
+    </g>
+    <use xlink:href="#outline" class="contour"/>
+  </g>
+</svg>

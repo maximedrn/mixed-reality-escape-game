@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620" height="550" viewBox="0 -12 620 550" role="img" aria-labelledby="title desc">
+  <title id="title">ClosedHand</title>
+  <desc id="desc">Poing fermé vu à la première personne, côté pouce et index, calqué sur la photographie de référence.</desc>
+  <style>
+    svg { color: #383838; }
+    .light { stop-color: #f5f5f5; }
+    .mid { stop-color: #dedede; }
+    .shadow { stop-color: #acacac; }
+    .rear-light { stop-color: #dadada; }
+    .rear-dark { stop-color: #a9a9a9; }
+    .nail-light { stop-color: #f8f8f8; }
+    .nail-dark { stop-color: #bdbdbd; }
+    .contour { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .edge { fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; opacity: .66; }
+    .crease { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; opacity: .40; }
+    .fine { fill: none; stroke: currentColor; stroke-width: .9; stroke-linecap: round; opacity: .22; }
+    .glint { fill: none; stroke: #fff; stroke-linecap: round; opacity: .19; }
+    .nail { fill: url(#nail); stroke: currentColor; stroke-width: 1.25; stroke-opacity: .55; }
+    @media (prefers-color-scheme: dark) {
+      svg { color: #e0e0e0; }
+      .light { stop-color: #626262; }
+      .mid { stop-color: #454545; }
+      .shadow { stop-color: #282828; }
+      .rear-light { stop-color: #505050; }
+      .rear-dark { stop-color: #303030; }
+      .nail-light { stop-color: #858585; }
+      .nail-dark { stop-color: #494949; }
+      .glint { opacity: .15; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="skin" x1=".15" y1=".05" x2=".85" y2=".9" gradientUnits="objectBoundingBox">
+      <stop class="light" offset="0"/><stop class="mid" offset=".53"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="backFinger" x1=".15" y1=".15" x2=".9" y2=".8" gradientUnits="objectBoundingBox">
+      <stop class="rear-light"/><stop class="rear-dark" offset="1"/>
+    </linearGradient>
+    <linearGradient id="nail" x1=".2" y1="0" x2=".8" y2="1" gradientUnits="objectBoundingBox">
+      <stop class="nail-light"/><stop class="nail-dark" offset="1"/>
+    </linearGradient>
+    <radialGradient id="volume">
+      <stop stop-color="white" stop-opacity=".33"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shade">
+      <stop stop-color="#000" stop-opacity=".21"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fold" x1=".15" y1="0" x2=".85" y2="1">
+      <stop class="light"/><stop class="mid" offset=".5"/><stop class="shadow" offset="1"/>
+    </linearGradient>
+    <linearGradient id="pocket" x1=".2" y1="0" x2=".65" y2="1">
+      <stop class="rear-dark"/><stop class="rear-light" offset="1"/>
+    </linearGradient>
+    <radialGradient id="deep"><stop stop-color="#111" stop-opacity=".66"/><stop offset="1" stop-color="#111" stop-opacity="0"/></radialGradient>
+    <path id="outline" d="M-36 530 C-21 477 -7 432 14 391 C36 349 48 311 65 268 C84 220 102 168 127 126 C139 103 149 79 163 62 C177 44 193 39 215 43 C234 46 245 47 257 45 C286 42 321 49 356 57 C383 63 416 67 437 80 C450 87 454 101 449 126 C459 123 470 131 474 143 C478 155 469 166 462 178 C472 202 469 222 458 243 C448 271 426 304 406 332 C379 368 350 397 318 421 C290 442 265 456 236 469 C217 483 203 504 188 530 Z"/>
+    <clipPath id="clip"><use xlink:href="#outline"/></clipPath>
+  </defs>
+  <g transform="translate(49 61.6) scale(.88)">
+    <use xlink:href="#outline" fill="url(#skin)"/>
+    <g clip-path="url(#clip)">
+      <!-- Volumes du dos de la main et du poignet. -->
+      <ellipse cx="181" cy="272" rx="98" ry="176" transform="rotate(27 181 272)" fill="url(#volume)"/>
+      <ellipse cx="277" cy="368" rx="71" ry="127" transform="rotate(39 277 368)" fill="url(#shade)"/>
+      <ellipse cx="67" cy="414" rx="52" ry="151" transform="rotate(23 67 414)" fill="url(#shade)"/>
+      <ellipse cx="392" cy="252" rx="58" ry="108" transform="rotate(32 392 252)" fill="url(#volume)"/>
+      <!-- Creux de la prise, avec le doigt replié visible au fond. -->
+      <path d="M274 112 C291 118 306 126 329 136 C354 143 387 141 423 123 C434 142 442 158 430 183 C415 211 384 226 354 231 C320 237 287 221 271 201 C257 184 259 145 274 112Z" fill="url(#pocket)"/>
+      <ellipse cx="352" cy="167" rx="78" ry="52" fill="url(#deep)"/>
+      <path d="M315 183 C327 169 347 166 365 170 C389 174 404 187 417 198 C401 215 381 222 356 222 C337 221 318 214 312 202 C308 195 310 188 315 183Z" fill="url(#fold)" stroke="currentColor" stroke-opacity=".30" stroke-width="1.3"/>
+      <ellipse cx="361" cy="188" rx="42" ry="18" fill="url(#volume)"/>
+      <!-- Pouce : extrémité visible sur le côté, puis base rejoignant la main. -->
+      <path d="M427 151 C436 140 443 129 450 126 C459 123 470 132 474 144 C477 155 468 167 462 178 C468 196 471 218 457 245 C445 273 421 302 407 313 C420 282 427 259 428 239 C428 220 419 207 410 196 C422 185 426 169 427 151Z" fill="url(#skin)"/>
+      <path class="nail" d="M450 133 C457 130 466 137 468 143 Q472 153 464 162 Q459 156 451 150 Q447 143 450 133Z"/>
+      <path class="edge" d="M432 158 C442 165 455 171 462 178 C474 202 466 222 458 239"/>
+      <path class="crease" d="M439 183 Q451 191 454 205 M440 190 Q449 197 450 207"/>
+      <!-- Index replié sur le devant du poing. La limite supérieure est le contour réel. -->
+      <path d="M251 47 C281 42 321 49 356 57 C383 63 416 67 437 80 C451 87 453 101 449 126 C443 151 432 177 414 198 C400 193 383 179 364 169 C351 162 339 160 328 157 C319 142 314 124 308 111 C299 90 278 65 251 47Z" fill="url(#fold)"/>
+      <ellipse cx="380" cy="94" rx="71" ry="34" transform="rotate(13 380 94)" fill="url(#volume)"/>
+      <ellipse cx="414" cy="161" rx="26" ry="48" transform="rotate(29 414 161)" fill="url(#shade)"/>
+      <path class="edge" d="M449 126 C442 152 431 177 414 198 C399 191 384 179 364 169 C351 163 341 160 328 157"/>
+      <path class="crease" d="M435 115 C423 128 407 140 388 146 C366 152 349 153 334 156"/>
+      <path class="fine" d="M429 121 C415 134 400 140 385 145 M421 128 Q405 139 394 141"/>
+      <!-- Repli de l'articulation proximale, à gauche du creux. -->
+      <path d="M215 43 C235 46 247 49 258 46 C285 54 301 76 312 100 C322 119 329 142 328 157 C321 168 310 180 312 192 C314 207 329 218 345 223 C322 226 302 217 282 204 C253 184 241 161 232 135 C224 114 222 86 215 43Z" fill="url(#skin)"/>
+      <ellipse cx="275" cy="112" rx="31" ry="79" transform="rotate(-23 275 112)" fill="url(#volume)"/>
+      <path class="edge" d="M328 157 C319 169 309 181 312 193 C316 207 329 218 345 223"/>
+      <path class="crease" d="M271 120 C278 145 294 170 312 188 M285 112 C288 134 301 155 314 169 M306 113 Q316 139 321 150"/>
+      <path class="fine" d="M276 135 Q285 156 296 169 M293 119 Q301 142 309 151"/>
+      <!-- Pli continu entre la base du pouce et les doigts. -->
+      <path class="crease" d="M250 192 C269 212 288 226 313 230 Q330 234 345 229"/>
+      <path class="fine" d="M256 204 Q285 234 317 236 M346 231 Q378 231 402 214"/>
+      <!-- Relief de la première articulation et lignes de tendons, discrètes. -->
+      <path class="glint" stroke-width="3.2" d="M132 133 C150 99 168 67 192 59 M267 53 Q307 49 341 60 M339 175 Q362 168 381 178"/>
+      <path class="fine" d="M131 174 C145 129 163 98 180 84 M114 285 C134 227 159 185 185 155 M164 345 C197 308 223 286 250 273"/>
+      <path class="glint" stroke-width="2" d="M99 312 C124 249 149 208 176 178 M454 136 Q461 136 465 145"/>
+    </g>
+    <use xlink:href="#outline" class="contour"/>
+  </g>
+</svg>

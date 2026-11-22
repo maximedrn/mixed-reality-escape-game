@@ -35,7 +35,7 @@ La disposition peut changer d'une partie à l'autre, **sans liste de configurati
 
 ## 3. Objets interactifs virtuels
 
-Les objets de gameplay existent uniquement dans Unity. Ils peuvent être sélectionnés, déplacés, tournés ou activés selon les interactions retenues. Ils suivent le repère de la scène : **aucun marqueur physique n'est nécessaire pour chacun d'eux**.
+Les objets de gameplay existent uniquement dans Unity. Leur [manipulation par le joueur](gameplay/items/player_interactions.md) est décrite séparément. Ils suivent le repère de la scène : **aucun marqueur physique n'est nécessaire pour chacun d'eux**.
 
 Les définitions, capacités, collisions et événements sont décrits dans la [documentation des items](gameplay/items/README.md).
 
