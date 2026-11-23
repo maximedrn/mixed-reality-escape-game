@@ -13,7 +13,6 @@ from src.utils.constants import (
     GLTF,
     HEX_DIGITS,
     METERS_UNIT,
-    MOTION_SCHEMA_VERSION,
     POSITIVE_Z_FORWARD_AXIS,
     Y_UP_AXIS,
 )
@@ -46,8 +45,8 @@ class ClipInfo(FrozenModel):
 
     name: str = Field(min_length=1)
     fps: int = Field(gt=0, le=MAX_FPS)
-    loop: bool = True
-    in_place: Literal[True] = True
+    loop: bool
+    in_place: Literal[True]
 
 
 class CoordinateValue(StrEnum):
@@ -62,10 +61,10 @@ class CoordinateValue(StrEnum):
 class CoordinateSystem(FrozenModel):
     """Require the coordinate convention understood by the GLB builder."""
 
-    space: Literal[CoordinateValue.SPACE] = CoordinateValue.SPACE
-    units: Literal[CoordinateValue.UNITS] = CoordinateValue.UNITS
-    up: Literal[CoordinateValue.UP] = CoordinateValue.UP
-    forward: Literal[CoordinateValue.FORWARD] = CoordinateValue.FORWARD
+    space: Literal[CoordinateValue.SPACE]
+    units: Literal[CoordinateValue.UNITS]
+    up: Literal[CoordinateValue.UP]
+    forward: Literal[CoordinateValue.FORWARD]
 
 
 class Marker(FrozenModel):
@@ -82,10 +81,8 @@ class RigPose(FrozenModel):
     rotations_xyzw: list[list[tuple[float, float, float, float]]] = Field(
         min_length=2
     )
-    translation_bone_names: list[str] = Field(default_factory=list[str])
-    translations_xyz: list[list[tuple[float, float, float]]] = Field(
-        default_factory=list[list[tuple[float, float, float]]]
-    )
+    translation_bone_names: list[str]
+    translations_xyz: list[list[tuple[float, float, float]]]
 
     # Pydantic's MyPy plugin requires the validator mode to remain lexical.
     @model_validator(mode="after")  # noqa: WPS226
@@ -118,7 +115,7 @@ class Motion(FrozenModel):
     field.
     """
 
-    schema_version: Literal[1, 2] = MOTION_SCHEMA_VERSION
+    schema_version: Literal[1, 2]
     clip: ClipInfo
     coordinates: CoordinateSystem
     source_rig_signature: str = Field(
@@ -127,7 +124,7 @@ class Motion(FrozenModel):
     markers: list[Marker] = Field(min_length=1)
     positions_xyz: list[list[tuple[float, float, float]]] = Field(min_length=2)
     rig_pose: RigPose
-    ground_offset_y: float = 0.0
+    ground_offset_y: float
 
     @model_validator(mode="after")
     def validate_frames(self) -> Self:

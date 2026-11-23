@@ -13,8 +13,11 @@ svg_size_mm = 100.0
 profile = "a4_grid"
 qr_size_mm = 100.0
 padding_mm = 5.0
+start_index = 0
 show_text = true
 draw_guides = false
+shift_x_mm = 0.0
+shift_y_mm = 0.0
 
 [labels.grid]
 page_width_mm = 210.0

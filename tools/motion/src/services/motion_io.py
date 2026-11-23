@@ -14,6 +14,7 @@ from src.models.gltf import Node
 from src.models.motion import (
     ClipInfo,
     CoordinateSystem,
+    CoordinateValue,
     Marker,
     Motion,
     RigPose,
@@ -41,7 +42,6 @@ from src.utils.messages import (
     ROOT_MATRIX_UNSUPPORTED_ERROR,
 )
 
-DEFAULT_FPS: Final[int] = 24
 ROOT_OFFSET_TOLERANCE: Final[float] = 1e-05
 MAX_MARKER_ERROR_M: Final[float] = 0.001
 
@@ -64,7 +64,7 @@ def export_motion(
     animation_file: Path,
     base_file: Path,
     output_file: Path,
-    fps: int = DEFAULT_FPS,
+    fps: int,
 ) -> Motion:
     """Convert the validated in-place GLB into a portable JSON clip.
 
@@ -132,7 +132,12 @@ def export_motion(
     motion: Motion = Motion(
         schema_version=MOTION_SCHEMA_VERSION,
         clip=ClipInfo(name=name, fps=fps, loop=looping, in_place=True),
-        coordinates=CoordinateSystem(),
+        coordinates=CoordinateSystem(
+            space=CoordinateValue.SPACE,
+            units=CoordinateValue.UNITS,
+            up=CoordinateValue.UP,
+            forward=CoordinateValue.FORWARD,
+        ),
         source_rig_signature=base_glb.signature(MOTION_SCHEMA_VERSION),
         markers=markers,
         positions_xyz=positions.tolist(),

@@ -1,8 +1,8 @@
 {
-  "name": "Tohannic.Interactions",
-  "rootNamespace": "Tohannic.Interactions",
+  "name": "Project.Interactions",
+  "rootNamespace": "Project.Interactions",
   "references": [
-    "Tohannic.Core",
-    "Tohannic.Spatial"
+    "Project.Core",
+    "Project.Spatial"
   ]
 }

@@ -1,38 +1,15 @@
 {
-    "name": "Tohannic.Tests.PlayMode",
+    "name": "Project.Tests.PlayMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Tohannic.Core",
-        "Tohannic.Spatial",
-        "Tohannic.Interactions"
+        "Project.Core",
+        "Project.Spatial",
+        "Project.Interactions"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "Android",
-        "Editor",
-        "EmbeddedLinux",
-        "iOS",
-        "Kepler",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "macOSStandalone",
-        "Switch2",
-        "Switch",
-        "PS4",
-        "PS5",
-        "QNX",
-        "tvOS",
-        "WSA",
-        "VisionOS",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64",
-        "GameCoreXboxOne",
-        "XboxOne",
-        "GameCoreScarlett"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [

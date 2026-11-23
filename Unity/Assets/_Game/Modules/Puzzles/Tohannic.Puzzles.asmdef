@@ -1,8 +1,8 @@
 {
-  "name": "Tohannic.Puzzles",
-  "rootNamespace": "Tohannic.Puzzles",
+  "name": "Project.Puzzles",
+  "rootNamespace": "Project.Puzzles",
   "references": [
-    "Tohannic.Core",
-    "Tohannic.Interactions"
+    "Project.Core",
+    "Project.Interactions"
   ]
 }

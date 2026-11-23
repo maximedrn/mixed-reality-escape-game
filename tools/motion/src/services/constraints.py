@@ -193,7 +193,7 @@ def hinge_direction(rig: Glb, name: str, policy: HingeJointLimit) -> float:
         [[rest.as_quat()], [bent.as_quat()]], dtype=float64
     )
     positions: NDArray[float64] = marker_trajectories(
-        rig, [child], [name], samples
+        rig, [child], [name], samples, None, None
     )
     direction: Vector3 = policy.bend_direction
     response: float = float(dot(positions[1, 0] - positions[0, 0], direction))

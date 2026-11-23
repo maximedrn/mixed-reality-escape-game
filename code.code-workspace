@@ -1,14 +1,11 @@
 {
   "folders": [
-    {"name": "Root", "path": "."},
-    {"name": "Unity", "path": "Unity"},
-    {"name": "Markers", "path": "tools/markers"},
-    {"name": "Scanspace", "path": "tools/scanspace"},
-    {"name": "FreeMoCap Batch", "path": "tools/freemocap-batch"},
-    {"name": "Motion", "path": "tools/motion"},
-    {"name": "Lint", "path": "tools/lint"}
+    {"name": "root", "path": "."},
+    {"name": "unity", "path": "Unity"},
+    {"name": "tools", "path": "tools"},
   ],
   "settings": {
+    "flake8.importStrategy": "fromEnvironment",
     "mypy-type-checker.importStrategy": "fromEnvironment"
   }
 }

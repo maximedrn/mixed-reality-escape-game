@@ -1,7 +1,7 @@
 {
-  "name": "Tohannic.Spatial",
-  "rootNamespace": "Tohannic.Spatial",
+  "name": "Project.Spatial",
+  "rootNamespace": "Project.Spatial",
   "references": [
-    "Tohannic.Core"
+    "Project.Core"
   ]
 }

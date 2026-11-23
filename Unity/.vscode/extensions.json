@@ -1,5 +1,7 @@
 {
-    "recommendations": [
-      "visualstudiotoolsforunity.vstuc"
-    ]
+  "recommendations": [
+    "visualstudiotoolsforunity.vstuc",
+    "csharpier.csharpier-vscode",
+    "redhat.vscode-yaml"
+  ]
 }

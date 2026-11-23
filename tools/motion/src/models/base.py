@@ -15,6 +15,5 @@ class FrozenModel(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(
         frozen=True,
         extra=FORBID,
-        validate_default=True,
         allow_inf_nan=False,
     )

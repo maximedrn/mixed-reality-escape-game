@@ -3,9 +3,6 @@
 Thumbs.db
 .history/
 
-# Generated printable markers.
-/assets/markers/exports/
-
 # LaTeX intermediate files.
 *.aux
 *.bbl
@@ -22,16 +19,63 @@ Thumbs.db
 indent.log
 
 # Unity generated files.
+/Unity/.utmp/
 /Unity/[Ll]ibrary/
 /Unity/[Tt]emp/
 /Unity/[Oo]bj/
 /Unity/[Ll]ogs/
-/Unity/[Uu]serSettings/
-/Unity/[Mm]emoryCaptures/
+/Unity/[Uu]ser[Ss]ettings/
+/Unity/[Mm]emory[Cc]aptures/
+/Unity/[Rr]ecordings/
 /Unity/[Bb]uild/
 /Unity/[Bb]uilds/
-/Unity/.gradle/
-/Unity/Assets/#Meta/session_id.id
+/Unity/**/.gradle/
+/Unity/**/sysinfo.txt
+/Unity/**/mono_crash.*
+/Unity/**/*_BackUpThisFolder_ButDontShipItWithYourGame/
+/Unity/**/*_BurstDebugInformation_DoNotShip/
+/Unity/**/*.apk
+/Unity/**/*.aab
+/Unity/**/*.obb
+/Unity/**/*.app/
+/Unity/Assets/_Recovery/
+/Unity/Assets/_Recovery.meta
+/Unity/Assets/[Ss]ceneDependencyCache*
+/Unity/Assets/Plugins/Android/**/*.gradle.backup*
+/Unity/Assets/Resources/PerformanceTestRunInfo.json*
+/Unity/Assets/Resources/PerformanceTestRunSettings.json*
+/Unity/Assets/InitTestScene*.unity
+/Unity/Assets/InitTestScene*.unity.meta
+/Unity/Assets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers/
+/Unity/Assets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+/Unity/Assets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
+/Unity/Assets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
+/Unity/UIElementsSchema/
+
+# Meta XR generated captures and local DevAgent credentials.
+/Unity/Assets/#Meta/
+/Unity/Assets/#Meta.meta
+/Unity/Assets/Resources/DevAgentSettings.asset
+/Unity/Assets/Resources/DevAgentSettings.asset.meta
+
+# Local credentials and Unity signing files.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+/Unity/**/*.keystore
+/Unity/**/*.keystore.meta
+/Unity/**/*.jks
+/Unity/**/*.jks.meta
+/Unity/**/*.p12
+/Unity/**/*.p12.meta
+/Unity/**/*.pfx
+/Unity/**/*.pfx.meta
+/Unity/**/keystore.properties
+/Unity/**/keystore.properties.meta
+/Unity/**/local.properties
+/Unity/**/local.properties.meta
 
 # Generated IDE files.
 *.csproj
@@ -39,6 +83,8 @@ indent.log
 *.slnx
 *.suo
 *.user
+*.userprefs
+.vs/
 .idea/
 
 # Python.

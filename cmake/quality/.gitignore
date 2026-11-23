@@ -1,0 +1,6 @@
+# Build artifacts.
+/bin/
+/obj/
+
+# Include code quality file.
+!/Project.CodeQuality.csproj

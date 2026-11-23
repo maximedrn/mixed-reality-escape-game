@@ -1,8 +1,8 @@
 {
-  "name": "Tohannic.Monster",
-  "rootNamespace": "Tohannic.Monster",
+  "name": "Project.Monster",
+  "rootNamespace": "Project.Monster",
   "references": [
-    "Tohannic.Core",
-    "Tohannic.Spatial"
+    "Project.Core",
+    "Project.Spatial"
   ]
 }

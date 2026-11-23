@@ -1,0 +1,5 @@
+input = "room.glb"
+scan = "room.scanspace"
+output = "room-cleaned.glb"
+window_overlap_m = 0.008
+window_depth_m = 0.105

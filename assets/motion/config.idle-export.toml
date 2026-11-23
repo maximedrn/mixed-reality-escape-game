@@ -1,0 +1,4 @@
+input = "../../artifacts/motion/idle.glb"
+model = "monster/models/rigged.glb"
+output = "../../artifacts/motion/idle.json"
+fps = 24

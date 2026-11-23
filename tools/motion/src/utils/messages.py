@@ -27,12 +27,10 @@ TRANSFORM_KEYS_ERROR: Final[str] = (
 
 DUPLICATE_ANIMATION_NAMES_ERROR: Final[str] = "Animation names must be unique"
 DUPLICATE_OUTPUTS_ERROR: Final[str] = "Animation outputs must be distinct"
-UNKNOWN_ANIMATION_ERROR: Final[str] = "Animation not configured: {name}"
-AMBIGUOUS_OVERRIDE_ERROR: Final[str] = (
-    "Select one animation with --name before overriding "
-    "--animation or --output"
+SINGLE_CLIP_PATHS_REQUIRED: Final[str] = (
+    "A single-clip configuration requires inputs.animation and outputs.glb."
 )
-SELECT_ANIMATION_HELP: Final[str] = "Build only the configured animation name"
+CONFIG_HELP: Final[str] = "TOML configuration file."
 CONSTRAINT_SAMPLES_MESSAGE: Final[str] = (
     "Joint limits baked into {count} rotation samples"
 )
@@ -127,7 +125,6 @@ MOTION_VALID_MESSAGE: Final[str] = (
 )
 MULTIPLE_NODE_PARENTS_ERROR: Final[str] = "glTF node has multiple parents"
 NOT_A_GLB_FILE_ERROR: Final[str] = "Not a GLB file: {path}"
-OUTPUT_ANIMATED_GLB_PATH_HELP: Final[str] = "Output animated GLB path"
 OUTPUT_ANIMATION_COUNT_ERROR: Final[str] = (
     "Output GLB does not contain exactly one animation"
 )

@@ -7,6 +7,11 @@ confidence_threshold = 0.004
 [output]
 directory = "raw"
 
+[processing]
+timeout_seconds = 3600
+overwrite = false
+continue_on_error = false
+
 [[animations]]
 name = "alert_1"
 videos = [

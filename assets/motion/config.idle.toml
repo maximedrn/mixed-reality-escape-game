@@ -1,0 +1,11 @@
+[inputs]
+model = "monster/models/rigged.glb"
+constraints = "monster/constraints.json"
+
+[outputs]
+format = "glb"
+
+[[animations]]
+name = "idle"
+input = "monster/animation/examples/idle.json"
+output = "../../artifacts/motion/idle.glb"

@@ -270,7 +270,7 @@ class Glb:
             raise ValueError(EVERY_SKIN_JOINT_MUST_HAVE_ERROR)
         return [name for name in names if name is not None]
 
-    def signature(self: Self, schema_version: Literal[1, 2] = 1) -> str:
+    def signature(self: Self, schema_version: Literal[1, 2]) -> str:
         """Hash rest joints with versioned numeric serialization.
 
         Version 2 serializes all transform components as floating point.
@@ -561,7 +561,7 @@ def sampled_animation(
 
 
 def sampled_translations(
-    glb: Glb, fps: int, ground_offset_y: float = 0.0
+    glb: Glb, fps: int, ground_offset_y: float
 ) -> tuple[list[str], NDArray[float64], int]:
     """Read absolute local translations, optionally removing root grounding.
 
@@ -602,8 +602,8 @@ def marker_trajectories(
     marker_bones: list[str],
     bone_names: list[str],
     rotation_frames: NDArray[float64],
-    translation_bone_names: list[str] | None = None,
-    translation_frames: NDArray[float64] | None = None,
+    translation_bone_names: list[str] | None,
+    translation_frames: NDArray[float64] | None,
 ) -> NDArray[float64]:
     """Evaluate glTF joint-head XYZ for every frame in metres.
 
@@ -649,7 +649,7 @@ def marker_trajectories(
         visit(root)
 
     base_transforms: list[NDArray[float64]] = [
-        _local_transform(node) for node in nodes
+        _local_transform(node, None) for node in nodes
     ]
     animated_node_ids: list[int] = [indices[name] for name in bone_names]
     marker_node_ids: list[int] = [indices[name] for name in marker_bones]
@@ -808,7 +808,7 @@ def _append_transform_channels(
 
 
 def _local_transform(
-    node: Node, rotation: Rotation | None = None
+    node: Node, rotation: Rotation | None
 ) -> NDArray[float64]:
     """Build a local affine transform, preserving static scale and matrices.
 
