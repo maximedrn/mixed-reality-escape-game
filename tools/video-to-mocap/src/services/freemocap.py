@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from atexit import register
+from functools import cache
 from importlib import import_module
 from multiprocessing import Value
 from multiprocessing.sharedctypes import Synchronized
@@ -9,7 +11,7 @@ from pathlib import Path
 from threading import Event, Thread
 from time import monotonic, perf_counter, sleep
 from types import ModuleType
-from typing import Any, Protocol, cast
+from typing import TYPE_CHECKING, Any, Protocol, cast
 
 from src.models.runtime import Batch, Job
 from src.utils.constants import (
@@ -17,6 +19,7 @@ from src.utils.constants import (
     BINARY_FLAG_TYPE,
     CALIBRATION_FILE,
     FREEMOCAP_CONFIG_MODULE,
+    FREEMOCAP_LOG_CONSUMER_MODULE,
     FREEMOCAP_MANAGER_MODULE,
     MIN_CAMERAS,
     MULTIPROCESSING_QUEUES_MODULE,
@@ -27,6 +30,7 @@ from src.utils.constants import (
     SKELLYCAM_INFO_MODULE,
     SKELLYCAM_MANAGED_MODULE,
     SKELLYCAM_WORKERS_MODULE,
+    SKELLYLOGS_MODULE,
     STATUS_FAILED,
 )
 from src.utils.messages import (
@@ -36,6 +40,9 @@ from src.utils.messages import (
     PROCESS_TIMED_OUT,
     PROGRESS,
 )
+
+if TYPE_CHECKING:
+    from multiprocessing.queues import Queue
 
 
 class ProgressMessage(Protocol):  # pylint: disable=too-few-public-methods
@@ -84,6 +91,7 @@ class Pipeline(Protocol):
         ...
 
 
+@cache
 def resolve_api() -> tuple[Any, Any, Any, Any, Any]:
     """Import posthoc classes from FreeMoCap V2 only when processing.
 
@@ -97,6 +105,15 @@ def resolve_api() -> tuple[Any, Any, Any, Any, Any]:
         info: ModuleType = import_module(SKELLYCAM_INFO_MODULE)
         worker: ModuleType = import_module(SKELLYCAM_WORKERS_MODULE)
         managed: ModuleType = import_module(SKELLYCAM_MANAGED_MODULE)
+        log_consumer: ModuleType = import_module(FREEMOCAP_LOG_CONSUMER_MODULE)
+        skellylogs: ModuleType = import_module(SKELLYLOGS_MODULE)
+        log_queue: Queue[dict[str, object]] = (
+            skellylogs.get_websocket_log_queue()
+        )
+        # Headless runs have no frontend to flush after the consumer stops.
+        log_queue.cancel_join_thread()
+        log_consumer.start_log_queue_consumer()
+        register(log_consumer.stop_log_queue_consumer)
         manager: ModuleType = import_module(FREEMOCAP_MANAGER_MODULE)
         config: ModuleType = import_module(FREEMOCAP_CONFIG_MODULE)
     except ImportError as error:

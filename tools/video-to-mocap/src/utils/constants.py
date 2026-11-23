@@ -41,6 +41,9 @@ FREEMOCAP_MANAGER_MODULE: Final[str] = (
 FREEMOCAP_CONFIG_MODULE: Final[str] = (
     "freemocap.core.tasks.mocap.mocap_task_config"
 )
+FREEMOCAP_LOG_CONSUMER_MODULE: Final[str] = (
+    "freemocap.system.logging.log_queue_consumer"
+)
 MULTIPROCESSING_QUEUES_MODULE: Final[str] = "multiprocessing.queues"
 SKELLYCAM_INFO_MODULE: Final[str] = (
     "skellycam.core.recorders.videos.recording_info"
@@ -51,6 +54,7 @@ SKELLYCAM_WORKERS_MODULE: Final[str] = (
 SKELLYCAM_MANAGED_MODULE: Final[str] = (
     "skellycam.core.ipc.process_management.managed_worker"
 )
+SKELLYLOGS_MODULE: Final[str] = "skellylogs"
 CV2_MODULE: Final[str] = "cv2"
 PROCESS_MODE: Final[str] = "PROCESS"
 MIN_CAMERAS: Final[int] = 2
