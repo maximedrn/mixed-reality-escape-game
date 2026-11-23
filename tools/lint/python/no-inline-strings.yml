@@ -1,12 +1,11 @@
 id: no-inline-strings
 language: Python
 severity: error
-message: Extract this literal into utils/constants.py, utils/messages.py or config/defaults.py.
+message: Extract this literal into utils/constants.py or utils/messages.py.
 ignores:
   - "**/tests/**"
   - "**/utils/constants.py"
   - "**/utils/messages.py"
-  - "**/config/defaults.py"
 rule:
   all:
     - kind: string

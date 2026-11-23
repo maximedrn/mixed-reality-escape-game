@@ -1,0 +1,15 @@
+{
+  "pylint.importStrategy": "fromEnvironment",
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "flake8.importStrategy": "fromEnvironment",
+  "flake8.severity": {
+    "IMR222": "Error",
+    "TYP001": "Error",
+    "TYP002": "Error",
+    "WPS432": "Error",
+    "WPS226": "Error"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
+}

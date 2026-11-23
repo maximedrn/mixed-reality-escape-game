@@ -20,8 +20,8 @@ class BuildRequest(FrozenModel):
     model: FilePath
     animation: FilePath
     output_glb: Path
-    constraints: FilePath | None = None
-    name: str | None = Field(default=None, min_length=1)
+    constraints: FilePath | None
+    name: str | None = Field(min_length=1)
 
     @model_validator(mode="after")
     def validate_destinations(self) -> Self:
@@ -47,7 +47,7 @@ class BuildResult(FrozenModel):
     """Return only output files that actually exist after publication."""
 
     glb: FilePath
-    constrained_samples: int = Field(default=0, ge=0)
+    constrained_samples: int = Field(ge=0)
 
 
 class PreparedBuild(FrozenModel):
@@ -55,4 +55,4 @@ class PreparedBuild(FrozenModel):
 
     request: BuildRequest
     motion: Motion
-    constrained_samples: int = Field(default=0, ge=0)
+    constrained_samples: int = Field(ge=0)

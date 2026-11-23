@@ -1,109 +1,74 @@
-"""Plan named clip exports and validate the whole batch before publication."""
+"""Plan clip exports and validate the whole batch before publication."""
 
 from pathlib import Path
 
 from src.config.settings import load_config, project_path
-from src.models.arguments import BuildArguments
 from src.models.build import BuildRequest, BuildResult, PreparedBuild
-from src.models.configuration import AnimationConfig, ProjectConfig
+from src.models.configuration import ProjectConfig
 from src.services.build import prepare_build, publish_build
 from src.utils.messages import (
-    AMBIGUOUS_OVERRIDE_ERROR,
     BUILD_DESTINATIONS_ERROR,
     DUPLICATE_OUTPUTS_ERROR,
-    UNKNOWN_ANIMATION_ERROR,
+    SINGLE_CLIP_PATHS_REQUIRED,
 )
 
 
-def build_project(options: BuildArguments) -> list[BuildResult]:
-    """Validate all selected inputs, then publish each verified GLB.
+def build_project(file: Path) -> list[BuildResult]:
+    """Validate all configured inputs, then publish each verified GLB.
 
-    :param options: Configuration path, optional clip name and path overrides.
-    :type options: BuildArguments
+    :param file: TOML file defining the rig, clips and GLB destinations.
+    :type file: Path
     :return: Published outputs in configuration order.
     :rtype: list[BuildResult]
     """
-    requests: list[BuildRequest] = plan_builds(options)
+    requests: list[BuildRequest] = plan_builds(file)
     prepared: list[PreparedBuild] = [
         prepare_build(request) for request in requests
     ]
     return [publish_build(item) for item in prepared]
 
 
-def plan_builds(options: BuildArguments) -> list[BuildRequest]:
-    """Resolve selected clips and reject destructive destination collisions.
+def plan_builds(file: Path) -> list[BuildRequest]:
+    """Resolve configured clips and reject destructive destination collisions.
 
-    :param options: CLI configuration and explicit overrides.
-    :type options: BuildArguments
-    :return: Existing inputs and distinct output paths for every selected clip.
+    :param file: TOML file defining the rig, clips and GLB destinations.
+    :type file: Path
+    :return: Existing inputs and distinct output paths for every clip.
     :rtype: list[BuildRequest]
     """
-    file: Path = options.config.expanduser().resolve()
-    config: ProjectConfig = load_config(file)
-    animations: list[AnimationConfig] = config.animations
-    if animations and options.name is not None:
-        animations = [
-            animation
-            for animation in animations
-            if animation.name == options.name
-        ]
-        if not animations:
-            raise ValueError(UNKNOWN_ANIMATION_ERROR.format(name=options.name))
-    if len(animations) > 1 and (
-        options.animation is not None or options.output is not None
-    ):
-        raise ValueError(AMBIGUOUS_OVERRIDE_ERROR)
-    model: Path = (
-        (options.model or project_path(file, config.inputs.model))
-        .expanduser()
-        .resolve()
-    )
+    file = file.expanduser().resolve()
+    config: ProjectConfig = load_config(file, ProjectConfig)
+    model: Path = project_path(file, config.inputs.model)
     constraints: Path | None = (
-        project_path(file, config.inputs.constraints).resolve()
+        project_path(file, config.inputs.constraints)
         if config.inputs.constraints is not None
         else None
     )
-    requests: list[BuildRequest] = []
-    animation: AnimationConfig
-    if animations:
-        for animation in animations:
-            requests.append(
-                BuildRequest(
-                    model=model,
-                    constraints=constraints,
-                    name=animation.name,
-                    animation=(
-                        options.animation
-                        or project_path(file, animation.input)
-                    )
-                    .expanduser()
-                    .resolve(),
-                    output_glb=(
-                        options.output or project_path(file, animation.output)
-                    )
-                    .expanduser()
-                    .resolve(),
-                )
-            )
-    else:
-        requests.append(
+    requests: list[BuildRequest]
+    if config.animations:
+        requests = [
             BuildRequest(
                 model=model,
                 constraints=constraints,
-                name=options.name,
-                animation=(
-                    options.animation
-                    or project_path(file, config.inputs.animation)
-                )
-                .expanduser()
-                .resolve(),
-                output_glb=(
-                    options.output or project_path(file, config.outputs.glb)
-                )
-                .expanduser()
-                .resolve(),
+                name=animation.name,
+                animation=project_path(file, animation.input),
+                output_glb=project_path(file, animation.output),
             )
-        )
+            for animation in config.animations
+        ]
+    else:
+        if config.inputs.animation is None or config.outputs.glb is None:
+            raise ValueError(SINGLE_CLIP_PATHS_REQUIRED)
+        requests = [
+            BuildRequest(
+                model=model,
+                constraints=constraints,
+                name=None,
+                animation=project_path(file, config.inputs.animation),
+                output_glb=project_path(file, config.outputs.glb),
+            )
+        ]
+
     destinations: list[str] = [
         str(request.output_glb).casefold() for request in requests
     ]
@@ -113,10 +78,6 @@ def plan_builds(options: BuildArguments) -> list[BuildRequest]:
     if constraints is not None:
         sources.add(str(constraints).casefold())
     sources.update(str(request.animation).casefold() for request in requests)
-    sources.update(
-        str(project_path(file, animation.input).resolve()).casefold()
-        for animation in config.animations
-    )
     if sources.intersection(destinations):
         raise ValueError(BUILD_DESTINATIONS_ERROR)
     return requests

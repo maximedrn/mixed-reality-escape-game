@@ -32,7 +32,7 @@ class LimitMode(StrEnum):
 class LocalJointLimit(FrozenModel):
     """Bound extrinsic XYZ Euler angles relative to the bind pose."""
 
-    axis_mode: Literal[LimitMode.LOCAL] = LimitMode.LOCAL
+    axis_mode: Literal[LimitMode.LOCAL]
     min_deg: tuple[Angle, Angle, Angle]
     max_deg: tuple[Angle, Angle, Angle]
     group: str | None = None
@@ -56,14 +56,14 @@ class LocalJointLimit(FrozenModel):
 class HingeJointLimit(FrozenModel):
     """Calibrate flexion direction and bound twist and lateral motion."""
 
-    axis_mode: Literal[LimitMode.HINGE] = LimitMode.HINGE
+    axis_mode: Literal[LimitMode.HINGE]
     flexion_deg: PositiveAngle
     hyperextension_deg: PositiveAngle
     lateral_slack_deg: PositiveAngle
     hinge_axis: int = Field(ge=0, le=2)
     bend_direction: Vector3
-    twist_axis: int = Field(default=1, ge=0, le=2)
-    twist_deg: PositiveAngle = 0
+    twist_axis: int = Field(ge=0, le=2)
+    twist_deg: PositiveAngle
     group: str | None = None
 
     @model_validator(mode="after")
@@ -90,12 +90,12 @@ type JointLimit = Annotated[
 class ConstraintsConfig(FrozenModel):
     """Read joint limits alongside optional rig-authoring information."""
 
-    schema_version: Literal[1] = 1
+    schema_version: Literal[1]
     model: str | None = None
-    character: dict[str, JsonValue] = Field(default_factory=dict)
-    calibration: dict[str, JsonValue] = Field(default_factory=dict)
-    ik: dict[str, JsonValue] = Field(default_factory=dict)
-    limits: dict[str, JointLimit] = Field(default_factory=dict)
+    character: dict[str, JsonValue] | None = None
+    calibration: dict[str, JsonValue] | None = None
+    ik: dict[str, JsonValue] | None = None
+    limits: dict[str, JointLimit]
 
 
 class ConstraintResult(FrozenModel):

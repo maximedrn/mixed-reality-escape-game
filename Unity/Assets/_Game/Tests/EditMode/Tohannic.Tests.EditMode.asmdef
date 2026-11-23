@@ -1,12 +1,13 @@
 {
-    "name": "Tohannic.Tests.EditMode",
+    "name": "Project.Tests.EditMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Tohannic.Core",
-        "Tohannic.Puzzles",
-        "Tohannic.Monster"
+        "Project.Core",
+        "Project.GameFlow",
+        "Project.Puzzles",
+        "Project.Monster"
     ],
     "includePlatforms": [
         "Editor"

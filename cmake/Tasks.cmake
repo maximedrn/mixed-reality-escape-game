@@ -30,9 +30,6 @@ function(find_unity_solution OUTPUT)
     )
 
     if(NOT SOLUTIONS)
-        message(WARNING
-            "Unity solution not found. Skipping Roslyn analysis."
-        )
         set(${OUTPUT} "" PARENT_SCOPE)
         return()
     endif()
@@ -55,9 +52,11 @@ function(check_format)
 endfunction()
 
 function(lint)
-    find_unity_solution(SOLUTION)
+    run_dotnet(build "${CMAKE_CURRENT_LIST_DIR}/quality/Project.CodeQuality.csproj" --nologo)
 
+    find_unity_solution(SOLUTION)
     if(NOT SOLUTION)
+        message(STATUS "No Unity-generated solution: only the engine-independent C# was checked.")
         return()
     endif()
 
@@ -71,15 +70,8 @@ function(lint)
         list(APPEND OPTIONS --verbosity diagnostic)
     endif()
 
-    run_dotnet(
-        format style "${SOLUTION}"
-        ${OPTIONS}
-    )
-
-    run_dotnet(
-        format analyzers "${SOLUTION}"
-        ${OPTIONS}
-    )
+    run_dotnet(format style "${SOLUTION}" ${OPTIONS})
+    run_dotnet(format analyzers "${SOLUTION}" ${OPTIONS})
 endfunction()
 
 function(motion_setup)

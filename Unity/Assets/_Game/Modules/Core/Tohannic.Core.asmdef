@@ -1,5 +1,6 @@
 {
-  "name": "Tohannic.Core",
-  "rootNamespace": "Tohannic.Core",
-  "references": []
+  "name": "Project.Core",
+  "rootNamespace": "Project.Core",
+  "references": [],
+  "noEngineReferences": true
 }

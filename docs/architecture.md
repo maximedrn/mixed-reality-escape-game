@@ -106,7 +106,7 @@ Une fois la partie lancée, on ne redétecte pas en continu les tables dans le M
 | **Meta XR / MRUK**      | Suivi spatial et intégration de la pièce |
 | **ScanSpace**           | Première piste pour le scan 3D           |
 | **Blender**             | Nettoyage et création du décor           |
-| **`tools/markers`**     | Génération des QR codes                  |
+| **`tools/qr-markers`**  | Génération des QR codes                  |
 | **Unity AI Navigation** | Génération du NavMesh ; A* sur le graphe extrait est implémenté par notre code |
 
 Voir la [roadmap](roadmap.md) pour l'ordre d'implémentation.

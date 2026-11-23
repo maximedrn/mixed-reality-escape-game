@@ -3,21 +3,25 @@
 from pathlib import Path
 from tomllib import loads
 
-from src.models.configuration import ProjectConfig
+from src.models.base import FrozenModel
 from src.utils.constants import (
     TEXT_ENCODING,
 )
 
 
-def load_config(file: Path) -> ProjectConfig:
+def load_config[Config: FrozenModel](
+    file: Path, schema: type[Config]
+) -> Config:
     """Parse a project's TOML configuration with Pydantic validation.
 
     :param file: Configuration file with UTF-8 encoded TOML.
     :type file: Path
+    :param schema: Configuration model required by the operation.
+    :type schema: type[Config]
     :return: Validated project configuration.
-    :rtype: ProjectConfig
+    :rtype: Config
     """
-    return ProjectConfig.model_validate(loads(file.read_text(TEXT_ENCODING)))
+    return schema.model_validate(loads(file.read_text(TEXT_ENCODING)))
 
 
 def project_path(config_file: Path, value: Path) -> Path:
@@ -30,7 +34,4 @@ def project_path(config_file: Path, value: Path) -> Path:
     :return: A path independent of the process working directory.
     :rtype: Path
     """
-    value = value.expanduser()
-    if value.is_absolute():
-        return value
-    return config_file.resolve().parent / value
+    return (config_file.resolve().parent / value.expanduser()).resolve()

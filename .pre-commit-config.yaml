@@ -1,4 +1,3 @@
-
 repos:
   - repo: local
     hooks:
@@ -11,10 +10,9 @@ repos:
         stages: [pre-commit]
 
       - id: csharp-check
-        name: "C# | Check (CSharpier + Roslyn)"
+        name: "C# | Check (CSharpier + standard Roslyn analyzers)"
         entry: cmake -DTASK=check -P cmake/Tasks.cmake
         language: system
         pass_filenames: false
         always_run: true
         stages: [pre-commit]
-

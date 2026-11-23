@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Unity/Assets/_Game/Modules/*/Domain/**/*.cs" />
+    <Compile Include="../../Unity/Assets/_Game/Modules/*/Application/**/*.cs" />
+    <Compile Include="../../Unity/Assets/_Game/Modules/*/Ports/**/*.cs" />
+  </ItemGroup>
+</Project>

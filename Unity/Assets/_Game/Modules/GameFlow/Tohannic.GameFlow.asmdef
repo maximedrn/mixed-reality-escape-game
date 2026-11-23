@@ -1,9 +1,7 @@
 {
-  "name": "Tohannic.GameFlow",
-  "rootNamespace": "Tohannic.GameFlow",
+  "name": "Project.GameFlow",
+  "rootNamespace": "Project.GameFlow",
   "references": [
-    "Tohannic.Core",
-    "Tohannic.Puzzles",
-    "Tohannic.Monster"
+    "Project.Core"
   ]
 }

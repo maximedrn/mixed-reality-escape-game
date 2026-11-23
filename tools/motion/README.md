@@ -1,47 +1,54 @@
 # Humanoid Motion
 
-_Convert a humanoid rig and motion JSON files into animated GLBs, preserving the source geometry, skinning and textures._
+Build animated GLBs from a humanoid rig and motion JSON. The exporter preserves the source geometry, skinning and textures and verifies the resulting animation.
 
-## Prerequisites
+## Requirements
 
-- Python 3.12+.
-- [uv](https://docs.astral.sh/uv/) for dependencies and development commands.
+- Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
+- A humanoid rig in GLB format and a compatible motion JSON for each clip.
+- An animated GLB and its source rig when exporting motion JSON.
 
-## Development
+## Setup
 
-### 1. Install dependencies
+Run all commands from the repository root.
 
 ```bash
 uv sync --locked --project tools/motion
 ```
 
-### 2. Configure the inputs and output
+## Usage
 
-Edit [`config.toml`](../../assets/motion/config.toml): `[inputs]` defines the rig and optional joint constraints, `[outputs]` selects `format = "glb"`, and each `[[animations]]` entry defines a `name`, JSON `input` and GLB `output`. Paths are relative to this file.
+In [config.toml](../../assets/motion/config.toml), set the rig in `[inputs]`,
+the output format in `[outputs]`, and the name, input JSON and output GLB for
+each `[[animations]]` entry. TOML paths are relative to the configuration file.
 
-Motion JSON version 2 includes local translations (`translation_bone_names`, `translations_xyz`) alongside rotations. Version 1 remains readable; `export-json` writes version 2.
-
-### 3. Export the animated GLB
-
-```bash
-uv run --locked --project tools/motion motion build --config assets/motion/config.toml
-```
-
-List available commands with:
+The examples build [one clip](../../assets/motion/config.idle.toml), export it to
+[motion JSON at 24 FPS](../../assets/motion/config.idle-export.toml), then
+[validate the result](../../assets/motion/config.idle-validate.toml).
 
 ```bash
-uv run --locked --project tools/motion motion --help
+uv run --locked --project tools/motion motion build --config assets/motion/config.idle.toml
+uv run --locked --project tools/motion motion export-json --config assets/motion/config.idle-export.toml
+uv run --locked --project tools/motion motion validate --config assets/motion/config.idle-validate.toml
 ```
 
-### 4. Format and lint
+The build writes each `[[animations]]` entry to its configured destination.
+A single-clip configuration can also declare `inputs.animation` and `outputs.glb`.
+Motion JSON declares its schema version, coordinates, clip flags, ground
+offset and translation arrays. Use empty arrays for clips without translated
+joints.
+
+## Development
 
 ```bash
 uv run --locked --project tools/motion poe -C tools/motion format
 uv run --locked --project tools/motion poe -C tools/motion check
 ```
 
-### 5. Build the package
+## Build
+
+Build the source distribution and wheel in `tools/motion/dist/`.
 
 ```bash
-uv build --project tools/motion
+uv build tools/motion
 ```
