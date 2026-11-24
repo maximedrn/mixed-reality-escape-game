@@ -53,6 +53,7 @@ The project uses the following packages, managed through Unity Package Manager:
 - [Mixed Reality Utility Kit (MRUK)](https://developers.meta.com/horizon/develop/) — Scene understanding and room geometry.
 - [AI Navigation](https://docs.unity3d.com/Packages/com.unity.ai.navigation@latest) — NavMesh navigation.
 - [Unity Test Framework](https://docs.unity3d.com/Packages/com.unity.test-framework@latest) — EditMode and PlayMode testing.
+- [SQLite-net](https://github.com/gilzoide/unity-sqlite-net) — Local game database on the headset. See the [database schema](docs/database/README.md).
 
 ### Development tools
 

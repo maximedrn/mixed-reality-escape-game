@@ -1,0 +1,949 @@
+-- Catalog versions
+
+CREATE TABLE content_versions (
+    id TEXT PRIMARY KEY,
+    label TEXT NOT NULL CHECK (length(trim(label)) > 0),
+    created_at_utc_ms INTEGER NOT NULL CHECK (created_at_utc_ms >= 0)
+) STRICT;
+
+CREATE TABLE published_content_versions (
+    content_version_id TEXT PRIMARY KEY REFERENCES content_versions (id),
+    published_at_utc_ms INTEGER NOT NULL CHECK (published_at_utc_ms >= 0)
+) STRICT;
+
+CREATE TABLE active_content_version (
+    slot INTEGER PRIMARY KEY CHECK (slot = 1),
+    content_version_id TEXT NOT NULL REFERENCES published_content_versions (content_version_id)
+) STRICT;
+
+CREATE TABLE asset_refs (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    unity_key TEXT NOT NULL CHECK (length(trim(unity_key)) > 0),
+    kind TEXT NOT NULL CHECK (kind IN ('Scene', 'Prefab', 'Mesh', 'AudioClip', 'AnimationClip', 'AnimatorController')),
+    PRIMARY KEY (content_version_id, id),
+    UNIQUE (content_version_id, kind, unity_key)
+) STRICT;
+
+CREATE TABLE difficulties (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    display_order INTEGER NOT NULL CHECK (display_order >= 0),
+    allows_monster INTEGER NOT NULL CHECK (allows_monster IN (0, 1)),
+    PRIMARY KEY (content_version_id, id),
+    UNIQUE (content_version_id, id, allows_monster),
+    UNIQUE (content_version_id, display_order)
+) STRICT;
+
+CREATE TABLE interaction_profiles (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    grab_distance_m REAL NOT NULL CHECK (grab_distance_m > 0),
+    pinch_distance_m REAL NOT NULL CHECK (pinch_distance_m > 0),
+    press_distance_m REAL NOT NULL CHECK (press_distance_m > 0),
+    open_hand_confidence REAL NOT NULL CHECK (open_hand_confidence BETWEEN 0 AND 1),
+    closed_hand_confidence REAL NOT NULL CHECK (closed_hand_confidence BETWEEN 0 AND 1),
+    pinch_confidence REAL NOT NULL CHECK (pinch_confidence BETWEEN 0 AND 1),
+    point_confidence REAL NOT NULL CHECK (point_confidence BETWEEN 0 AND 1),
+    gesture_stabilization_ms INTEGER NOT NULL CHECK (gesture_stabilization_ms >= 0),
+    max_charge_ms INTEGER NOT NULL CHECK (max_charge_ms > 0),
+    max_throw_speed_mps REAL NOT NULL CHECK (max_throw_speed_mps > 0),
+    aim_smoothing_ms INTEGER NOT NULL CHECK (aim_smoothing_ms >= 0),
+    PRIMARY KEY (content_version_id, id)
+) STRICT;
+
+CREATE TABLE interaction_feedback_settings (
+    content_version_id TEXT NOT NULL,
+    interaction_profile_id TEXT NOT NULL,
+    target_kind TEXT NOT NULL CHECK (target_kind IN ('GrabOnly', 'InteractionOnly', 'GrabAndInteract', 'InteractionPoint')),
+    red REAL NOT NULL CHECK (red BETWEEN 0 AND 1),
+    green REAL NOT NULL CHECK (green BETWEEN 0 AND 1),
+    blue REAL NOT NULL CHECK (blue BETWEEN 0 AND 1),
+    intensity REAL NOT NULL CHECK (intensity >= 0),
+    PRIMARY KEY (content_version_id, interaction_profile_id, target_kind),
+    FOREIGN KEY (content_version_id, interaction_profile_id)
+        REFERENCES interaction_profiles (content_version_id, id)
+) STRICT;
+
+CREATE TABLE physics_profiles (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    min_impact_speed_mps REAL NOT NULL CHECK (min_impact_speed_mps >= 0),
+    noise_per_mps REAL NOT NULL CHECK (noise_per_mps >= 0),
+    PRIMARY KEY (content_version_id, id)
+) STRICT;
+
+-- Rooms, marker calibration and placements
+
+CREATE TABLE rooms (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    scene_asset_id TEXT NOT NULL,
+    visible_asset_id TEXT,
+    collision_asset_id TEXT,
+    ambience_audio_asset_id TEXT,
+    ambience_volume REAL CHECK (ambience_volume BETWEEN 0 AND 1),
+    PRIMARY KEY (content_version_id, id),
+    FOREIGN KEY (content_version_id, scene_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, visible_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, collision_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, ambience_audio_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE room_calibration_settings (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    min_fixed_markers INTEGER NOT NULL CHECK (min_fixed_markers >= 0),
+    position_tolerance_m REAL NOT NULL CHECK (position_tolerance_m > 0),
+    rotation_tolerance_deg REAL NOT NULL CHECK (rotation_tolerance_deg BETWEEN 0 AND 180),
+    detection_timeout_ms INTEGER NOT NULL CHECK (detection_timeout_ms > 0),
+    PRIMARY KEY (content_version_id, room_id),
+    FOREIGN KEY (content_version_id, room_id) REFERENCES rooms (content_version_id, id)
+) STRICT;
+
+CREATE TABLE room_anchors (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    position_x_m REAL NOT NULL,
+    position_y_m REAL NOT NULL,
+    position_z_m REAL NOT NULL,
+    rotation_x REAL NOT NULL,
+    rotation_y REAL NOT NULL,
+    rotation_z REAL NOT NULL,
+    rotation_w REAL NOT NULL,
+    PRIMARY KEY (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id) REFERENCES rooms (content_version_id, id)
+) STRICT;
+
+CREATE TABLE room_decorations (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    anchor_id TEXT NOT NULL,
+    prefab_asset_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id, anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, prefab_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE room_lights (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    anchor_id TEXT NOT NULL,
+    intensity REAL NOT NULL CHECK (intensity >= 0),
+    range_m REAL NOT NULL CHECK (range_m > 0),
+    red REAL NOT NULL CHECK (red BETWEEN 0 AND 1),
+    green REAL NOT NULL CHECK (green BETWEEN 0 AND 1),
+    blue REAL NOT NULL CHECK (blue BETWEEN 0 AND 1),
+    PRIMARY KEY (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id, anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id)
+) STRICT;
+
+CREATE TABLE furniture (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    width_m REAL NOT NULL CHECK (width_m > 0),
+    height_m REAL NOT NULL CHECK (height_m > 0),
+    depth_m REAL NOT NULL CHECK (depth_m > 0),
+    visible_prefab_asset_id TEXT NOT NULL,
+    collision_prefab_asset_id TEXT NOT NULL,
+    required_for_calibration INTEGER NOT NULL CHECK (required_for_calibration IN (0, 1)),
+    PRIMARY KEY (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id) REFERENCES rooms (content_version_id, id),
+    FOREIGN KEY (content_version_id, visible_prefab_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, collision_prefab_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE qr_markers (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    payload TEXT NOT NULL CHECK (length(payload) > 0),
+    furniture_id TEXT,
+    edge_size_m REAL NOT NULL CHECK (edge_size_m > 0),
+    local_position_x_m REAL NOT NULL,
+    local_position_y_m REAL NOT NULL,
+    local_position_z_m REAL NOT NULL,
+    local_rotation_x REAL NOT NULL,
+    local_rotation_y REAL NOT NULL,
+    local_rotation_z REAL NOT NULL,
+    local_rotation_w REAL NOT NULL,
+    PRIMARY KEY (content_version_id, room_id, id),
+    UNIQUE (content_version_id, payload),
+    FOREIGN KEY (content_version_id, room_id) REFERENCES rooms (content_version_id, id),
+    FOREIGN KEY (content_version_id, room_id, furniture_id)
+        REFERENCES furniture (content_version_id, room_id, id)
+) STRICT;
+
+-- Items and interaction primitives
+
+CREATE TABLE item_capability_kinds (
+    id TEXT PRIMARY KEY
+) STRICT;
+
+CREATE TABLE interaction_kinds (
+    id TEXT PRIMARY KEY
+) STRICT;
+
+CREATE TABLE impact_effect_kinds (
+    id TEXT PRIMARY KEY
+) STRICT;
+
+CREATE TABLE items (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    prefab_asset_id TEXT,
+    mass_kg REAL CHECK (mass_kg > 0),
+    break_speed_mps REAL CHECK (break_speed_mps >= 0),
+    impact_audio_asset_id TEXT,
+    break_audio_asset_id TEXT,
+    PRIMARY KEY (content_version_id, id),
+    FOREIGN KEY (content_version_id, prefab_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, impact_audio_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, break_audio_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE item_capabilities (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    capability_id TEXT NOT NULL REFERENCES item_capability_kinds (id),
+    PRIMARY KEY (content_version_id, item_id, capability_id),
+    FOREIGN KEY (content_version_id, item_id) REFERENCES items (content_version_id, id)
+) STRICT;
+
+CREATE TABLE item_impact_rules (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    effect_id TEXT NOT NULL REFERENCES impact_effect_kinds (id),
+    min_strength_kg_mps REAL NOT NULL CHECK (min_strength_kg_mps >= 0),
+    base_duration_ms INTEGER CHECK (base_duration_ms > 0),
+    PRIMARY KEY (content_version_id, item_id, effect_id),
+    FOREIGN KEY (content_version_id, item_id) REFERENCES items (content_version_id, id),
+    CHECK (effect_id = 'Reaction' OR base_duration_ms IS NOT NULL)
+) STRICT;
+
+CREATE TABLE item_interaction_points (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    kind_id TEXT NOT NULL REFERENCES interaction_kinds (id),
+    prefab_binding TEXT,
+    proximity_m REAL CHECK (proximity_m > 0),
+    PRIMARY KEY (content_version_id, item_id, id),
+    UNIQUE (content_version_id, item_id, id, kind_id),
+    FOREIGN KEY (content_version_id, item_id) REFERENCES items (content_version_id, id)
+) STRICT;
+
+CREATE TABLE item_free_settings (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    point_id TEXT NOT NULL,
+    kind_id TEXT NOT NULL DEFAULT 'Free' CHECK (kind_id = 'Free'),
+    max_translation_m REAL CHECK (max_translation_m >= 0),
+    max_rotation_deg REAL CHECK (max_rotation_deg BETWEEN 0 AND 360),
+    PRIMARY KEY (content_version_id, item_id, point_id),
+    FOREIGN KEY (content_version_id, item_id, point_id, kind_id)
+        REFERENCES item_interaction_points (content_version_id, item_id, id, kind_id)
+) STRICT;
+
+CREATE TABLE item_rotate_settings (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    point_id TEXT NOT NULL,
+    kind_id TEXT NOT NULL DEFAULT 'Rotate' CHECK (kind_id = 'Rotate'),
+    axis_x REAL NOT NULL,
+    axis_y REAL NOT NULL,
+    axis_z REAL NOT NULL,
+    min_angle_deg REAL NOT NULL,
+    max_angle_deg REAL NOT NULL,
+    PRIMARY KEY (content_version_id, item_id, point_id),
+    FOREIGN KEY (content_version_id, item_id, point_id, kind_id)
+        REFERENCES item_interaction_points (content_version_id, item_id, id, kind_id),
+    CHECK (axis_x <> 0 OR axis_y <> 0 OR axis_z <> 0),
+    CHECK (min_angle_deg < max_angle_deg)
+) STRICT;
+
+CREATE TABLE item_slide_settings (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    point_id TEXT NOT NULL,
+    kind_id TEXT NOT NULL DEFAULT 'Slide' CHECK (kind_id = 'Slide'),
+    axis_x REAL NOT NULL,
+    axis_y REAL NOT NULL,
+    axis_z REAL NOT NULL,
+    min_travel_m REAL NOT NULL,
+    max_travel_m REAL NOT NULL,
+    PRIMARY KEY (content_version_id, item_id, point_id),
+    FOREIGN KEY (content_version_id, item_id, point_id, kind_id)
+        REFERENCES item_interaction_points (content_version_id, item_id, id, kind_id),
+    CHECK (axis_x <> 0 OR axis_y <> 0 OR axis_z <> 0),
+    CHECK (min_travel_m < max_travel_m)
+) STRICT;
+
+CREATE TABLE item_press_settings (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    point_id TEXT NOT NULL,
+    kind_id TEXT NOT NULL DEFAULT 'Press' CHECK (kind_id = 'Press'),
+    allow_pinch INTEGER NOT NULL CHECK (allow_pinch IN (0, 1)),
+    PRIMARY KEY (content_version_id, item_id, point_id),
+    FOREIGN KEY (content_version_id, item_id, point_id, kind_id)
+        REFERENCES item_interaction_points (content_version_id, item_id, id, kind_id)
+) STRICT;
+
+CREATE TABLE item_light_settings (
+    content_version_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    intensity REAL NOT NULL CHECK (intensity >= 0),
+    range_m REAL NOT NULL CHECK (range_m > 0),
+    red REAL NOT NULL CHECK (red BETWEEN 0 AND 1),
+    green REAL NOT NULL CHECK (green BETWEEN 0 AND 1),
+    blue REAL NOT NULL CHECK (blue BETWEEN 0 AND 1),
+    initially_on INTEGER NOT NULL CHECK (initially_on IN (0, 1)),
+    PRIMARY KEY (content_version_id, item_id),
+    FOREIGN KEY (content_version_id, item_id) REFERENCES items (content_version_id, id)
+) STRICT;
+
+-- Scenarios and their available placements
+
+CREATE TABLE scenarios (
+    content_version_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    player_spawn_anchor_id TEXT NOT NULL,
+    exit_anchor_id TEXT NOT NULL,
+    interaction_profile_id TEXT NOT NULL,
+    physics_profile_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, id),
+    UNIQUE (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, room_id, player_spawn_anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id, exit_anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, interaction_profile_id)
+        REFERENCES interaction_profiles (content_version_id, id),
+    FOREIGN KEY (content_version_id, physics_profile_id) REFERENCES physics_profiles (content_version_id, id)
+) STRICT;
+
+CREATE TABLE rulesets (
+    content_version_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    difficulty_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, id),
+    UNIQUE (content_version_id, scenario_id, difficulty_id),
+    UNIQUE (content_version_id, id, scenario_id),
+    UNIQUE (content_version_id, id, room_id, difficulty_id),
+    UNIQUE (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, scenario_id, room_id)
+        REFERENCES scenarios (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, difficulty_id) REFERENCES difficulties (content_version_id, id)
+) STRICT;
+
+CREATE TABLE ruleset_room_lights (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    light_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, ruleset_id, light_id),
+    FOREIGN KEY (content_version_id, ruleset_id, room_id)
+        REFERENCES rulesets (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, room_id, light_id)
+        REFERENCES room_lights (content_version_id, room_id, id)
+) STRICT;
+
+CREATE TABLE scenario_items (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    anchor_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, scenario_id, id),
+    UNIQUE (content_version_id, scenario_id, id, item_id),
+    FOREIGN KEY (content_version_id, scenario_id, room_id)
+        REFERENCES scenarios (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, item_id) REFERENCES items (content_version_id, id),
+    FOREIGN KEY (content_version_id, room_id, anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id)
+) STRICT;
+
+CREATE TABLE ruleset_items (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    placement_id TEXT NOT NULL,
+    spawn_on_start INTEGER NOT NULL CHECK (spawn_on_start IN (0, 1)),
+    PRIMARY KEY (content_version_id, ruleset_id, placement_id),
+    FOREIGN KEY (content_version_id, ruleset_id, scenario_id)
+        REFERENCES rulesets (content_version_id, id, scenario_id),
+    FOREIGN KEY (content_version_id, scenario_id, placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+-- Puzzles, variants, prerequisites and steps
+
+CREATE TABLE puzzles (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    technical_difficulty TEXT CHECK (technical_difficulty IN ('Easy', 'Medium', 'Hard')),
+    PRIMARY KEY (content_version_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_variants (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    puzzle_id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, scenario_id, id),
+    UNIQUE (content_version_id, scenario_id, puzzle_id, id),
+    FOREIGN KEY (content_version_id, scenario_id) REFERENCES scenarios (content_version_id, id),
+    FOREIGN KEY (content_version_id, puzzle_id) REFERENCES puzzles (content_version_id, id)
+) STRICT;
+
+CREATE TABLE ruleset_puzzles (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    puzzle_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    display_order INTEGER NOT NULL CHECK (display_order >= 0),
+    required_for_exit INTEGER NOT NULL CHECK (required_for_exit IN (0, 1)),
+    PRIMARY KEY (content_version_id, ruleset_id, puzzle_id),
+    UNIQUE (content_version_id, ruleset_id, display_order),
+    FOREIGN KEY (content_version_id, ruleset_id, scenario_id)
+        REFERENCES rulesets (content_version_id, id, scenario_id),
+    FOREIGN KEY (content_version_id, scenario_id, puzzle_id, variant_id)
+        REFERENCES puzzle_variants (content_version_id, scenario_id, puzzle_id, id)
+) STRICT;
+
+CREATE TABLE ruleset_puzzle_prerequisites (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    puzzle_id TEXT NOT NULL,
+    required_puzzle_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, ruleset_id, puzzle_id, required_puzzle_id),
+    FOREIGN KEY (content_version_id, ruleset_id, puzzle_id)
+        REFERENCES ruleset_puzzles (content_version_id, ruleset_id, puzzle_id),
+    FOREIGN KEY (content_version_id, ruleset_id, required_puzzle_id)
+        REFERENCES ruleset_puzzles (content_version_id, ruleset_id, puzzle_id),
+    CHECK (puzzle_id <> required_puzzle_id)
+) STRICT;
+
+CREATE TABLE puzzle_steps (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL CHECK (step_number > 0),
+    label TEXT NOT NULL,
+    instruction TEXT,
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id)
+        REFERENCES puzzle_variants (content_version_id, scenario_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_hints (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    hint_number INTEGER NOT NULL CHECK (hint_number > 0),
+    message TEXT NOT NULL CHECK (length(trim(message)) > 0),
+    available_after_ms INTEGER NOT NULL CHECK (available_after_ms >= 0),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, hint_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number)
+        REFERENCES puzzle_steps (content_version_id, scenario_id, variant_id, step_number)
+) STRICT;
+
+CREATE TABLE puzzle_step_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL CHECK (condition_number > 0),
+    kind TEXT NOT NULL CHECK (kind IN ('ItemEvent', 'Rotation', 'Assembly', 'Code', 'Pull')),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    UNIQUE (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number)
+        REFERENCES puzzle_steps (content_version_id, scenario_id, variant_id, step_number)
+) STRICT;
+
+CREATE TABLE puzzle_item_event_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'ItemEvent' CHECK (kind = 'ItemEvent'),
+    placement_id TEXT NOT NULL,
+    event TEXT NOT NULL CHECK (event IN ('Inspect', 'Grab', 'Release', 'Throw', 'Activate', 'Break')),
+    required_count INTEGER NOT NULL CHECK (required_count > 0),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, condition_number, kind)
+        REFERENCES puzzle_step_conditions (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_rotation_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Rotation' CHECK (kind = 'Rotation'),
+    placement_id TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    point_id TEXT NOT NULL,
+    target_angle_deg REAL NOT NULL,
+    tolerance_deg REAL NOT NULL CHECK (tolerance_deg BETWEEN 0 AND 180),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, condition_number, kind)
+        REFERENCES puzzle_step_conditions (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, placement_id, item_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id, item_id),
+    FOREIGN KEY (content_version_id, item_id, point_id)
+        REFERENCES item_rotate_settings (content_version_id, item_id, point_id)
+) STRICT;
+
+CREATE TABLE puzzle_assembly_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Assembly' CHECK (kind = 'Assembly'),
+    first_placement_id TEXT NOT NULL,
+    second_placement_id TEXT NOT NULL,
+    position_tolerance_m REAL NOT NULL CHECK (position_tolerance_m > 0),
+    rotation_tolerance_deg REAL NOT NULL CHECK (rotation_tolerance_deg BETWEEN 0 AND 180),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, condition_number, kind)
+        REFERENCES puzzle_step_conditions (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, first_placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id),
+    FOREIGN KEY (content_version_id, scenario_id, second_placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id),
+    CHECK (first_placement_id <> second_placement_id)
+) STRICT;
+
+CREATE TABLE puzzle_code_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Code' CHECK (kind = 'Code'),
+    keypad_placement_id TEXT NOT NULL,
+    expected_code TEXT NOT NULL CHECK (length(expected_code) > 0 AND expected_code NOT GLOB '*[^0-9]*'),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, condition_number, kind)
+        REFERENCES puzzle_step_conditions (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, keypad_placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_pull_conditions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    condition_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Pull' CHECK (kind = 'Pull'),
+    placement_id TEXT NOT NULL,
+    min_travel_m REAL NOT NULL CHECK (min_travel_m > 0),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, condition_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, condition_number, kind)
+        REFERENCES puzzle_step_conditions (content_version_id, scenario_id, variant_id, step_number, condition_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_step_actions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    action_number INTEGER NOT NULL CHECK (action_number > 0),
+    kind TEXT NOT NULL CHECK (kind IN ('Item', 'Audio')),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, action_number),
+    UNIQUE (content_version_id, scenario_id, variant_id, step_number, action_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number)
+        REFERENCES puzzle_steps (content_version_id, scenario_id, variant_id, step_number)
+) STRICT;
+
+CREATE TABLE puzzle_item_actions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    action_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Item' CHECK (kind = 'Item'),
+    placement_id TEXT NOT NULL,
+    operation TEXT NOT NULL CHECK (operation IN ('Open', 'Close', 'Enable', 'Disable', 'Spawn', 'Reveal')),
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, action_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, action_number, kind)
+        REFERENCES puzzle_step_actions (content_version_id, scenario_id, variant_id, step_number, action_number, kind),
+    FOREIGN KEY (content_version_id, scenario_id, placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+CREATE TABLE puzzle_audio_actions (
+    content_version_id TEXT NOT NULL,
+    scenario_id TEXT NOT NULL,
+    variant_id TEXT NOT NULL,
+    step_number INTEGER NOT NULL,
+    action_number INTEGER NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'Audio' CHECK (kind = 'Audio'),
+    audio_asset_id TEXT NOT NULL,
+    volume REAL NOT NULL CHECK (volume BETWEEN 0 AND 1),
+    source_placement_id TEXT,
+    PRIMARY KEY (content_version_id, scenario_id, variant_id, step_number, action_number),
+    FOREIGN KEY (content_version_id, scenario_id, variant_id, step_number, action_number, kind)
+        REFERENCES puzzle_step_actions (content_version_id, scenario_id, variant_id, step_number, action_number, kind),
+    FOREIGN KEY (content_version_id, audio_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, scenario_id, source_placement_id)
+        REFERENCES scenario_items (content_version_id, scenario_id, id)
+) STRICT;
+
+-- Monster definitions, difficulty profiles and animations
+
+CREATE TABLE monsters (
+    content_version_id TEXT NOT NULL REFERENCES content_versions (id),
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    prefab_asset_id TEXT,
+    animator_asset_id TEXT,
+    attack_range_m REAL CHECK (attack_range_m > 0),
+    nav_agent_radius_m REAL CHECK (nav_agent_radius_m > 0),
+    nav_agent_height_m REAL CHECK (nav_agent_height_m > 0),
+    PRIMARY KEY (content_version_id, id),
+    FOREIGN KEY (content_version_id, prefab_asset_id) REFERENCES asset_refs (content_version_id, id),
+    FOREIGN KEY (content_version_id, animator_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE monster_profiles (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    difficulty_id TEXT NOT NULL,
+    allows_monster INTEGER NOT NULL DEFAULT 1 CHECK (allows_monster = 1),
+    vision_fov_deg REAL NOT NULL CHECK (vision_fov_deg > 0 AND vision_fov_deg <= 360),
+    investigate_distance_m REAL NOT NULL,
+    chase_distance_m REAL NOT NULL,
+    attack_distance_m REAL NOT NULL,
+    vision_acquire_ms INTEGER NOT NULL CHECK (vision_acquire_ms >= 0),
+    vision_lose_ms INTEGER NOT NULL CHECK (vision_lose_ms >= 0),
+    hearing_range_m REAL NOT NULL CHECK (hearing_range_m > 0),
+    hearing_threshold REAL NOT NULL CHECK (hearing_threshold >= 0),
+    visual_memory_ms INTEGER NOT NULL CHECK (visual_memory_ms >= 0),
+    noise_memory_ms INTEGER NOT NULL CHECK (noise_memory_ms >= 0),
+    investigate_duration_ms INTEGER NOT NULL CHECK (investigate_duration_ms >= 0),
+    investigate_distance_estimate_m REAL NOT NULL CHECK (investigate_distance_estimate_m >= 0),
+    search_duration_ms INTEGER NOT NULL CHECK (search_duration_ms >= 0),
+    search_radius_m REAL NOT NULL CHECK (search_radius_m >= 0),
+    chase_persistence_ms INTEGER NOT NULL CHECK (chase_persistence_ms >= 0),
+    patrol_speed_mps REAL NOT NULL CHECK (patrol_speed_mps > 0),
+    investigate_speed_mps REAL NOT NULL CHECK (investigate_speed_mps > 0),
+    search_speed_mps REAL NOT NULL CHECK (search_speed_mps > 0),
+    chase_speed_mps REAL NOT NULL CHECK (chase_speed_mps > 0),
+    attack_cooldown_ms INTEGER NOT NULL CHECK (attack_cooldown_ms >= 0),
+    recovery_duration_ms INTEGER NOT NULL CHECK (recovery_duration_ms >= 0),
+    impact_threshold_multiplier REAL NOT NULL CHECK (impact_threshold_multiplier > 0),
+    slow_speed_multiplier REAL NOT NULL CHECK (slow_speed_multiplier > 0 AND slow_speed_multiplier <= 1),
+    slow_duration_multiplier REAL NOT NULL CHECK (slow_duration_multiplier > 0),
+    stun_duration_multiplier REAL NOT NULL CHECK (stun_duration_multiplier > 0),
+    PRIMARY KEY (content_version_id, monster_id, difficulty_id),
+    FOREIGN KEY (content_version_id, monster_id) REFERENCES monsters (content_version_id, id),
+    FOREIGN KEY (content_version_id, difficulty_id, allows_monster)
+        REFERENCES difficulties (content_version_id, id, allows_monster),
+    CHECK (0 < attack_distance_m AND attack_distance_m <= chase_distance_m AND chase_distance_m <= investigate_distance_m)
+) STRICT;
+
+CREATE TABLE monster_navigation_settings (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    projection_tolerance_m REAL NOT NULL CHECK (projection_tolerance_m > 0),
+    adjacency_tolerance_m REAL NOT NULL CHECK (adjacency_tolerance_m > 0),
+    repath_interval_ms INTEGER NOT NULL CHECK (repath_interval_ms > 0),
+    target_move_threshold_m REAL NOT NULL CHECK (target_move_threshold_m > 0),
+    PRIMARY KEY (content_version_id, monster_id),
+    FOREIGN KEY (content_version_id, monster_id) REFERENCES monsters (content_version_id, id)
+) STRICT;
+
+CREATE TABLE monster_ability_kinds (
+    id TEXT PRIMARY KEY
+) STRICT;
+
+CREATE TABLE monster_profile_abilities (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    difficulty_id TEXT NOT NULL,
+    ability_id TEXT NOT NULL REFERENCES monster_ability_kinds (id),
+    PRIMARY KEY (content_version_id, monster_id, difficulty_id, ability_id),
+    FOREIGN KEY (content_version_id, monster_id, difficulty_id)
+        REFERENCES monster_profiles (content_version_id, monster_id, difficulty_id)
+) STRICT;
+
+CREATE TABLE monster_clips (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    clip_name TEXT NOT NULL,
+    clip_asset_id TEXT,
+    PRIMARY KEY (content_version_id, monster_id, id),
+    UNIQUE (content_version_id, monster_id, clip_name),
+    FOREIGN KEY (content_version_id, monster_id) REFERENCES monsters (content_version_id, id),
+    FOREIGN KEY (content_version_id, clip_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE monster_animation_bindings (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    action TEXT NOT NULL CHECK (length(trim(action)) > 0),
+    slot INTEGER NOT NULL CHECK (slot >= 0),
+    clip_id TEXT NOT NULL,
+    playback_speed REAL NOT NULL CHECK (playback_speed > 0),
+    finish_timeout_ms INTEGER CHECK (finish_timeout_ms > 0),
+    PRIMARY KEY (content_version_id, monster_id, action, slot),
+    FOREIGN KEY (content_version_id, monster_id, clip_id)
+        REFERENCES monster_clips (content_version_id, monster_id, id)
+) STRICT;
+
+CREATE TABLE monster_audio_bindings (
+    content_version_id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    event TEXT NOT NULL CHECK (length(trim(event)) > 0),
+    slot INTEGER NOT NULL CHECK (slot >= 0),
+    audio_asset_id TEXT NOT NULL,
+    volume REAL NOT NULL CHECK (volume BETWEEN 0 AND 1),
+    PRIMARY KEY (content_version_id, monster_id, event, slot),
+    FOREIGN KEY (content_version_id, monster_id) REFERENCES monsters (content_version_id, id),
+    FOREIGN KEY (content_version_id, audio_asset_id) REFERENCES asset_refs (content_version_id, id)
+) STRICT;
+
+CREATE TABLE ruleset_monsters (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    monster_id TEXT NOT NULL,
+    difficulty_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    spawn_anchor_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, ruleset_id, id),
+    FOREIGN KEY (content_version_id, ruleset_id, room_id, difficulty_id)
+        REFERENCES rulesets (content_version_id, id, room_id, difficulty_id),
+    FOREIGN KEY (content_version_id, monster_id, difficulty_id)
+        REFERENCES monster_profiles (content_version_id, monster_id, difficulty_id),
+    FOREIGN KEY (content_version_id, room_id, spawn_anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id)
+) STRICT;
+
+-- Scoreboards and optional reference layouts
+
+CREATE TABLE ranked_layouts (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    id TEXT NOT NULL,
+    label TEXT NOT NULL,
+    position_tolerance_m REAL NOT NULL CHECK (position_tolerance_m > 0),
+    rotation_tolerance_deg REAL NOT NULL CHECK (rotation_tolerance_deg BETWEEN 0 AND 180),
+    PRIMARY KEY (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id) REFERENCES rooms (content_version_id, id)
+) STRICT;
+
+CREATE TABLE ranked_layout_furniture (
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    layout_id TEXT NOT NULL,
+    furniture_id TEXT NOT NULL,
+    expected_anchor_id TEXT NOT NULL,
+    PRIMARY KEY (content_version_id, room_id, layout_id, furniture_id),
+    FOREIGN KEY (content_version_id, room_id, layout_id)
+        REFERENCES ranked_layouts (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id, furniture_id)
+        REFERENCES furniture (content_version_id, room_id, id),
+    FOREIGN KEY (content_version_id, room_id, expected_anchor_id)
+        REFERENCES room_anchors (content_version_id, room_id, id)
+) STRICT;
+
+CREATE TABLE leaderboards (
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    ranked_layout_id TEXT,
+    display_limit INTEGER NOT NULL CHECK (display_limit > 0),
+    PRIMARY KEY (content_version_id, ruleset_id),
+    FOREIGN KEY (content_version_id, ruleset_id, room_id)
+        REFERENCES rulesets (content_version_id, id, room_id),
+    FOREIGN KEY (content_version_id, room_id, ranked_layout_id)
+        REFERENCES ranked_layouts (content_version_id, room_id, id)
+) STRICT;
+
+-- Players, completed sessions and recorded statistics
+
+CREATE TABLE players (
+    id TEXT PRIMARY KEY,
+    display_name TEXT NOT NULL CHECK (length(trim(display_name)) > 0),
+    created_at_utc_ms INTEGER NOT NULL CHECK (created_at_utc_ms >= 0)
+) STRICT;
+
+CREATE TABLE game_sessions (
+    id TEXT PRIMARY KEY,
+    player_id TEXT NOT NULL REFERENCES players (id),
+    content_version_id TEXT NOT NULL REFERENCES published_content_versions (content_version_id),
+    ruleset_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    started_at_utc_ms INTEGER NOT NULL CHECK (started_at_utc_ms >= 0),
+    finished_at_utc_ms INTEGER NOT NULL,
+    duration_ms INTEGER NOT NULL CHECK (duration_ms >= 0),
+    outcome TEXT NOT NULL CHECK (outcome IN ('Won', 'Lost')),
+    leaderboard_eligible INTEGER NOT NULL CHECK (leaderboard_eligible IN (0, 1)),
+    UNIQUE (id, content_version_id, ruleset_id),
+    UNIQUE (id, content_version_id, room_id),
+    FOREIGN KEY (content_version_id, ruleset_id, room_id)
+        REFERENCES rulesets (content_version_id, id, room_id),
+    CHECK (finished_at_utc_ms >= started_at_utc_ms),
+    CHECK (leaderboard_eligible = 0 OR outcome = 'Won')
+) STRICT;
+
+CREATE TABLE session_puzzle_stats (
+    session_id TEXT NOT NULL,
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    puzzle_id TEXT NOT NULL,
+    attempt_count INTEGER NOT NULL CHECK (attempt_count >= 0),
+    hints_used INTEGER NOT NULL CHECK (hints_used >= 0),
+    available_at_elapsed_ms INTEGER CHECK (available_at_elapsed_ms >= 0),
+    solved_at_elapsed_ms INTEGER CHECK (solved_at_elapsed_ms >= 0),
+    PRIMARY KEY (session_id, puzzle_id),
+    FOREIGN KEY (session_id, content_version_id, ruleset_id)
+        REFERENCES game_sessions (id, content_version_id, ruleset_id),
+    FOREIGN KEY (content_version_id, ruleset_id, puzzle_id)
+        REFERENCES ruleset_puzzles (content_version_id, ruleset_id, puzzle_id),
+    CHECK (solved_at_elapsed_ms IS NULL OR (
+        available_at_elapsed_ms IS NOT NULL AND solved_at_elapsed_ms >= available_at_elapsed_ms
+    ))
+) STRICT;
+
+CREATE TABLE session_monster_stats (
+    session_id TEXT NOT NULL,
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    spawn_id TEXT NOT NULL,
+    confirmed_detections INTEGER NOT NULL CHECK (confirmed_detections >= 0),
+    noises_perceived INTEGER NOT NULL CHECK (noises_perceived >= 0),
+    chases INTEGER NOT NULL CHECK (chases >= 0),
+    attacks INTEGER NOT NULL CHECK (attacks >= 0),
+    stuns INTEGER NOT NULL CHECK (stuns >= 0),
+    PRIMARY KEY (session_id, spawn_id),
+    FOREIGN KEY (session_id, content_version_id, ruleset_id)
+        REFERENCES game_sessions (id, content_version_id, ruleset_id),
+    FOREIGN KEY (content_version_id, ruleset_id, spawn_id)
+        REFERENCES ruleset_monsters (content_version_id, ruleset_id, id)
+) STRICT;
+
+CREATE TABLE session_item_stats (
+    session_id TEXT NOT NULL,
+    content_version_id TEXT NOT NULL,
+    ruleset_id TEXT NOT NULL,
+    placement_id TEXT NOT NULL,
+    grabs INTEGER NOT NULL CHECK (grabs >= 0),
+    throws INTEGER NOT NULL CHECK (throws >= 0),
+    activations INTEGER NOT NULL CHECK (activations >= 0),
+    breaks INTEGER NOT NULL CHECK (breaks >= 0),
+    PRIMARY KEY (session_id, placement_id),
+    FOREIGN KEY (session_id, content_version_id, ruleset_id)
+        REFERENCES game_sessions (id, content_version_id, ruleset_id),
+    FOREIGN KEY (content_version_id, ruleset_id, placement_id)
+        REFERENCES ruleset_items (content_version_id, ruleset_id, placement_id)
+) STRICT;
+
+CREATE TABLE session_furniture_poses (
+    session_id TEXT NOT NULL,
+    content_version_id TEXT NOT NULL,
+    room_id TEXT NOT NULL,
+    furniture_id TEXT NOT NULL,
+    position_x_m REAL NOT NULL,
+    position_y_m REAL NOT NULL,
+    position_z_m REAL NOT NULL,
+    rotation_x REAL NOT NULL,
+    rotation_y REAL NOT NULL,
+    rotation_z REAL NOT NULL,
+    rotation_w REAL NOT NULL,
+    PRIMARY KEY (session_id, furniture_id),
+    FOREIGN KEY (session_id, content_version_id, room_id)
+        REFERENCES game_sessions (id, content_version_id, room_id),
+    FOREIGN KEY (content_version_id, room_id, furniture_id)
+        REFERENCES furniture (content_version_id, room_id, id)
+) STRICT;
+
+CREATE TABLE session_room_calibrations (
+    session_id TEXT PRIMARY KEY REFERENCES game_sessions (id),
+    duration_ms INTEGER NOT NULL CHECK (duration_ms >= 0),
+    fixed_markers_seen INTEGER NOT NULL CHECK (fixed_markers_seen >= 0),
+    position_error_m REAL CHECK (position_error_m >= 0),
+    rotation_error_deg REAL CHECK (rotation_error_deg BETWEEN 0 AND 180)
+) STRICT;
+
+CREATE INDEX game_sessions_ranked_wins
+    ON game_sessions (content_version_id, ruleset_id, player_id, duration_ms, finished_at_utc_ms, id)
+    WHERE outcome = 'Won' AND leaderboard_eligible = 1;
+
+CREATE INDEX game_sessions_player_history
+    ON game_sessions (player_id, finished_at_utc_ms DESC);
+
+CREATE VIEW leaderboard_entries AS
+WITH best_wins AS (
+    SELECT
+        sessions.*,
+        ROW_NUMBER() OVER (
+            PARTITION BY sessions.content_version_id, sessions.ruleset_id, sessions.player_id
+            ORDER BY sessions.duration_ms, sessions.finished_at_utc_ms, sessions.id
+        ) AS player_run_number
+    FROM game_sessions AS sessions
+    INNER JOIN leaderboards AS board
+        ON board.content_version_id = sessions.content_version_id AND board.ruleset_id = sessions.ruleset_id
+    WHERE sessions.outcome = 'Won' AND sessions.leaderboard_eligible = 1
+)
+SELECT
+    best_wins.content_version_id,
+    best_wins.ruleset_id,
+    ROW_NUMBER() OVER (
+        PARTITION BY best_wins.content_version_id, best_wins.ruleset_id
+        ORDER BY best_wins.duration_ms, best_wins.finished_at_utc_ms, best_wins.id
+    ) AS rank,
+    best_wins.player_id,
+    players.display_name,
+    best_wins.id AS session_id,
+    best_wins.duration_ms,
+    best_wins.finished_at_utc_ms
+FROM best_wins
+INNER JOIN players ON players.id = best_wins.player_id
+WHERE best_wins.player_run_number = 1;
+
+CREATE VIEW player_ruleset_stats AS
+SELECT
+    content_version_id,
+    ruleset_id,
+    player_id,
+    COUNT(*) AS sessions_played,
+    COUNT(*) FILTER (WHERE outcome = 'Won') AS wins,
+    COUNT(*) FILTER (WHERE outcome = 'Lost') AS losses,
+    MIN(duration_ms) FILTER (WHERE outcome = 'Won') AS best_win_duration_ms
+FROM game_sessions
+GROUP BY content_version_id, ruleset_id, player_id;
+
+PRAGMA user_version = 1;

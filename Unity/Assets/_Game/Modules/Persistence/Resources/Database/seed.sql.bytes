@@ -1,0 +1,104 @@
+INSERT INTO item_capability_kinds (id) VALUES
+    ('Grabbable'),
+    ('Manipulable'),
+    ('Activatable'),
+    ('Breakable');
+
+INSERT INTO interaction_kinds (id) VALUES
+    ('Free'),
+    ('Rotate'),
+    ('Slide'),
+    ('Press');
+
+INSERT INTO impact_effect_kinds (id) VALUES
+    ('Reaction'),
+    ('Slow'),
+    ('Stun');
+
+INSERT INTO monster_ability_kinds (id) VALUES
+    ('Vision'),
+    ('Hearing'),
+    ('Attack'),
+    ('InspectTable');
+
+INSERT INTO content_versions (id, label, created_at_utc_ms) VALUES
+    ('documentation-001', 'Catalogue de travail', CAST(unixepoch('subsec') * 1000 AS INTEGER));
+
+INSERT INTO difficulties (content_version_id, id, label, display_order, allows_monster) VALUES
+    ('documentation-001', 'Peaceful', 'Peaceful', 0, 0),
+    ('documentation-001', 'Easy',     'Easy',     1, 1),
+    ('documentation-001', 'Normal',   'Normal',   2, 1),
+    ('documentation-001', 'Hard',     'Hard',     3, 1),
+    ('documentation-001', 'Hardcore', 'Hardcore', 4, 1);
+
+-- Candidates from the item catalog and the proposed puzzle sequence.
+INSERT INTO items (content_version_id, id, label) VALUES
+    ('documentation-001', 'portable-torch',      'Torche portable'),
+    ('documentation-001', 'candle',              'Bougie'),
+    ('documentation-001', 'stone',               'Caillou'),
+    ('documentation-001', 'bottle',              'Bouteille'),
+    ('documentation-001', 'empty-vial',          'Fiole vide'),
+    ('documentation-001', 'small-vial',          'Petite fiole'),
+    ('documentation-001', 'small-bottles',      'Ensemble de petites bouteilles'),
+    ('documentation-001', 'vial-stopper',       'Bouchon de fiole'),
+    ('documentation-001', 'colored-potion',     'Fiole de potion colorée'),
+    ('documentation-001', 'potion-4',            'Potion, modèle 4'),
+    ('documentation-001', 'cauldron',            'Chaudron'),
+    ('documentation-001', 'distillation-device', 'Appareil de distillation'),
+    ('documentation-001', 'scale',               'Balance'),
+    ('documentation-001', 'mortar-and-pestle',  'Mortier et pilon'),
+    ('documentation-001', 'ingredient-jar',     'Bocal d’ingrédients'),
+    ('documentation-001', 'chalice',             'Calice'),
+    ('documentation-001', 'mug',                 'Chope'),
+    ('documentation-001', 'crystal',             'Cristal'),
+    ('documentation-001', 'mushroom-cluster',    'Groupe de champignons'),
+    ('documentation-001', 'ingredient-pouch',    'Bourse d’ingrédients'),
+    ('documentation-001', 'book-group',          'Groupe de livres'),
+    ('documentation-001', 'book',                'Livre'),
+    ('documentation-001', 'book-stack',          'Pile de livres'),
+    ('documentation-001', 'spellbook',           'Grimoire'),
+    ('documentation-001', 'scroll',              'Parchemin'),
+    ('documentation-001', 'open-manuscript',     'Manuscrit ouvert sur lutrin'),
+    ('documentation-001', 'unrolled-scroll',     'Parchemin déroulé'),
+    ('documentation-001', 'peg-rack',            'Râtelier mural à chevilles'),
+    ('documentation-001', 'large-pouch',         'Grande bourse'),
+    ('documentation-001', 'chain',               'Chaîne'),
+    ('documentation-001', 'hatch',               'Trappe'),
+    ('documentation-001', 'clue-plate',          'Plaque à symbole'),
+    ('documentation-001', 'graduated-disc',      'Disque gradué'),
+    ('documentation-001', 'clue-fragment',       'Fragment d’indice'),
+    ('documentation-001', 'keypad',              'Clavier virtuel');
+
+INSERT INTO puzzles (content_version_id, id, title, technical_difficulty) VALUES
+    ('documentation-001', 'chain-pull',          'Tirage de chaîne', 'Medium'),
+    ('documentation-001', 'plate-observation',  'Observation de la plaque', NULL),
+    ('documentation-001', 'disc-alignment',     'Alignement du disque gradué', NULL),
+    ('documentation-001', 'fragment-assembly',   'Assemblage des fragments', NULL),
+    ('documentation-001', 'keypad-unlock',      'Déverrouillage au clavier', NULL),
+    ('documentation-001', 'ingredient-mixing',  'Mélange d’ingrédients', NULL);
+
+INSERT INTO monsters (content_version_id, id, label) VALUES
+    ('documentation-001', 'monster', 'Monstre de Tohannic');
+
+INSERT INTO monster_clips (content_version_id, monster_id, id, clip_name) VALUES
+    ('documentation-001', 'monster', 'A01', 'idle'),
+    ('documentation-001', 'monster', 'A02', 'idle_exhausted'),
+    ('documentation-001', 'monster', 'A03', 'limp_walk'),
+    ('documentation-001', 'monster', 'A04', 'walk_start'),
+    ('documentation-001', 'monster', 'A05', 'walk_stop'),
+    ('documentation-001', 'monster', 'A06', 'turn_left'),
+    ('documentation-001', 'monster', 'A07', 'turn_right'),
+    ('documentation-001', 'monster', 'A08', 'alert'),
+    ('documentation-001', 'monster', 'A09', 'look_around'),
+    ('documentation-001', 'monster', 'A10', 'look_down'),
+    ('documentation-001', 'monster', 'A11', 'bend_down'),
+    ('documentation-001', 'monster', 'A12', 'bend_up'),
+    ('documentation-001', 'monster', 'A13', 'door_duck'),
+    ('documentation-001', 'monster', 'A14', 'door_walk'),
+    ('documentation-001', 'monster', 'A15', 'door_stand'),
+    ('documentation-001', 'monster', 'A16', 'arm_attack'),
+    ('documentation-001', 'monster', 'A17', 'hit_reaction'),
+    ('documentation-001', 'monster', 'A18', 'stunned'),
+    ('documentation-001', 'monster', 'A19', 'stun_recovery'),
+    ('documentation-001', 'monster', 'A20', 'target_lost'),
+    ('documentation-001', 'monster', 'A21', 'look_under_table');

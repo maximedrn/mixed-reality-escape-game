@@ -7,7 +7,9 @@
         "Project.Core",
         "Project.GameFlow",
         "Project.Puzzles",
-        "Project.Monster"
+        "Project.Monster",
+        "Project.Persistence",
+        "Gilzoide.SqliteNet"
     ],
     "includePlatforms": [
         "Editor"

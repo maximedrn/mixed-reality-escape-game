@@ -1,0 +1,8 @@
+{
+  "name": "Project.Persistence",
+  "rootNamespace": "Project.Persistence",
+  "references": [
+    "Gilzoide.SqliteNet",
+    "Project.Core"
+  ]
+}

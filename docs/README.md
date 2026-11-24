@@ -20,6 +20,7 @@ Le déroulement détaillé est dans la [roadmap](roadmap.md).
 ## Documentation
 
 - [Architecture](architecture.md) — les trois catégories d'objets et le recalage.
+- [Schéma SQLite](database/README.md) — configuration, classement, statistiques et données initiales.
 - [Environnement](environment/README.md) — la salle virtuelle et sa direction artistique.
 - [Assets d'environnement](environment/assets.md) — architecture, mobilier, rangement et éclairage fixe.
 - [Gameplay](gameplay/README.md) — règles générales.
