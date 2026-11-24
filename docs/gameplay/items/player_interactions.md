@@ -15,26 +15,30 @@ L'action associée à un geste dépend de l'état de la main et des capacités d
 
 ## 2. Catégories d'items et feedback visuel
 
-Un glow autour de l'item indique les interactions disponibles. Sa couleur découle des [capacités statiques](specifications.md#1-types-et-capacités) :
+Un glow autour de l'item indique la combinaison de ses [capacités statiques](specifications.md#1-types-et-capacités).
 
-| Glow   | Capacités                                          | Interactions possibles                                                             | Exemples                             |
-| ------ | -------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------ |
-| Rouge  | `Grabbable` sans `Manipulable` ni `Activatable`    | Saisir, déplacer, relâcher, lancer.                                                | Caillou, bouteille simple.           |
-| Violet | `Grabbable` avec `Manipulable` et/ou `Activatable` | Gestes de saisie et de lancer, plus manipulation et/ou activation selon les flags. | Fiole avec bouchon, boîte, grimoire. |
-| Bleu   | `Manipulable` et/ou `Activatable` sans `Grabbable` | Manipuler et/ou activer sans déplacer librement l'item.                            | Levier, vanne, bouton.               |
-| Aucun  | Aucune de ces trois capacités                      | Aucune interaction joueur correspondante.                                          | —                                    |
+| Glow   | Capacités                                   |
+| ------ | ------------------------------------------- |
+| Rouge  | `Grabbable`                                 |
+| Bleu   | `Manipulable`                               |
+| Vert   | `Activatable`                               |
+| Violet | `Grabbable` + `Manipulable`                 |
+| Orange | `Manipulable` + `Activatable`               |
+| Jaune  | `Grabbable` + `Activatable`                 |
+| Blanc  | `Grabbable` + `Manipulable` + `Activatable` |
+| Aucun  | Aucune de ces trois capacités               |
 
-`Breakable` n'influe pas sur la couleur. Ces catégories n'imposent pas de types distincts dans le code ; les exemples n'attribuent pas automatiquement de capacités aux items cités.
+Chaque ligne correspond à la combinaison exacte des trois capacités. `Breakable` n'influe pas sur la couleur.
 
 ### Points d'interaction
 
-Lorsqu'une manipulation ou activation spécifique vise un emplacement précis, un **point de glow bleu** indique cette zone, en complément du glow global de l'item.
+Lorsqu'une manipulation ou activation spécifique vise un emplacement précis, un **point de glow bleu** indique cette zone, quelle que soit la couleur du glow global de l'item.
 
 - Levier bleu : point bleu sur la poignée.
 - Vanne bleue : point bleu sur la zone de manipulation.
 - Boîte violette : point bleu sur le couvercle ou le mécanisme manipulable.
 - Fiole violette : point bleu sur le bouchon.
-- Bouton bleu : point bleu sur la surface à presser avec l'index.
+- Bouton vert : point bleu sur la surface à presser avec l'index.
 
 Un `Pinch` sur le corps d'un item `Grabbable` permet de le déplacer. Si l'item est `Manipulable`, un `Pinch` sur un point d'interaction manipule la partie associée sans saisir l'item entier. Si l'item est `Activatable`, un contact de l'index en `Point` déclenche une activation `Press` compatible ; le `Pinch` peut également déclencher `Press` si l'item le prévoit. Sans point spécifique, le geste s'effectue sur la zone interactive de l'item. Pointer à distance ne déclenche pas l'interaction.
 
@@ -130,9 +134,9 @@ stateDiagram-v2
 
 Le changement de main est également possible par `Pinch` (voir section 7).
 
-## 5. Items sans saisie libre — Bleu
+## 5. Items interactifs sans saisie libre — Bleu, vert ou orange
 
-Un item bleu `Manipulable`, comme un levier ou une vanne, est manipulé en `Pinch` sur sa zone interactive selon la primitive associée. Un item bleu `Activatable`, comme un bouton, reçoit une activation ponctuelle en `Point` par contact de l'index. Les deux capacités peuvent coexister.
+Un item `Manipulable`, comme un levier ou une vanne, est manipulé en `Pinch` sur sa zone interactive selon la primitive associée. Un item `Activatable`, comme un bouton, reçoit une activation ponctuelle en `Point` par contact de l'index. Les deux capacités peuvent coexister.
 
 L'ouverture de la main termine une manipulation en `Pinch`. L'item reste soumis à ses contraintes : il ne peut pas être saisi librement ni lancé.
 
@@ -164,7 +168,7 @@ Les primitives sont réutilisables par les items fixes et les points d'interacti
 
 Les contraintes, limites de mouvement et effets de chaque primitive sont propres à l'item. Pour `Press`, un contact continu ne déclenche pas plusieurs activations : le joueur doit interrompre le contact avant de pouvoir appuyer de nouveau. Le geste `Point` déclenche une interaction `Press` uniquement si la main est libre d'interagir, et jamais pendant la visée d'un lancer assisté.
 
-## 6. Items transportables et interactifs — Violet
+## 6. Items transportables et interactifs — Violet, jaune ou blanc
 
 Ces items combinent `Grabbable` avec `Manipulable`, `Activatable` ou les deux.
 
@@ -229,7 +233,7 @@ Le débouchage, le versement et le mélange de liquides constituent des exemples
 
 ### 7.1. Transfert d'un item
 
-Lorsqu'une main tient un item rouge ou violet et que l'autre est libre, le joueur peut transférer l'item à cette dernière par `Pinch`.
+Lorsqu'une main tient un item `Grabbable` et que l'autre est libre, le joueur peut transférer l'item à cette dernière par `Pinch`.
 
 Le pinch de la main réceptrice doit cibler le corps de l'item et non un point d'interaction bleu. L'item change de main sans chute ni lancer et conserve sa position et son orientation. La main d'origine devient libre ; la main réceptrice tient désormais l'item en `Pinch`.
 
@@ -273,7 +277,7 @@ Les changements de gestes doivent être stabilisés pour éviter les relâchemen
 
 ## 8. Récapitulatif des interactions
 
-| Interaction                                    | Rouge |               Violet                |                Bleu                 |
+| Interaction                                    | Rouge |       Violet, jaune ou blanc        |        Bleu, vert ou orange         |
 | ---------------------------------------------- | :---: | :---------------------------------: | :---------------------------------: |
 | Saisie en `ClosedHand` ou `Pinch`              |  Oui  |                 Oui                 |                 Non                 |
 | Changement de mode et déplacement libre        |  Oui  |                 Oui                 |                 Non                 |

@@ -20,8 +20,6 @@ Les champs suivants sont proposés comme catalogue initial ; ils ne doivent êtr
 
 ### Perception
 
-![FOV](../../diagrams/monster_fov.svg)
-
 | Paramètre             | Utilité                                              |
 | --------------------- | ---------------------------------------------------- |
 | `visionFov`           | Ouverture du cône de vision.                         |
