@@ -1,0 +1,5 @@
+{
+  "name": "EnvironmentSandbox",
+  "rootNamespace": "EnvironmentSandbox",
+  "references": ["RoomGeneration", "Unity.InputSystem"]
+}

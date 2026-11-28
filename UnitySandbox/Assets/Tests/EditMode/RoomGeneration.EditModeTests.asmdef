@@ -1,0 +1,6 @@
+{
+  "name": "RoomGeneration.EditModeTests",
+  "references": ["RoomGeneration"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
